@@ -23,6 +23,9 @@ firebase.initializeApp(firebaseConfig);
  */
 const db = firebase.firestore();
 
+// Support for Firestore-specific data types
+const { Timestamp } = firebase.firestore;
+
 /**
  * Shorthand to access the Firebase Auth service
  */
@@ -46,6 +49,7 @@ db.settings(dbSettings);
 const usersCollection = db.collection('users');
 
 export {
+  Timestamp,
   db,
   auth,
   currentUser,
