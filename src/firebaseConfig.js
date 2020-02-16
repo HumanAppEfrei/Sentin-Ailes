@@ -7,14 +7,14 @@ import 'firebase/firestore';
 
 // Firebase initialization
 const firebaseConfig = {
-  apiKey: 'AIzaSyABC3SzD13n_7mva6LU8qshKrWtLmqDjW0',
-  authDomain: 'humanapp-sentinailes.firebaseapp.com',
-  databaseURL: 'https://humanapp-sentinailes.firebaseio.com',
-  projectId: 'humanapp-sentinailes',
-  storageBucket: 'humanapp-sentinailes.appspot.com',
-  messagingSenderId: '371829755039',
-  appId: '1:371829755039:web:f3492b1a29173599d5a6aa',
-  measurementId: 'G-T9STF36JZ0',
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_FIREBASE_DB_URL,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_FIREBASE_APP_ID,
+  measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
 };
 firebase.initializeApp(firebaseConfig);
 
@@ -35,12 +35,6 @@ const auth = firebase.auth();
  * Shorthand to the current user
  */
 const { currentUser } = auth;
-
-
-const dbSettings = {
-  timestampsInSnapshots: true,
-};
-db.settings(dbSettings);
 
 /* ===============================================================
  *                     Firestore Collections
