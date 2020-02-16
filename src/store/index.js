@@ -12,13 +12,25 @@ export default new Vuex.Store({
     loginError: null,
   },
   getters: {
+    userRecord(state) {
+      return state.user === null ? null : state.user.record;
+    },
+    authUser(state) {
+      return state.user === null ? null : state.user.auth;
+    },
   },
   mutations: {
-    setUser(state, payload) {
-      state.user = payload;
+    setAuthUser(state, payload) {
+      state.user.auth = payload;
     },
-    removeUser(state) {
-      state.user = null;
+    removeAuthUser(state) {
+      state.user.auth = null;
+    },
+    setUserRecord(state, payload) {
+      state.user.record = payload;
+    },
+    removeUserRecord(state) {
+      state.user.record = null;
     },
     setLoginStatus(state, payload) {
       state.loginStatus = payload;
@@ -34,16 +46,16 @@ export default new Vuex.Store({
         const authResponse = await firebase.auth().signInWithEmailAndPassword(email, password);
 
         // Update state accordingly to login response from firebase auth
-        commit('setUser', authResponse.user);
+        commit('setAuthUser', authResponse.user);
         commit('setLoginStatus', 'success');
         commit('setLoginError', null);
-      } catch (err) { // In case of an error
+      } catch (err) {
+        // In case of an error
         // Update state accordingly to response from firebase auth
         commit('setLoginStatus', 'failure');
         commit('setLoginError', err.message);
       }
     },
   },
-  modules: {
-  },
+  modules: {},
 });
