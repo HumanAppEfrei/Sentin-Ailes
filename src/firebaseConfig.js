@@ -36,12 +36,6 @@ const auth = firebase.auth();
  */
 const { currentUser } = auth;
 
-
-const dbSettings = {
-  timestampsInSnapshots: true,
-};
-db.settings(dbSettings);
-
 /* ===============================================================
  *                     Firestore Collections
   =============================================================== */
