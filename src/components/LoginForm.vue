@@ -20,38 +20,28 @@
       </v-btn>
     </form>
 
-    <v-alert type="error" class="mt-4" outlined v-show="loginError">
-      {{ loginError }}
+    <v-alert type="error" class="mt-4" outlined v-show="$store.state.loginError">
+      {{ $store.state.loginError }}
     </v-alert>
 
-    <v-alert type="success" class="mt-4" v-show="!loginError && loginData">
-      {{ JSON.stringify(loginData) }}
+    <v-alert type="success" class="mt-4" v-show="!$store.state.loginError && $store.state.user">
+      {{ $store.state.user }}
     </v-alert>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase';
-
 export default {
   data() {
     return {
       email: '',
       password: '',
-      loginError: '',
-      loginData: null,
     };
   },
   methods: {
     async submitForm() {
-      console.log(`Handling connection for email "${this.email}" and password "${this.password}"`);
+      this.$store.dispatch('loginWithEmailAndPassword', { email: this.email, password: this.password });
       this.$refs.loginForm.reset();
-      try {
-        this.loginData = await firebase.auth().signInWithEmailAndPassword(this.email, this.password);
-        // TODO: redirect users to their dashboard
-      } catch (err) {
-        this.loginError = err.message;
-      }
     },
   },
 };
