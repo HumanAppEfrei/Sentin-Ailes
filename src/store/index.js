@@ -89,12 +89,26 @@ export default new Vuex.Store({
 
         // Then, create Firestore record with additional data
         try {
-          usersCollection.doc(authResponse.user.uid).set(additionalData);
+          usersCollection.doc(authResponse.user.uid).set(additionalData, { merge: true });
         } catch (err) {
           commit('setRegisterError', err.message);
         }
       } catch (err) {
         commit('setRegisterError', err.message);
+      }
+    },
+
+    async logout({ commit }) {
+      try {
+        await firebase.auth().signOut();
+
+        commit('setAuthUser', null);
+        commit('setUserRecord', null);
+        commit('setLoginStatus', null);
+
+        router.push({ name: 'login' });
+      } catch (err) {
+        console.error(err);
       }
     },
   },
