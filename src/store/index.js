@@ -23,15 +23,27 @@ export default new Vuex.Store({
   },
   mutations: {
     setAuthUser(state, payload) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
       state.user.auth = payload;
     },
     removeAuthUser(state) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
       state.user.auth = null;
     },
     setUserRecord(state, payload) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
       state.user.record = payload;
     },
     removeUserRecord(state) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
       state.user.record = null;
     },
     setLoginStatus(state, payload) {
