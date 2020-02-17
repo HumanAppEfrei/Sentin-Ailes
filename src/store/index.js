@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import firebase from 'firebase';
+import { usersCollection } from '@/firebaseConfig';
 
 Vue.use(Vuex);
 
@@ -10,6 +11,7 @@ export default new Vuex.Store({
     user: null,
     loginStatus: null,
     loginError: null,
+    registerError: null,
   },
   getters: {
     userRecord(state) {
@@ -38,6 +40,9 @@ export default new Vuex.Store({
     setLoginError(state, payload) {
       state.loginError = payload;
     },
+    setRegisterError(state, payload) {
+      state.registerError = payload;
+    },
   },
   actions: {
     async loginWithEmailAndPassword({ commit }, { email, password }) {
@@ -54,6 +59,26 @@ export default new Vuex.Store({
         // Update state accordingly to response from firebase auth
         commit('setLoginStatus', 'failure');
         commit('setLoginError', err.message);
+      }
+    },
+
+    async registerWithEmailandPassword({ commit }, { email, password, additionalData }) {
+      try {
+        // First perform authentication
+        const authResponse = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+        commit('setAuthUser', authResponse.user);
+        commit('setLoginStatus', 'success');
+        commit('setRegisterError', null);
+
+        // Then, create Firestore record with additional data
+        try {
+          usersCollection.doc(authResponse.user.uid).set(additionalData);
+        } catch (err) {
+          commit('setRegisterError', err.message);
+        }
+      } catch (err) {
+        commit('setRegisterError', err.message);
       }
     },
   },
