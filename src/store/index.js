@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import router from '@/router';
+
 import firebase from 'firebase';
 import { usersCollection } from '@/firebaseConfig';
 
@@ -66,6 +68,8 @@ export default new Vuex.Store({
         commit('setAuthUser', authResponse.user);
         commit('setLoginStatus', 'success');
         commit('setLoginError', null);
+
+        router.push({ name: 'home' });
       } catch (err) {
         // In case of an error
         // Update state accordingly to response from firebase auth
