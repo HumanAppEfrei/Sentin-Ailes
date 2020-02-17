@@ -24,7 +24,7 @@
       {{ $store.state.loginError }}
     </v-alert>
 
-    <v-alert type="success" class="mt-4" v-show="!$store.state.loginError && $store.state.user">
+    <v-alert type="success" class="mt-4" v-show="$store.state.loginStatus === 'success'">
       {{ $store.state.user }}
     </v-alert>
   </div>
