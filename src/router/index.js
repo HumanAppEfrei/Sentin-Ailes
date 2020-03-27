@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
+import ContactInfo from '../views/ContactInfo.vue';
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+  },
+  {
+    path: '/contact-info',
+    name: 'contact-info',
+    component: ContactInfo,
   },
 ];
 
