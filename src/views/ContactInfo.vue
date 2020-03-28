@@ -1,12 +1,28 @@
 <template>
 <v-form>
   <v-container >
-      <v-row>
-        <v-col cols=12 sm=10>
+      <v-row justify="space-between">
+        <v-col cols=12 sm=6>
           <h1>Informations personnelles</h1>
         </v-col>
-        <v-col cols="1" order="-1" order-sm="1">
-          <v-btn>Modifier</v-btn>
+        <v-col
+          cols="12"
+          sm="5"
+          order="-1"
+          order-sm="1">
+          <v-row v-if="!editMode"
+            justify="end">
+            <v-btn @click="onEdit"><v-icon left>edit</v-icon> Modifier</v-btn>
+          </v-row>
+          <v-row v-else
+            justify="end">
+            <v-col>
+              <v-btn @click="onSave"><v-icon left>save_alt</v-icon>Enregistrer</v-btn>
+            </v-col>
+            <v-col>
+              <v-btn @click="onCancel"><v-icon left>cancel</v-icon>Annuler</v-btn>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <h2>Identitée</h2>
@@ -113,7 +129,7 @@
           />
         </v-col>
       </v-row>
-      <h1>Contacts d'urgence</h1>
+      <h1>Contacts d'urgences</h1>
   </v-container>
 </v-form>
 </template>
@@ -142,6 +158,20 @@ export default {
     };
   },
   components: {},
+
+  methods: {
+    onEdit() {
+      this.editMode = true;
+    },
+    onSave() {
+      /* Update db */
+      this.editMode = false;
+    },
+    onCancel() {
+      /* Reload User data From db */
+      this.editMode = false;
+    },
+  },
 };
 </script>
 
