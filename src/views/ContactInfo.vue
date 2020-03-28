@@ -2,20 +2,19 @@
 <v-form>
   <v-container >
       <v-row justify="space-between">
-        <v-col cols=12 sm=6>
+        <v-col cols="12" sm="7" order="1">
           <h1>Informations personnelles</h1>
         </v-col>
-        <v-col
-          cols="12"
-          sm="5"
-          order="-1"
-          order-sm="1">
-          <v-row v-if="!editMode"
-            justify="end">
-            <v-btn @click="onEdit"><v-icon left>edit</v-icon> Modifier</v-btn>
+        <v-col cols="12" sm="5" order="-1" order-sm="2">
+          <v-row justify="end" v-if="!editMode">
+            <v-col>
+              <v-spacer></v-spacer>
+            </v-col>
+            <v-col>
+              <v-btn @click="onEdit"><v-icon left>edit</v-icon> Modifier</v-btn>
+            </v-col>
           </v-row>
-          <v-row v-else
-            justify="end">
+          <v-row justify="end" v-else>
             <v-col>
               <v-btn @click="onSave"><v-icon left>save_alt</v-icon>Enregistrer</v-btn>
             </v-col>
