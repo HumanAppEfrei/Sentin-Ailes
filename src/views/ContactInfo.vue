@@ -134,7 +134,7 @@
       :key="contact.number"
       :contact="contact"
       :edit-mode="editMode"
-      :on-delete="onDeleteContact">
+      @delete="onDeleteContact">
     </emergency-contact>
     <v-row justify="center">
       <v-btn v-if="editMode" @click="onAddContact">Ajouter un contact</v-btn>

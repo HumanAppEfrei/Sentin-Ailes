@@ -47,8 +47,12 @@ export default {
   props: [
     'contact',
     'editMode',
-    'onDelete',
   ],
+  methods: {
+    onDelete() {
+      this.$emit('delete', this.$props.contact.number);
+    },
+  },
 };
 </script>
 
