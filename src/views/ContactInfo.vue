@@ -185,11 +185,11 @@ export default {
       this.editMode = true;
     },
     onSave() {
-      /* Update db */
+      /* Update user in vuex store */
       this.editMode = false;
     },
     onCancel() {
-      /* Reload User data From db */
+      /* Reload User data From vuex store */
       this.editMode = false;
     },
     onAddContact() {
