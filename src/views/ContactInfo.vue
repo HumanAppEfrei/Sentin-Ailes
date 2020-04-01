@@ -1,5 +1,5 @@
 <template>
-<v-container >
+<main>
   <v-form>
     <v-row>
         <h1>Informations personnelles</h1>
@@ -126,14 +126,14 @@
   </v-btn>
   </div>
   <v-row class="floating" v-else>
-    <v-btn fab large color="primary" @click="onSave">
+    <v-btn class="btn-pair" fab large color="primary" @click="onSave">
       <v-icon>save_alt</v-icon>
     </v-btn>
-    <v-btn fab large color="error" @click="onCancel">
+    <v-btn class="btn-pair" fab large color="error" @click="onCancel">
       <v-icon>cancel</v-icon>
     </v-btn>
   </v-row>
-</v-container>
+</main>
 </template>
 
 <script>
@@ -207,11 +207,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
+main {
+  padding: 0% 15%;
+}
+
 .floating {
   flex-direction: column;
+  justify-content: space-between;
   position: fixed;
   right: 5%;
   bottom: 5%;
+}
+
+.btn-pair {
+  margin: 5px;
+}
+
+@media screen and (max-width: 600px){
+  main {
+    padding: 0% 5%;
+  }
 }
 </style>

@@ -5,7 +5,7 @@
       <v-btn color="error" @click="onDelete(contact.number)" v-if="editMode">Suprimer</v-btn>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="12" sm="6">
         <v-text-field outlined
           type="text"
           label="Prénom"
@@ -13,7 +13,7 @@
           :readonly="!editMode"
           prepend-inner-icon="person" />
       </v-col>
-      <v-col>
+      <v-col cols="12" sm="6">
         <v-text-field outlined
         type="text"
         label="Nom"
