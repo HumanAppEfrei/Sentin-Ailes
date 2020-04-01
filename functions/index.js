@@ -34,8 +34,9 @@ exports.onUserCreation = functions.auth.user().onCreate(async user => {
   if (userWhitelistRecord === null) {
     console.log("Unable to find whitelist record with provided email, deleting user...");
 
-    // If email not in the whitelist, delete the newly created user record
+    // If email not in the whitelist, delete the newly created user record for Auth service and associated Firestore record
     admin.auth().deleteUser(user.uid);
+    setTimeout(() => userCollection.doc(user.uid).delete(), 15000);
     return;
   }
 
