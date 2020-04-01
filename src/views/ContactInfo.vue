@@ -210,7 +210,7 @@ export default {
 <style scoped>
 
 main {
-  padding: 0% 15%;
+  padding: 2% 15%;
 }
 
 .floating {
@@ -227,7 +227,7 @@ main {
 
 @media screen and (max-width: 600px){
   main {
-    padding: 0% 5%;
+    padding: 5%;
   }
 }
 </style>
