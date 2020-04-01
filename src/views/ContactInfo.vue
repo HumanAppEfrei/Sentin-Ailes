@@ -1,28 +1,8 @@
 <template>
 <v-container >
   <v-form>
-    <v-row justify="space-between">
-      <v-col cols="12" sm="7" order="1">
+    <v-row>
         <h1>Informations personnelles</h1>
-      </v-col>
-      <v-col cols="12" sm="5" order="-1" order-sm="2">
-        <v-row justify="end" v-if="!editMode">
-          <v-col>
-            <v-spacer></v-spacer>
-          </v-col>
-          <v-col>
-            <v-btn @click="onEdit"><v-icon left>edit</v-icon> Modifier</v-btn>
-          </v-col>
-        </v-row>
-        <v-row justify="end" v-else>
-          <v-col>
-            <v-btn @click="onSave"><v-icon left>save_alt</v-icon>Enregistrer</v-btn>
-          </v-col>
-          <v-col>
-            <v-btn @click="onCancel"><v-icon left>cancel</v-icon>Annuler</v-btn>
-          </v-col>
-        </v-row>
-      </v-col>
     </v-row>
     <h2>Identitée</h2>
     <v-row>
@@ -140,6 +120,19 @@
       <v-btn v-if="editMode" @click="onAddContact">Ajouter un contact</v-btn>
     </v-row>
   </v-form>
+  <div class="floating" v-if="!editMode">
+  <v-btn fab large @click="onEdit">
+    <v-icon>edit</v-icon>
+  </v-btn>
+  </div>
+  <v-row class="floating" v-else>
+    <v-btn fab large color="primary" @click="onSave">
+      <v-icon>save_alt</v-icon>
+    </v-btn>
+    <v-btn fab large color="error" @click="onCancel">
+      <v-icon>cancel</v-icon>
+    </v-btn>
+  </v-row>
 </v-container>
 </template>
 
@@ -215,4 +208,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.floating {
+  flex-direction: column;
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
 </style>

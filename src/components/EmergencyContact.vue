@@ -2,7 +2,7 @@
   <v-container>
     <v-row justify="space-between">
       <h2>Contact {{ contact.number }}</h2>
-      <v-btn @click="onDelete(contact.number)" v-if="editMode">Suprimer</v-btn>
+      <v-btn color="error" @click="onDelete(contact.number)" v-if="editMode">Suprimer</v-btn>
     </v-row>
     <v-row>
       <v-col>
