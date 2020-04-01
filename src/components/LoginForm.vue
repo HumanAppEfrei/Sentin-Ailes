@@ -20,11 +20,11 @@
       </v-btn>
     </form>
 
-    <v-alert type="error" class="mt-4" outlined v-show="$store.state.loginError">
+    <v-alert type="error" class="mt-4" outlined v-show="$store.state.loginStatus === 'failure'">
       {{ $store.state.loginError }}
     </v-alert>
 
-    <v-alert type="success" class="mt-4" v-show="!$store.state.loginError && $store.state.user">
+    <v-alert type="success" class="mt-4" v-show="$store.state.loginStatus === 'success'">
       {{ $store.state.user }}
     </v-alert>
   </div>
@@ -41,7 +41,9 @@ export default {
   methods: {
     async submitForm() {
       this.$store.dispatch('loginWithEmailAndPassword', { email: this.email, password: this.password });
-      this.$refs.loginForm.reset();
+
+      this.email = '';
+      this.password = '';
     },
   },
 };

@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import router from '@/router';
+
 import firebase from 'firebase';
+import { usersCollection } from '@/firebaseConfig';
 
 Vue.use(Vuex);
 
@@ -10,21 +13,49 @@ export default new Vuex.Store({
     user: null,
     loginStatus: null,
     loginError: null,
+    registerError: null,
   },
   getters: {
+    userRecord(state) {
+      return state.user === null ? null : state.user.record;
+    },
+    authUser(state) {
+      return state.user === null ? null : state.user.auth;
+    },
   },
   mutations: {
-    setUser(state, payload) {
-      state.user = payload;
+    setAuthUser(state, payload) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
+      state.user.auth = payload;
     },
-    removeUser(state) {
-      state.user = null;
+    removeAuthUser(state) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
+      state.user.auth = null;
+    },
+    setUserRecord(state, payload) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
+      state.user.record = payload;
+    },
+    removeUserRecord(state) {
+      if (state.user === null) {
+        state.user = { auth: null, record: null };
+      }
+      state.user.record = null;
     },
     setLoginStatus(state, payload) {
       state.loginStatus = payload;
     },
     setLoginError(state, payload) {
       state.loginError = payload;
+    },
+    setRegisterError(state, payload) {
+      state.registerError = payload;
     },
   },
   actions: {
@@ -34,16 +65,52 @@ export default new Vuex.Store({
         const authResponse = await firebase.auth().signInWithEmailAndPassword(email, password);
 
         // Update state accordingly to login response from firebase auth
-        commit('setUser', authResponse.user);
+        commit('setAuthUser', authResponse.user);
         commit('setLoginStatus', 'success');
         commit('setLoginError', null);
-      } catch (err) { // In case of an error
+
+        router.push({ name: 'home' });
+      } catch (err) {
+        // In case of an error
         // Update state accordingly to response from firebase auth
         commit('setLoginStatus', 'failure');
         commit('setLoginError', err.message);
       }
     },
+
+    async registerWithEmailandPassword({ commit }, { email, password, additionalData }) {
+      try {
+        // First perform authentication
+        const authResponse = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+        commit('setAuthUser', authResponse.user);
+        commit('setLoginStatus', 'success');
+        commit('setRegisterError', null);
+
+        // Then, create Firestore record with additional data
+        try {
+          usersCollection.doc(authResponse.user.uid).set(additionalData, { merge: true });
+        } catch (err) {
+          commit('setRegisterError', err.message);
+        }
+      } catch (err) {
+        commit('setRegisterError', err.message);
+      }
+    },
+
+    async logout({ commit }) {
+      try {
+        await firebase.auth().signOut();
+
+        commit('setAuthUser', null);
+        commit('setUserRecord', null);
+        commit('setLoginStatus', null);
+
+        router.push({ name: 'login' });
+      } catch (err) {
+        console.error(err);
+      }
+    },
   },
-  modules: {
-  },
+  modules: {},
 });
