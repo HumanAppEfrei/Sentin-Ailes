@@ -141,8 +141,8 @@ import EmergencyContact from '@/components/EmergencyContact.vue';
 
 const contact1 = {
   number: 1,
-  firstName: 'Jean',
-  lastName: 'Paul',
+  firstname: 'Jean',
+  lastname: 'Paul',
   phone: '0102030405',
   email: 'jean.paul@www.zzz',
 };
