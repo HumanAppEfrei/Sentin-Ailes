@@ -2,6 +2,24 @@
   <v-container>
     <h1>Whitelist (authorized emails and associated roles)</h1>
 
+    <h2>Ajouter une entrée</h2>
+    <v-form ref="whitelistEntryForm" @submit.prevent="handleFormSubmission">
+      <v-row>
+        <v-col cols="6">
+          <v-text-field v-model="newEntryEmail" placeholder="Email" outlined class="pa-0" />
+        </v-col>
+        <v-col cols="3">
+          <v-select v-model="newEntryRole" :items="possibleRoles" item-text="name" item-value="value" placeholder="Role" outlined />
+        </v-col>
+        <v-col cols="3">
+          <v-btn block color="primary" type="submit">
+            Ajouter l'entrée
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
+
+    <h2>Liste des entrées</h2>
     <v-data-table
       :headers="tableHeaders"
       :items="whitelistRecords"
@@ -39,6 +57,26 @@ export default {
 
   data() {
     return {
+      newEntryEmail: '',
+      newEntryRole: '',
+      possibleRoles: [
+        {
+          name: 'Bénéficiaire',
+          value: 'beneficiaire',
+        },
+        {
+          name: 'Intervenant',
+          value: 'intervenant',
+        },
+        {
+          name: 'Administrateur',
+          value: 'admin',
+        },
+        {
+          name: 'Super administrateur',
+          value: 'superAdmin',
+        },
+      ],
       unsubscribeFromSubscription: null,
       tableHeaders: [
         {
@@ -65,6 +103,20 @@ export default {
   },
 
   methods: {
+    async handleFormSubmission() {
+      try {
+        await whitelistCollection.add({
+          email: this.newEntryEmail,
+          userType: this.newEntryRole,
+        });
+
+        this.newEntryEmail = '';
+        this.newEntryRole = '';
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     initItemDeletion(item) {
       this.selectedRecord = item;
       this.showDialog = true;
