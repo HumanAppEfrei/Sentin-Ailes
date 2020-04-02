@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import router from '@/router';
 
 import firebase from 'firebase';
-import { usersCollection, whitelistCollection } from '@/firebaseConfig';
+import { usersCollection, whitelistCollection } from '@/firebaseConfig.js';
 
 Vue.use(Vuex);
 
