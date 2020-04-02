@@ -8,11 +8,26 @@
       multi-sort
     >
       <template v-slot:item.btn="{ item }">
-        <v-btn color="primary" @click="deleteItem(item)">
+        <v-btn color="primary" @click="initItemDeletion(item)">
           Delete
         </v-btn>
       </template>
     </v-data-table>
+
+    <!-- Whitelist record deletion confirmation dialog -->
+    <v-dialog v-model="showDialog" @click:outside="closeDialog" max-width="600">
+      <v-card class="pa-5">
+        <v-card-title>Supprimer cette entrée ?</v-card-title>
+        <v-card-actions class="d-flex justify-end mt-3">
+          <v-btn color="primary" class="mx-4" @click="closeDialog">
+            Annuler la suppression
+          </v-btn>
+          <v-btn color="error" @click="deleteItemAndCloseDialog">
+            Supprimer cette entrée
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -44,16 +59,25 @@ export default {
         },
       ],
       whitelistRecords: [],
+      selectedRecord: null,
+      showDialog: false,
     };
   },
 
   methods: {
     initItemDeletion(item) {
-      console.log(item);
+      this.selectedRecord = item;
+      this.showDialog = true;
     },
 
-    async deleteItem(item) {
-      await item.ref.delete();
+    closeDialog() {
+      this.selectedRecord = null;
+      this.showDialog = false;
+    },
+
+    deleteItemAndCloseDialog() {
+      this.selectedRecord.ref.delete();
+      this.closeDialog();
     },
   },
 
