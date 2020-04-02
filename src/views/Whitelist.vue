@@ -33,8 +33,8 @@
       </template>
 
       <template v-slot:item.btn="{ item }">
-        <v-btn color="primary" @click="initItemDeletion(item)">
-          Delete
+        <v-btn color="error" @click="initItemDeletion(item)">
+          Supprimer
         </v-btn>
       </template>
     </v-data-table>
@@ -59,6 +59,21 @@
 <script>
 import { whitelistCollection } from '@/firebaseConfig';
 
+/**
+ * Map a role code name to its display name
+ *
+ * For example: 'superAdmin' becomes 'Super Administrateur'
+ * @param {String} abbr Role code name
+ * @returns {String} Display name of the role
+ */
+function mapRoleAbbrToRoleName(abbr) {
+  if (abbr === 'beneficiaire') return 'Bénéficiaire';
+  if (abbr === 'intervenant') return 'Intervenant';
+  if (abbr === 'admin') return 'Administrateur';
+  if (abbr === 'superAdmin') return 'Super Administrateur';
+  return '';
+}
+
 export default {
   name: 'WhitelistView',
 
@@ -81,19 +96,19 @@ export default {
           value: 'admin',
         },
         {
-          name: 'Super administrateur',
+          name: 'Super Administrateur',
           value: 'superAdmin',
         },
       ],
       unsubscribeFromSubscription: null,
       tableHeaders: [
         {
-          text: 'Email',
+          text: 'Adresse email',
           value: 'data.email',
           sortable: true,
         },
         {
-          text: 'Role',
+          text: 'Rôle',
           value: 'data.userType',
           sortable: true,
         },
@@ -143,11 +158,15 @@ export default {
 
   async beforeMount() {
     // Gather all whitelist records from database
-    this.whitelistRecords = (await whitelistCollection.get()).docs.map(doc => ({ ref: doc.ref, data: doc.data() }));
+    this.whitelistRecords = (await whitelistCollection.get()).docs
+      .map(doc => ({ ref: doc.ref, data: doc.data() }));
+
 
     // Subscribe to changes (and save unsubcription function)
     this.unsubscribeFromSubscription = whitelistCollection.onSnapshot((snapshot) => {
-      this.whitelistRecords = snapshot.docs.map(doc => ({ ref: doc.ref, data: doc.data() }));
+      this.whitelistRecords = snapshot.docs
+        .map(doc => ({ ref: doc.ref, data: doc.data() }))
+        .map(doc => ({ ref: doc.ref, data: { ...doc.data, userType: mapRoleAbbrToRoleName(doc.data.userType) } }));
     });
   },
 
