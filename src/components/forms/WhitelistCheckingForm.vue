@@ -14,7 +14,7 @@
             outlined/>
         </v-col>
       </v-row>
-      <v-btn color="primary" type="submit" :loading="checkingMail">
+      <v-btn color="primary" type="submit" :loading="whitelistStatus.status === 'pending'">
             Vérifier votre mail
           </v-btn>
     </v-container>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'WhitelistCheckingForm',
@@ -29,7 +30,6 @@ export default {
   data() {
     return {
       formValid: false,
-      checkingMail: false,
       email: '',
       emailRules: [
         // eslint-disable-next-line max-len
@@ -37,6 +37,12 @@ export default {
           .test(v) || 'Addresse email invalide',
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      whitelistStatus: 'getWhitelistStatus',
+    }),
   },
 
   methods: {
