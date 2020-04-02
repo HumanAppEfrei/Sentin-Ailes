@@ -41,6 +41,7 @@ const { currentUser } = auth;
   =============================================================== */
 
 const usersCollection = db.collection('users');
+const whitelist = db.collection('whitelist');
 
 export {
   Timestamp,
@@ -48,4 +49,5 @@ export {
   auth,
   currentUser,
   usersCollection,
+  whitelist,
 };
