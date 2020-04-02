@@ -1,6 +1,5 @@
 <template>
   <v-form ref="registrationForm" @submit.prevent="checkUser" v-model="formValid">
-    <v-container>
       <h2>Informations de connexion</h2>
       <v-row>
         <v-col cols="12" sm="4">
@@ -17,7 +16,6 @@
       <v-btn color="primary" type="submit" :loading="whitelistStatus.status === 'pending'">
             Vérifier votre mail
           </v-btn>
-    </v-container>
   </v-form>
 </template>
 
