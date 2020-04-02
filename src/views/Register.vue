@@ -1,5 +1,5 @@
 <template>
-  <v-stepper v-model="e1" vertical>
+  <v-stepper v-model="e1" vertical class="elevation-0">
     <v-container>
       <v-stepper-step
         :complete="whitelistStatus.status === 'found'"
