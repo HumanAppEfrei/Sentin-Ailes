@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import router from '@/router';
 
 import firebase from 'firebase';
-import { usersCollection, whitelist } from '@/firebaseConfig';
+import { usersCollection, whitelistCollection } from '@/firebaseConfig.js';
 
 Vue.use(Vuex);
 
@@ -74,7 +74,7 @@ export default new Vuex.Store({
       // console.log('checking');
       commit('setWhitelistStatus', { status: 'pending', type: 'none' });
       try {
-        const dbResponse = await whitelist.where('email', '==', email).get()
+        const dbResponse = await whitelistCollection.where('email', '==', email).get()
           .then(snapshot => snapshot);
 
         // console.log(dbResponse.docs[0].data().userType);
