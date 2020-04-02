@@ -14,8 +14,8 @@
 
       <v-stepper-step :complete="e1 > 2" step="2">Inscription</v-stepper-step>
       <v-stepper-content step="2">
-        <!-- TODO: Intervenant form -->
-        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'"/>
+        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" />
+        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" />
       </v-stepper-content>
     </v-container>
   </v-stepper>
@@ -23,6 +23,7 @@
 
 <script>
 import BeneficiaireRegisterForm from '@/components/forms/BeneficiaireRegisterForm.vue';
+import IntervenantRegisterForm from '@/components/forms/IntervenantRegisterForm.vue';
 import WhitelistCheckingForm from '@/components/forms/WhitelistCheckingForm.vue';
 import { mapGetters } from 'vuex';
 
@@ -30,6 +31,7 @@ export default {
   name: 'RegisterView',
   components: {
     BeneficiaireRegisterForm,
+    IntervenantRegisterForm,
     WhitelistCheckingForm,
   },
 
