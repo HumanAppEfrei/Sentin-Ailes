@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import router from '@/router';
 
 import firebase from 'firebase';
-import { usersCollection } from '@/firebaseConfig';
+import { usersCollection, whitelist } from '@/firebaseConfig';
 
 Vue.use(Vuex);
 
@@ -14,6 +14,8 @@ export default new Vuex.Store({
     loginStatus: null,
     loginError: null,
     registerError: null,
+    whitelistStatus: { status: 'not found', type: 'none' },
+    whitelistError: null,
   },
   getters: {
     userRecord(state) {
@@ -21,6 +23,9 @@ export default new Vuex.Store({
     },
     authUser(state) {
       return state.user === null ? null : state.user.auth;
+    },
+    getWhitelistStatus(state) {
+      return state.whitelistStatus;
     },
   },
   mutations: {
@@ -57,8 +62,32 @@ export default new Vuex.Store({
     setRegisterError(state, payload) {
       state.registerError = payload;
     },
+    setWhitelistStatus(state, payload) {
+      state.whitelistStatus = payload;
+    },
+    setWhitelisError(state, payload) {
+      state.whitelistError = payload;
+    },
   },
   actions: {
+    async checkEmailInWhitelist({ commit }, { email }) {
+      // console.log('checking');
+      commit('setWhitelistStatus', { status: 'pending', type: 'none' });
+      try {
+        const dbResponse = await whitelist.where('email', '==', email).get()
+          .then(snapshot => snapshot);
+
+        // console.log(dbResponse.docs[0].data().userType);
+        if (!dbResponse.empty) {
+          commit('setWhitelistStatus', { status: 'found', type: dbResponse.docs[0].data().userType });
+        } else {
+          commit('setWhitelistStatus', { status: 'not found', type: 'error' });
+        }
+      } catch (err) {
+        commit('setWhitelistError', err.message);
+      }
+    },
+
     async loginWithEmailAndPassword({ commit }, { email, password }) {
       try {
         // Attempt login
