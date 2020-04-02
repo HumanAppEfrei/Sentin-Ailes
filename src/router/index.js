@@ -5,6 +5,7 @@ import Register from '@/views/Register.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import ContactInfo from '../views/ContactInfo.vue';
+import WhitelistView from '../views/Whitelist.vue';
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/contact-info',
     name: 'contact-info',
     component: ContactInfo,
+  },
+  {
+    path: '/whitelist',
+    name: 'whitelist',
+    component: WhitelistView,
   },
 ];
 
