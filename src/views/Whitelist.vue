@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Whitelist (authorized emails and associated roles)</h1>
+    <h1>Whitelist (emails autorisés et rôles associés)</h1>
 
     <h2>Ajouter une entrée</h2>
     <v-form ref="whitelistEntryForm" @submit.prevent="handleFormSubmission">
@@ -23,8 +23,15 @@
     <v-data-table
       :headers="tableHeaders"
       :items="whitelistRecords"
+      :search="searchFilter"
       multi-sort
     >
+      <template v-slot:top>
+        <v-container class="mb-0">
+          <v-text-field v-model="searchFilter" placeholder="Filtrer la liste" outlined />
+        </v-container>
+      </template>
+
       <template v-slot:item.btn="{ item }">
         <v-btn color="primary" @click="initItemDeletion(item)">
           Delete
@@ -59,6 +66,7 @@ export default {
     return {
       newEntryEmail: '',
       newEntryRole: '',
+      searchFilter: '',
       possibleRoles: [
         {
           name: 'Bénéficiaire',
