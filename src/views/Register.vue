@@ -1,7 +1,7 @@
 <template>
   <v-stepper v-model="e1" vertical>
     <v-stepper-step
-      :complete="e1 > 1"
+      :complete="whitelistStatus.status === 'found'"
       step="1"
       :rules="[() => whitelistStatus.type != 'error' ? true : false]">
         Vérification de l'email
@@ -13,7 +13,8 @@
 
     <v-stepper-step :complete="e1 > 2" step="2">Inscription</v-stepper-step>
     <v-stepper-content step="2">
-      <BeneficiaireRegisterForm v-if="formType === 'beneficiaire'"/>
+      <!-- TODO: Intervenant form -->
+      <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'"/>
     </v-stepper-content>
   </v-stepper>
 </template>
@@ -39,10 +40,17 @@ export default {
     }),
   },
 
+  watch: {
+    whitelistStatus(newStatus) {
+      if (newStatus.status === 'found') {
+        this.e1 = 2;
+      }
+    },
+  },
+
   data() {
     return {
       e1: 1,
-      formType: 'beneficiaire',
     };
   },
 };
