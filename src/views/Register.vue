@@ -1,6 +1,11 @@
 <template>
   <v-stepper v-model="e1" vertical>
-    <v-stepper-step :complete="e1 > 1" step="1">Vérification de l'email</v-stepper-step>
+    <v-stepper-step
+      :complete="e1 > 1"
+      step="1"
+      :rules="[() => whitelistStatus.type != 'error' ? true : false]">
+        Vérification de l'email
+    </v-stepper-step>
     <v-stepper-content step="1">
       <WhitelistCheckingForm />
       <!-- <v-btn color="primary" @click="e1 = 2">Continue</v-btn> -->
@@ -16,6 +21,7 @@
 <script>
 import BeneficiaireRegisterForm from '@/components/forms/BeneficiaireRegisterForm.vue';
 import WhitelistCheckingForm from '@/components/forms/WhitelistCheckingForm.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'RegisterView',
@@ -25,6 +31,12 @@ export default {
   },
 
   methods: {
+  },
+
+  computed: {
+    ...mapGetters({
+      whitelistStatus: 'getWhitelistStatus',
+    }),
   },
 
   data() {
