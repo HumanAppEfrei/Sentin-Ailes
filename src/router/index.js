@@ -4,8 +4,10 @@ import VueRouter from 'vue-router';
 import Register from '@/views/Register.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import EventsList from '../views/EventsList.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
+
 
 Vue.use(VueRouter);
 
@@ -34,6 +36,11 @@ const routes = [
     path: '/whitelist',
     name: 'whitelist',
     component: WhitelistView,
+  },
+  {
+    path: '/events-list',
+    name: 'eventslist',
+    component: EventsList,
   },
 ];
 
