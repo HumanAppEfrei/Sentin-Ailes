@@ -3,6 +3,7 @@
       <v-row>
         <v-col cols="12" sm="8">
           <v-card-title>{{ event.name }}</v-card-title>
+          <v-card-subtitle>{{ event.date }}</v-card-subtitle>
           <v-card-text>{{ event.description }} </v-card-text>
         </v-col>
         <v-col class="d-flex flex-column justify-center align-center align-sm-center">
