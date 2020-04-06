@@ -6,6 +6,7 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
+import Hub from '../views/Hub.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/whitelist',
     name: 'whitelist',
     component: WhitelistView,
+  },
+  {
+    path: '/hub',
+    name: 'hub',
+    component: Hub,
   },
 ];
 
