@@ -1,26 +1,22 @@
 <template>
-  <v-container>
-      <v-row>
-          <v-col cols="12" sm="6">
-            <MenuTile color="red" icon="home" text="yeet" link="/"/>
+  <v-container fluid>
+      <v-row justify="center">
+          <v-col cols="12" lg="4" sm="6">
+            <MenuTile color="orange" icon="person" text="Informations personnelles" link="/contact-info"/>
           </v-col>
 
-          <v-spacer></v-spacer>
-
-          <v-col cols="12" sm="6">
-            <MenuTile/>
+          <v-col cols="12" lg="4" sm="6">
+            <MenuTile color="blue" icon="event" text="Calendrier" link="/"/>
           </v-col>
       </v-row>
 
-      <v-row>
-          <v-col cols="12" sm="6">
-            <MenuTile/>
+      <v-row justify="center">
+          <v-col cols="12" lg="4" sm="6">
+            <MenuTile color="pink" icon="mail" text="Messages" link="/"/>
           </v-col>
 
-          <v-spacer></v-spacer>
-
-          <v-col cols="12" sm="6">
-            <MenuTile/>
+          <v-col cols="12" lg="4" sm="6">
+            <MenuTile color="teal" icon="casino" text="Exercices" link="/"/>
           </v-col>
       </v-row>
   </v-container>
