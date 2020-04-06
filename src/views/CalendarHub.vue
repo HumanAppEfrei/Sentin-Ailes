@@ -2,15 +2,15 @@
   <v-container fluid>
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="orange" icon="person" text="Informations personnelles" link="/contact-info"/>
+            <MenuTile color="blue" icon="event" text="Ajouter un évènement" link="/"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="blue" icon="event" text="Calendrier" link="/"/>
+            <MenuTile color="blue" icon="event_note" text="Mes évènements programmés" link="/"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="pink" icon="mail" text="Messages" link="/"/>
+            <MenuTile color="blue" icon="date_range" text="Demandes d'évènement" link="/" notif=""/>
           </v-col>
       </v-row>
   </v-container>
@@ -25,7 +25,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-</style>
