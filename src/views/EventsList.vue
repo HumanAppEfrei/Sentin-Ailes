@@ -13,12 +13,13 @@
         readonly />
       </template>
       <v-date-picker
+        color="green darken-3"
         v-model="selectedDate"
         @input="onFilterEvents" />
     </v-dialog>
     <v-row>
       <v-col class="flex-grow-0 hidden-sm-and-down">
-        <v-date-picker v-model="selectedDate" v-on="onFilterEvents" fixed></v-date-picker>
+        <v-date-picker color="green darken-3" v-model="selectedDate" v-on="onFilterEvents" fixed></v-date-picker>
       </v-col>
       <v-col class="flex-column align-center" v-if="!selectedDate">
         <h2 class="text-center">Dans la semaine</h2>
