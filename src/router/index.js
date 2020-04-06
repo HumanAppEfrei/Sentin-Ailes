@@ -7,6 +7,7 @@ import Login from '@/views/Login.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
+import CalendarHub from '../views/CalendarHub.vue';
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,11 @@ const routes = [
     path: '/hub',
     name: 'hub',
     component: Hub,
+  },
+  {
+    path: '/calendar-hub',
+    name: 'calendar-hub',
+    component: CalendarHub,
   },
 ];
 
