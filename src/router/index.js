@@ -38,8 +38,8 @@ const routes = [
     component: WhitelistView,
   },
   {
-    path: '/events-list',
-    name: 'eventslist',
+    path: '/events',
+    name: 'events',
     component: EventsList,
   },
 ];
