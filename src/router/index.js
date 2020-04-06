@@ -45,7 +45,7 @@ const routes = [
   {
     path: '/calendar-hub',
     name: 'calendar-hub',
-    component: Hub,
+    component: CalendarHub,
   },
 ];
 
