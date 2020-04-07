@@ -46,6 +46,7 @@ const eventDemo = {
 };
 
 export default {
+  name: 'EventsList',
   data() {
     return {
       selectedDate: null,
