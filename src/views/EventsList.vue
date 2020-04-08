@@ -1,6 +1,7 @@
 <template>
-  <main class=".d-flex flex-column main">
+  <main class="main">
     <h1 class="my-12">Consulter mes évenement programmés</h1>
+    <!-- Date selector: small screen -->
     <v-dialog v-model="dateDialog" max-width="300px">
       <template v-slot:activator="{ on }">
         <v-text-field outlined
@@ -18,16 +19,31 @@
         @input="onFilterEvents" />
     </v-dialog>
     <v-row>
+      <!-- Date Selector: large screen -->
       <v-col class="flex-grow-0 hidden-sm-and-down">
-        <v-date-picker color="green darken-3" v-model="selectedDate" @input="onFilterEvents" fixed></v-date-picker>
+        <v-date-picker
+          color="green darken-3"
+          v-model="selectedDate"
+          @input="onFilterEvents"
+          fixed />
+        <v-btn
+          color="error"
+          @click="onResetDate"
+          v-if="selectedDate !== null">Réinitialiser</v-btn>
       </v-col>
+
+      <!-- Event List : Unfiltered -->
       <v-col class="flex-column align-center" v-if="!selectedDate">
         <h2 class="text-center">Dans la semaine</h2>
-        <event-card v-for="event in events" :key="event.id" :event="event"></event-card>
+        <event-card
+          v-for="event in events"
+          :key="event.id"
+          :event="event" />
       </v-col>
+      <!-- Event List : Filtered -->
       <v-col class="flex-column align-center" v-else>
         <h2 class="text-center">{{ selectedDate }}</h2>
-        <event-card v-for="event in filteredEvents" :key="event.id" :event="event"></event-card>
+        <event-card v-for="event in filteredEvents" :key="event.id" :event="event" />
       </v-col>
     </v-row>
   </main>
@@ -64,7 +80,10 @@ export default {
     onFilterEvents() {
       const { selectedDate, events } = this.$data;
       this.$data.filteredEvents = events.filter(event => event.date === selectedDate);
-      this.$data.dateDialog = false;
+      this.$data.dateDialog = false; // Closing dialog
+    },
+    onResetDate() {
+      this.$data.selectedDate = null;
     },
   },
 };
