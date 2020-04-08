@@ -7,6 +7,7 @@ import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
 import secureLS from '@/storage';
 import EventsList from '../views/EventsList.vue';
+import EventEditor from '../views/EventEditor.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
@@ -132,6 +133,16 @@ const routes = [
     path: '/messages/received',
     name: 'received',
     component: ReceivedMessages,
+  },
+  {
+    path: '/events/:id',
+    name: 'event editor',
+    component: EventEditor,
+  },
+  {
+    path: '/events/new',
+    name: 'new event editor',
+    component: EventEditor,
   },
 ];
 
