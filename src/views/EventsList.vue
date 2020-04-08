@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import { filter } from 'lodash';
-
 import EventCard from '../components/EventCard.vue';
 
 const eventDemo = {
@@ -65,7 +63,7 @@ export default {
   methods: {
     onFilterEvents() {
       const { selectedDate, events } = this.$data;
-      this.$data.filteredEvents = filter(events, event => event.date === selectedDate);
+      this.$data.filteredEvents = events.filter(event => event.date === selectedDate);
       this.$data.dateDialog = false;
     },
   },
