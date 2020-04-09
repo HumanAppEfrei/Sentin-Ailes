@@ -41,22 +41,22 @@ const routes = [
     component: WhitelistView,
   },
   {
-    path: '/events',
-    name: 'events',
-    component: EventsList,
-  },
-  {
     path: '/hub',
     name: 'hub',
     component: Hub,
   },
   {
-    path: '/calendar-hub',
+    path: '/calendar',
     name: 'calendar-hub',
     component: CalendarHub,
   },
   {
-    path: '/messages-hub',
+    path: '/calendar/my-events',
+    name: 'my-events',
+    component: EventsList,
+  },
+  {
+    path: '/messages',
     name: 'messages-hub',
     component: MessagesHub,
   },

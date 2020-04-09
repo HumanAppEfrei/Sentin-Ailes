@@ -6,7 +6,7 @@
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="blue" icon="event" text="Calendrier" link="/calendar-hub"/>
+            <MenuTile color="blue" icon="event" text="Calendrier" link="/calendar"/>
           </v-col>
       </v-row>
 
