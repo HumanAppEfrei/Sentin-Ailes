@@ -84,6 +84,9 @@
             :rules="emailRules"
             required
             prepend-inner-icon="email"
+            readonly
+            autofocus
+            color="success"
             outlined/>
         </v-col>
 
@@ -160,6 +163,10 @@ import { Timestamp } from '@/firebaseConfig';
 export default {
   name: 'BeneficiaireRegisterForm',
 
+  props: [
+    'email',
+  ],
+
   data() {
     return {
       formValid: false,
@@ -169,7 +176,6 @@ export default {
       birthDateMenu: '',
       phone: '',
       familySituation: '',
-      email: '',
       password: '',
       confirmPassword: '',
       address: '',
@@ -186,11 +192,6 @@ export default {
       ],
       phoneRules: [
         v => /^((\+)33|0)[1-9](\d{2}){4}$/.test(v) || 'Numéro de téléphone invalide',
-      ],
-      emailRules: [
-        // eslint-disable-next-line max-len
-        v => /^(([^<>()[\]\\.,;:\s@]+(\.[^<>()[\]\\.,;:\s@]+)*)|(.+))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          .test(v) || 'Addresse email invalide',
       ],
       passwordRules: [
         v => /.{8,}/.test(v) || 'Le mot de passe doit contenir au moins 8 caractères',
@@ -209,17 +210,6 @@ export default {
     registerUser() {
       if (this.formValid) {
         this.$emit('submit', {
-          email: this.email,
-          password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          phone: this.phone,
-          birthDate: Timestamp.fromDate(new Date(this.birthDate)),
-          famSituation: this.familySituation,
-          address: `${this.address}, ${this.postalCode}, ${this.city}`,
-        });
-
-        this.$store.dispatch('registerWithEmailandPassword', {
           email: this.email,
           password: this.password,
           additionalData: {

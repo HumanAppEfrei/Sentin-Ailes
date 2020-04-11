@@ -4,12 +4,15 @@ import VueRouter from 'vue-router';
 import Register from '@/views/Register.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import EventsList from '../views/EventsList.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
 import EventEditor from '../views/EventEditor.vue';
+import WriteNewMessage from '../views/WriteNewMessage.vue';
+
 
 Vue.use(VueRouter);
 
@@ -45,12 +48,17 @@ const routes = [
     component: Hub,
   },
   {
-    path: '/calendar-hub',
+    path: '/calendar',
     name: 'calendar-hub',
     component: CalendarHub,
   },
   {
-    path: '/messages-hub',
+    path: '/calendar/my-events',
+    name: 'my-events',
+    component: EventsList,
+  },
+  {
+    path: '/messages',
     name: 'messages-hub',
     component: MessagesHub,
   },
@@ -63,6 +71,11 @@ const routes = [
     path: '/events/new',
     name: 'new event editor',
     component: EventEditor,
+  },
+  {
+    path: '/messages/new-message',
+    name: 'new-message',
+    component: WriteNewMessage,
   },
 ];
 

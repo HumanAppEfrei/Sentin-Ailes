@@ -50,6 +50,9 @@
             :rules="emailRules"
             required
             prepend-inner-icon="email"
+            readonly
+            autofocus
+            color="success"
             outlined/>
         </v-col>
 
@@ -93,13 +96,16 @@
 export default {
   name: 'IntervenantRegisterForm',
 
+  props: [
+    'email',
+  ],
+
   data() {
     return {
       formValid: false,
       firstName: '',
       lastName: '',
       phone: '',
-      email: '',
       password: '',
       confirmPassword: '',
       nameRules: [
@@ -131,14 +137,6 @@ export default {
     registerUser() {
       if (this.formValid) {
         this.$emit('submit', {
-          email: this.email,
-          password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          phone: this.phone,
-        });
-
-        this.$store.dispatch('registerWithEmailandPassword', {
           email: this.email,
           password: this.password,
           additionalData: {

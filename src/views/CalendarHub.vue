@@ -6,7 +6,7 @@
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="blue" icon="event_note" text="Mes évènements programmés" link="/"/>
+            <MenuTile color="blue" icon="event_note" text="Mes évènements programmés" link="/calendar/my-events"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">

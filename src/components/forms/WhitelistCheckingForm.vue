@@ -14,7 +14,7 @@
         </v-col>
       </v-row>
       <p v-show="whitelistStatus.type === 'error'" class="error--text font-weight-black">
-        Il semble que vous n'êtes pas dans la whitlist de Senin'Ailes, contactez un administrateur
+        Il semble que vous n'êtes pas dans la whitelist de Sentin'Ailes, contactez un administrateur
       </p>
       <v-btn color="primary" type="submit" :loading="whitelistStatus.status === 'pending'">
         Vérifier votre mail
@@ -42,7 +42,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      whitelistStatus: 'getWhitelistStatus',
+      whitelistStatus: 'whitelist/getWhitelistStatus',
     }),
   },
 
@@ -53,7 +53,7 @@ export default {
           email: this.email,
         });
 
-        this.$store.dispatch('checkEmailInWhitelist', {
+        this.$store.dispatch('whitelist/checkEmailInWhitelist', {
           email: this.email,
         });
 

@@ -8,14 +8,13 @@
           Vérification de l'email
       </v-stepper-step>
       <v-stepper-content step="1">
-        <WhitelistCheckingForm />
-        <!-- <v-btn color="primary" @click="e1 = 2">Continue</v-btn> -->
+        <WhitelistCheckingForm @submit="passEmail"/>
       </v-stepper-content>
 
       <v-stepper-step :complete="e1 > 2" step="2">Inscription</v-stepper-step>
       <v-stepper-content step="2">
-        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" />
-        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" />
+        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" @submit="registerUser" :email="this.email"/>
+        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" @submit="registerUser" :email="this.email"/>
       </v-stepper-content>
     </v-container>
   </v-stepper>
@@ -36,11 +35,18 @@ export default {
   },
 
   methods: {
+    registerUser(formData) {
+      this.$store.dispatch('auth/registerWithEmailAndPassword', formData);
+    },
+
+    passEmail(formData) {
+      this.email = formData.email;
+    },
   },
 
   computed: {
     ...mapGetters({
-      whitelistStatus: 'getWhitelistStatus',
+      whitelistStatus: 'whitelist/getWhitelistStatus',
     }),
   },
 
@@ -55,6 +61,7 @@ export default {
   data() {
     return {
       e1: 1,
+      email: '',
     };
   },
 };

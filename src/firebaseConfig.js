@@ -43,8 +43,11 @@ const { currentUser } = auth;
 const usersCollection = db.collection('users');
 const whitelistCollection = db.collection('whitelist');
 
+const { analytics } = firebase;
+
 export {
   Timestamp,
+  analytics,
   db,
   auth,
   currentUser,
