@@ -40,14 +40,18 @@ exports.onUserCreation = functions.auth.user().onCreate(async user => {
     return;
   }
 
+  whitelistRecord = userWhitelistRecord.data();
 
   // Create Firestore record in 'users' collection with matching UID
   if (
     ['beneficiaire', 'intervenant', 'admin', 'superAdmin'].indexOf(
-      userWhitelistRecord.data().userType
+      whitelistRecord.userType
     ) !== -1
   ) {
     createUserFirestoreRecord(user.uid, userWhitelistRecord.data().userType);
+
+    // Set custom claim
+    await admin.auth().setCustomUserClaims(user.uid, { role: whitelistRecord.userType });
   } else {
     console.log("Unable to find valid userType value for whitelist record, deleting user...");
     // If whitelist record is invalid, delete the newly created user
