@@ -4,7 +4,7 @@ import { auth as fireAuth } from 'firebase';
 
 import router from '@/router/index';
 
-import { usersCollection } from '@/firebaseConfig';
+import { usersCollection, analytics } from '@/firebaseConfig';
 
 const state = {
   loggedIn: false,
@@ -133,13 +133,17 @@ const actions = {
     commit('loginPending');
 
     try {
-      await fireAuth().signInWithEmailAndPassword(email, password);
+      const { user } = await fireAuth().signInWithEmailAndPassword(email, password);
 
       // Gather user token (to get custom claims for role-based interface)
       const token = await fireAuth().currentUser.getIdTokenResult();
 
       const userRole = token.claims.role;
       commit('loginSuccess', userRole);
+
+      analytics().setUserId(user.uid);
+      analytics().setUserProperties({ user_type: userRole });
+      analytics().logEvent('connection');
     } catch (err) {
       commit('loginFailure', err);
     }
@@ -154,6 +158,8 @@ const actions = {
     commit('registerPending');
 
     try {
+      analytics().logEvent('registration_attempt');
+
       const { user } = await fireAuth().createUserWithEmailAndPassword(email, password);
 
       // Ensure user is logged out
