@@ -11,7 +11,7 @@ import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
 import WriteNewMessage from '../views/WriteNewMessage.vue';
-import NewReceivedMessages from '../views/NewReceivedMessages.vue';
+import ReceivedMessages from '../views/ReceivedMessages.vue';
 
 
 Vue.use(VueRouter);
@@ -68,9 +68,9 @@ const routes = [
     component: WriteNewMessage,
   },
   {
-    path: '/messages/new-received',
-    name: 'new-recieved',
-    component: NewReceivedMessages,
+    path: '/messages/received',
+    name: 'received',
+    component: ReceivedMessages,
   },
 ];
 
