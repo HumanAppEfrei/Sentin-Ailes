@@ -19,11 +19,10 @@
             </v-btn>
           </v-snackbar>
 
-          <h2>Votre message</h2>
-          <h3>Remplir tous les champs.</h3>
+          <h2 class="text-center">Votre message</h2>
         </v-col>
       </v-row>
-
+      <h3>Remplir tous les champs.</h3>
       <v-row cols="12" sm="6">
         <v-col>
           <v-text-field
@@ -33,6 +32,7 @@
             :rules="recipientRules"
             required
             prepend-inner-icon="person"
+            clearable clear-icon="backspace"
             outlined/>
         </v-col>
       </v-row>
@@ -46,6 +46,7 @@
             :rules="objectRules"
             required
             prepend-inner-icon="flag"
+            clearable clear-icon="backspace"
             outlined/>
         </v-col>
       </v-row>
@@ -57,7 +58,7 @@
             no-resize="true"
             type="text"
             v-model="message"
-            label="Votre message"
+            label="Contenu de votre message"
             :rules="messageRules"
             required
             prepend-inner-icon="create"
@@ -68,13 +69,12 @@
       <v-row cols="12" sm="6">
         <v-col>
           <v-btn
-            class="white--text"
             :disabled="!formValid"
             x-large
             type="submit"
             color="pink"
             @click="sendMessage()"
-            justify="center">
+            class="white--text">
             Envoyer
           </v-btn>
         </v-col>
