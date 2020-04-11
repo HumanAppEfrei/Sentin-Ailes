@@ -85,7 +85,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Global check if user trys to access app without logged in
-  console.log(store.getters);
   if (to.path !== '/login' && to.path !== '/register') {
     if (!store.getters['auth/isLoggedIn']) next('/login');
   }
