@@ -6,7 +6,11 @@
     <v-toolbar-title class="white--text">Sentin'Ailes</v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <v-btn class="white--text" icon @click="logoutUser">
+    <v-btn
+      v-if="this.$route.name !== 'login' && this.$route.name !== 'register'"
+      class="white--text"
+      icon
+      @click="logoutUser">
       <v-icon>power_settings_new</v-icon>
     </v-btn>
   </v-app-bar>
