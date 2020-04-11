@@ -145,12 +145,12 @@ const routes = [
     component: ReceivedMessages,
   },
   {
-    path: '/events/:id',
+    path: 'calendar/my-events/:id',
     name: 'event editor',
     component: EventEditor,
   },
   {
-    path: '/events/new',
+    path: 'calendar/my-events/new',
     name: 'new event editor',
     component: EventEditor,
   },
