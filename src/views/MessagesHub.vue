@@ -6,10 +6,6 @@
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="pink" icon="drafts" text="Anciens messages" link="/"/>
-          </v-col>
-
-          <v-col cols="12" lg="4" sm="6">
             <MenuTile color="pink" icon="mail" text="Messages reçus" link="/messages/received" notif=""/>
           </v-col>
       </v-row>
