@@ -32,6 +32,7 @@
             :rules="recipientRules"
             required
             prepend-inner-icon="person"
+            clearable clear-icon="backspace"
             outlined/>
         </v-col>
       </v-row>
@@ -45,6 +46,7 @@
             :rules="objectRules"
             required
             prepend-inner-icon="flag"
+            clearable clear-icon="backspace"
             outlined/>
         </v-col>
       </v-row>
