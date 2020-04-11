@@ -10,7 +10,7 @@
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="pink" icon="mail" text="Nouveaux messages reçus" link="/new-received" notif=""/>
+            <MenuTile color="pink" icon="mail" text="Messages reçus" link="/messages/received" notif=""/>
           </v-col>
       </v-row>
   </v-container>
