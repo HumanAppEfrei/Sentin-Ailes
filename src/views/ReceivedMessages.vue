@@ -49,8 +49,17 @@ const msgDemoUnread = {
   read: false,
 };
 
-const msgDemoRead = {
+const msgDemoUnread2 = {
   id: 2,
+  date: '2020-04-01',
+  sender: 'LeZiakeurFouDuTorzka',
+  object: 'Ziakety Ziak',
+  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet gravida leo, at consectetur odio. Suspendisse potenti. Nullam vel',
+  read: false,
+};
+
+const msgDemoRead = {
+  id: 3,
   date: '2020-04-01',
   sender: 'LeVRAIZiakeurFouDuTorzka',
   object: 'Yeetus Maximus',
@@ -68,6 +77,7 @@ export default {
     return {
       messages: [
         msgDemoUnread,
+        msgDemoUnread2,
         msgDemoRead,
       ],
     };
