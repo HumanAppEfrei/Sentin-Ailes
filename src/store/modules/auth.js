@@ -12,6 +12,7 @@ const state = {
   loginError: null,
   registerStatus: null,
   registerError: null,
+  roleClaim: null,
 };
 
 const getters = {
@@ -50,6 +51,7 @@ const mutations = {
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
+    state.roleClaim = null;
   },
   registerPending(state) {
     state.loggedIn = false;
@@ -57,13 +59,15 @@ const mutations = {
     state.registerError = null;
     state.loginStatus = null;
     state.loginError = null;
+    state.roleClaim = null;
   },
-  loginSuccess(state) {
+  loginSuccess(state, payload) {
     state.loggedIn = true;
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
+    state.roleClaim = payload;
   },
   loginFailure(state, payload) {
     state.loggedIn = false;
@@ -71,6 +75,7 @@ const mutations = {
     state.loginError = payload;
     state.registerStatus = null;
     state.registerError = null;
+    state.roleClaim = null;
   },
   registerSuccess(state) {
     state.loggedIn = false;
@@ -78,6 +83,7 @@ const mutations = {
     state.registerError = null;
     state.loginStatus = null;
     state.loginError = null;
+    state.roleClaim = null;
   },
   registerFailure(state, payload) {
     state.loggedIn = false;
@@ -85,6 +91,7 @@ const mutations = {
     state.registerError = payload;
     state.loginStatus = null;
     state.loginError = null;
+    state.roleClaim = null;
   },
   logout(state) {
     state.loggedIn = false;
@@ -92,6 +99,7 @@ const mutations = {
     state.loginStatus = null;
     state.registerError = null;
     state.registerStatus = null;
+    state.roleClaim = null;
   },
 };
 
@@ -106,7 +114,12 @@ const actions = {
 
     try {
       await fireAuth().signInWithEmailAndPassword(email, password);
-      commit('loginSuccess');
+
+      // Gather user token (to get custom claims for role-based interface)
+      const token = await fireAuth().currentUser.getIdTokenResult();
+
+      const userRole = token.claims.role;
+      commit('loginSuccess', userRole);
     } catch (err) {
       commit('loginFailure', err);
     }
