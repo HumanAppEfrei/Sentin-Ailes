@@ -10,6 +10,7 @@ import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
+import WriteNewMessage from '../views/WriteNewMessage.vue';
 
 
 Vue.use(VueRouter);
@@ -59,6 +60,11 @@ const routes = [
     path: '/messages',
     name: 'messages-hub',
     component: MessagesHub,
+  },
+  {
+    path: '/messages/new-message',
+    name: 'new-message',
+    component: WriteNewMessage,
   },
 ];
 
