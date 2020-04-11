@@ -6,6 +6,9 @@ import router from '@/router';
 import firebase from 'firebase';
 import { usersCollection, whitelistCollection } from '@/firebaseConfig.js';
 
+import authModule from './modules/auth';
+import whitelistModule from './modules/whitelist';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -141,5 +144,8 @@ export default new Vuex.Store({
       }
     },
   },
-  modules: {},
+  modules: {
+    auth: authModule,
+    whitelist: whitelistModule,
+  },
 });
