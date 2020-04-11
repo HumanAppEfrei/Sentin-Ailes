@@ -42,6 +42,26 @@ const getters = {
   registerError(state) {
     return state.registerError;
   },
+
+  isBeneficiaire(state) {
+    return state.roleClaim === 'beneficiaire';
+  },
+
+  isIntervenant(state) {
+    return state.roleClaim === 'intervenant';
+  },
+
+  isAdmin(state) {
+    return state.roleClaim === 'admin';
+  },
+
+  isSuperAdmin(state) {
+    return state.roleClaim === 'superAdmin';
+  },
+
+  userRole(state) {
+    return state.roleClaim;
+  },
 };
 
 const mutations = {
