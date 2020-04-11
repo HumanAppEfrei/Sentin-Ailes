@@ -14,8 +14,8 @@
 
       <v-stepper-step :complete="e1 > 2" step="2">Inscription</v-stepper-step>
       <v-stepper-content step="2">
-        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" />
-        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" />
+        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" @submit="registerUser" />
+        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" @submit="registerUser" />
       </v-stepper-content>
     </v-container>
   </v-stepper>
@@ -36,11 +36,14 @@ export default {
   },
 
   methods: {
+    registerUser(formData) {
+      this.$store.dispatch('auth/registerWithEmailAndPassword', formData);
+    },
   },
 
   computed: {
     ...mapGetters({
-      whitelistStatus: 'getWhitelistStatus',
+      whitelistStatus: 'whitelist/getWhitelistStatus',
     }),
   },
 

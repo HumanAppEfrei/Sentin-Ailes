@@ -211,17 +211,6 @@ export default {
         this.$emit('submit', {
           email: this.email,
           password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          phone: this.phone,
-          birthDate: Timestamp.fromDate(new Date(this.birthDate)),
-          famSituation: this.familySituation,
-          address: `${this.address}, ${this.postalCode}, ${this.city}`,
-        });
-
-        this.$store.dispatch('registerWithEmailandPassword', {
-          email: this.email,
-          password: this.password,
           additionalData: {
             firstName: this.firstName,
             lastName: this.lastName,
