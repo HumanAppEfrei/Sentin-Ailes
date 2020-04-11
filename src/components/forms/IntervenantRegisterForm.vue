@@ -50,6 +50,9 @@
             :rules="emailRules"
             required
             prepend-inner-icon="email"
+            readonly
+            autofocus
+            color="success"
             outlined/>
         </v-col>
 
@@ -93,13 +96,16 @@
 export default {
   name: 'IntervenantRegisterForm',
 
+  props: [
+    'email',
+  ],
+
   data() {
     return {
       formValid: false,
       firstName: '',
       lastName: '',
       phone: '',
-      email: '',
       password: '',
       confirmPassword: '',
       nameRules: [
