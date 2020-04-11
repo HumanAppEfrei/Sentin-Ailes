@@ -10,12 +10,17 @@
       <v-col>
         <h3>Messages non-lus</h3>
 
-        <MessageCard
-          v-for="msg in messages"
-          v-show="!msg.read"
-          :key="msg.id"
-          :message="msg"
-          class="py-4"/>
+        <div v-if="checkForUnread(messages)">
+          <MessageCard
+            v-for="msg in messages"
+            v-show="!msg.read"
+            :key="msg.id"
+            :message="msg"
+            class="py-4"/>
+        </div>
+        <div v-else>
+          <h4 class="text-center">Aucun message non-lu</h4>
+        </div>
       </v-col>
     </v-row>
 
@@ -37,12 +42,13 @@
 <script>
 import MessageCard from '@/components/MessageCard.vue';
 
+
 const msgDemoUnread = {
   id: 1,
   date: '2020-04-01',
   sender: 'LeZiakeurFouDuTorzka',
   object: 'Yeety Skeety',
-  content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet gravida leo, at consectetur odio. Suspendisse potenti. Nullam vel',
   read: false,
 };
 
@@ -68,6 +74,11 @@ export default {
         msgDemoRead,
       ],
     };
+  },
+  methods: {
+    checkForUnread(messages) {
+      return messages.some(msg => !msg.read);
+    },
   },
 };
 </script>
