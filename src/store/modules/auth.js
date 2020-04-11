@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-shadow */
 
 import { auth as fireAuth } from 'firebase';
@@ -144,6 +145,9 @@ const actions = {
       analytics().setUserId(user.uid);
       analytics().setUserProperties({ user_type: userRole });
       analytics().logEvent('connection');
+
+      // Redirect user to hub page
+      router.push({ path: '/' });
     } catch (err) {
       commit('loginFailure', err);
     }
