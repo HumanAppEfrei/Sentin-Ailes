@@ -42,7 +42,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      whitelistStatus: 'getWhitelistStatus',
+      whitelistStatus: 'whitelist/getWhitelistStatus',
     }),
   },
 
@@ -53,7 +53,7 @@ export default {
           email: this.email,
         });
 
-        this.$store.dispatch('checkEmailInWhitelist', {
+        this.$store.dispatch('whitelist/checkEmailInWhitelist', {
           email: this.email,
         });
 

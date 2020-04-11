@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     async submitForm() {
-      this.$store.dispatch('loginWithEmailAndPassword', { email: this.email, password: this.password });
+      this.$store.dispatch('auth/loginWithEmailAndPassword', { email: this.email, password: this.password });
 
       this.email = '';
       this.password = '';
