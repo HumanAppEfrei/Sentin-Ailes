@@ -133,14 +133,6 @@ export default {
         this.$emit('submit', {
           email: this.email,
           password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          phone: this.phone,
-        });
-
-        this.$store.dispatch('registerWithEmailandPassword', {
-          email: this.email,
-          password: this.password,
           additionalData: {
             firstName: this.firstName,
             lastName: this.lastName,
