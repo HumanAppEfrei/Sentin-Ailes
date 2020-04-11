@@ -8,18 +8,15 @@
 
     <v-row>
       <v-col>
-        <h3>Messages non-lus</h3>
-
         <div v-if="checkForUnread(messages)">
+          <h3>Messages non-lus</h3>
+
           <MessageCard
             v-for="msg in messages"
             v-show="!msg.read"
             :key="msg.id"
             :message="msg"
             class="py-4"/>
-        </div>
-        <div v-else>
-          <h4 class="text-center">Aucun message non-lu</h4>
         </div>
       </v-col>
     </v-row>
