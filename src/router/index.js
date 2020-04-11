@@ -124,6 +124,16 @@ const routes = [
     component: MessagesHub,
   },
   {
+    path: 'calendar/my-events/:id',
+    name: 'event editor',
+    component: EventEditor,
+  },
+  {
+    path: 'calendar/my-events/new',
+    name: 'new event editor',
+    component: EventEditor,
+  },
+  {
     path: '/messages/new-message',
     name: 'new-message',
     component: WriteNewMessage,
