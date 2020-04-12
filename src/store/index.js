@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 
 import authModule from './modules/auth';
 import whitelistModule from './modules/whitelist';
+import messagesModule from './modules/messages';
 
 Vue.use(Vuex);
 
@@ -13,5 +14,6 @@ export default new Vuex.Store({
   modules: {
     auth: authModule,
     whitelist: whitelistModule,
+    messages: messagesModule,
   },
 });
