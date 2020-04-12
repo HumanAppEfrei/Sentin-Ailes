@@ -14,6 +14,11 @@ export default {
   components: {
     Appbar,
   },
+
+  beforeCreate() {
+    // Attempt to log user (if authentication is still valid, he will be authenticated)
+    this.$store.dispatch('auth/attemptRelogin');
+  },
 };
 
 </script>

@@ -185,6 +185,22 @@ const actions = {
       console.error(err);
     }
   },
+
+  async attemptRelogin({ commit }) {
+    try {
+      const user = await fireAuth().currentUser;
+
+      if (user) {
+        const { role } = (await user.getIdTokenResult()).claims;
+        commit('loginSuccess', role);
+      } else {
+        router.push({ name: 'login' }); // Default redirects to login page
+      }
+    } catch (err) {
+      console.error(err);
+      router.push({ name: 'login' }); // Defaults redirect to login page
+    }
+  },
 };
 
 export default {
