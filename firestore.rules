@@ -1,17 +1,84 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
 
-    // This rule allows anyone on the internet to view, edit, and delete
-    // all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // your app will lose access to your Firestore database
+    function isSuperAdmin() {
+      return request.auth.token.role === 'superAdmin'
+    }
+
+    function isAdmin() {
+      return request.auth.token.role === 'admin' || request.auth.token.role === 'superAdmin';
+    } 
+    
     match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2020, 3, 4);
+      allow read, write: if true;
+    }
+
+    match /whitelist/{whitelistEntry} {
+      function userTypeIsBenefOfInterv() {
+        return resource.data.userType === 'beneficiaire' || resource.data.userType  === 'intervenant';
+      }
+
+      allow read: if true;
+      allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
+    }
+
+    match /users/{userId} {
+      function isSelf() {
+        return request.auth.uid == userId;
+      }
+
+      // Only use this function if refering to the user document in a nested collection
+      function getUserDoc() {
+        return get(/databases/$(database)/users/$(userId)).data;
+      }
+
+      function canAccessUser() {
+        return request.auth.uid in getUserDoc().people;
+      }
+
+      allow read, write: if isSelf();  // TODO: should update this to disallow deletion later
+      allow read, delete: if request.auth.token.role === 'admin' || request.auth.token.role === 'superAdmin';
+      allow read: if request.auth.uid in resource.data.people;  // Allow users which UID is in the `people` array of the record to read the document
+
+      match /messages/{message} {
+        // Determines whether the current request user is the author of the message
+        function isAuthor() {
+          return request.auth.uid == resource.data.from;
+        }
+
+        // Determines whether the current request user is a recipient of the message
+        function isReader() {
+          return request.auth.uid in resource.data.to;
+        }
+
+        allow read: if isSelf() || isAuthor() || isReader();
+        allow create: if isSelf() || canAccessUser();
+        allow update: if isAuthor();
+        allow delete: if isSelf() || isAuthor();
+      }
+
+      match /events/{event} {
+        function isParticipant() {
+          return request.auth.uid in resource.data.participants;
+        }
+
+        function isCreator() {
+          return request.auth.uid == resource.data.creator;
+        }
+
+        function isConcerned() {
+          return isSelf() || isParticipant() || isCreator();
+        }
+
+        allow read: if isConcerned();
+        allow create: if canAccessUser();
+        allow update: if isConcerned();
+        allow delete: if isSelf() || isCreator();
+      }
     }
   }
 }
