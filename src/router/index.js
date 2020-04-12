@@ -120,19 +120,14 @@ const routes = [
     component: EventsList,
   },
   {
-    path: '/messages',
-    name: 'messages-hub',
-    component: MessagesHub,
-  },
-  {
-    path: '/calendar/my-events/:id',
+    path: '/calendar/event-editor/:id',
     name: 'event editor',
     component: EventEditor,
   },
   {
-    path: '/calendar/my-events/new',
-    name: 'new event editor',
-    component: EventEditor,
+    path: '/messages',
+    name: 'messages-hub',
+    component: MessagesHub,
   },
   {
     path: '/messages/new-message',
@@ -143,16 +138,6 @@ const routes = [
     path: '/messages/received',
     name: 'received',
     component: ReceivedMessages,
-  },
-  {
-    path: 'calendar/my-events/:id',
-    name: 'event editor',
-    component: EventEditor,
-  },
-  {
-    path: '/calendar/my-events/new',
-    name: 'new event editor',
-    component: EventEditor,
   },
 ];
 

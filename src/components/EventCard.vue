@@ -7,7 +7,9 @@
           <v-card-text>{{ event.description }} </v-card-text>
         </v-col>
         <v-col class="d-flex flex-column justify-center align-center align-sm-center">
-          <v-btn :href="'/events/' + event.id">Modifier</v-btn>
+          <router-link :to="'/calendar/event-editor/' + event.id">
+           <v-btn>Modifier</v-btn>
+          </router-link>
         </v-col>
       </v-row>
     </v-card>
