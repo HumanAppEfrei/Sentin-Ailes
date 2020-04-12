@@ -91,11 +91,7 @@ const actions = {
       title,
       message,
       date,
-      author: {
-        uid: currentUser.uid,
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-      },
+      author: `${currentUser.firstName} ${currentUser.lastName}`,
     });
 
     commit('userNoteAdded', {
@@ -103,9 +99,7 @@ const actions = {
       message,
       date,
       id: insertedNote.id,
-      author: {
-        uid: currentUser.uuid,
-      },
+      author: `${currentUser.firstName} ${currentUser.lastName}`,
     });
   },
 
@@ -124,11 +118,7 @@ const actions = {
       title,
       message,
       date,
-      author: {
-        uid: currentUser.uid,
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-      },
+      author: `${currentUser.firstName} ${currentUser.lastName}`,
     });
 
     commit('userNoteAdded', {
@@ -138,9 +128,7 @@ const actions = {
         message,
         date,
         id: insertedNote.id,
-        author: {
-          uid: currentUser.uid,
-        },
+        author: `${currentUser.firstName} ${currentUser.lastName}`,
       },
     });
   },
