@@ -40,21 +40,16 @@ service cloud.firestore {
       allow read, delete: if request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
       allow read: if request.auth.uid in resource.data.people;  // Allow users which UID is in the `people` array of the record to read the document
 
-      match /messages/{message} {
-        // Determines whether the current request user is the author of the message
+      match /notes/{note} {
+        // Determines whether the current request user is the author of the note
         function isAuthor() {
           return request.auth.uid == resource.data.from;
         }
 
-        // Determines whether the current request user is a recipient of the message
-        function isReader() {
-          return request.auth.uid in resource.data.to;
-        }
-
-        allow read: if isSelf() || isAuthor() || isReader();
         allow create: if isSelf() || canAccessUser();
-        allow update: if isAuthor();
+        allow read: if isSelf() || isAuthor();
         allow delete: if isSelf() || isAuthor();
+        allow update: if isAuthor();
       }
 
       match /events/{event} {
