@@ -12,9 +12,7 @@ import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
-import MessagesHub from '../views/MessagesHub.vue';
-import WriteNewMessage from '../views/WriteNewMessage.vue';
-import ReceivedMessages from '../views/ReceivedMessages.vue';
+import Notes from '../views/Notes.vue';
 
 import store from '../store';
 
@@ -121,19 +119,9 @@ const routes = [
     component: EventsList,
   },
   {
-    path: '/messages',
-    name: 'messages-hub',
-    component: MessagesHub,
-  },
-  {
-    path: '/messages/new-message',
-    name: 'new-message',
-    component: WriteNewMessage,
-  },
-  {
-    path: '/messages/received',
-    name: 'received',
-    component: ReceivedMessages,
+    path: '/notes',
+    name: 'notes',
+    component: Notes,
   },
 ];
 
