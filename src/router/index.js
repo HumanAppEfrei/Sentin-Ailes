@@ -13,6 +13,7 @@ import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
+import EventEditor from '../views/EventEditor.vue';
 import WriteNewMessage from '../views/WriteNewMessage.vue';
 import ReceivedMessages from '../views/ReceivedMessages.vue';
 
@@ -123,6 +124,16 @@ const routes = [
     path: '/messages',
     name: 'messages-hub',
     component: MessagesHub,
+  },
+  {
+    path: 'calendar/my-events/:id',
+    name: 'event editor',
+    component: EventEditor,
+  },
+  {
+    path: 'calendar/my-events/new',
+    name: 'new event editor',
+    component: EventEditor,
   },
   {
     path: '/messages/new-message',
