@@ -24,7 +24,7 @@
 </template>
 
 <script>
-export default { //
+export default {
   name: 'EventEditor',
   data() {
     return {
