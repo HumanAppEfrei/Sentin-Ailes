@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-shadow */
 
@@ -14,7 +15,7 @@ const state = {
   registerStatus: null,
   registerError: null,
   roleClaim: null,
-  additionalUserData: {},
+  additionalUserData: { people: [] },
 };
 
 const getters = {
@@ -67,12 +68,16 @@ const getters = {
   userRole(state) {
     return state.roleClaim;
   },
+
+  relatedPeople(state) {
+    return state.additionalUserData.people;
+  },
 };
 
 const mutations = {
   loginPending(state) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.loginStatus = 'pending';
     state.loginError = null;
     state.registerStatus = null;
@@ -81,7 +86,7 @@ const mutations = {
   },
   registerPending(state) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'pending';
     state.registerError = null;
     state.loginStatus = null;
@@ -93,6 +98,7 @@ const mutations = {
     state.additionalUserData = {
       firstName,
       lastName,
+      ...(state.additionalUserData),
     };
     state.loginStatus = 'success';
     state.loginError = null;
@@ -102,7 +108,7 @@ const mutations = {
   },
   loginFailure(state, payload) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.loginStatus = 'failure';
     state.loginError = payload;
     state.registerStatus = null;
@@ -111,7 +117,7 @@ const mutations = {
   },
   registerSuccess(state) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'success';
     state.registerError = null;
     state.loginStatus = null;
@@ -120,7 +126,7 @@ const mutations = {
   },
   registerFailure(state, payload) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'failure';
     state.registerError = payload;
     state.loginStatus = null;
@@ -129,7 +135,7 @@ const mutations = {
   },
   logout(state) {
     state.loggedIn = false;
-    state.additionalUserData = {};
+    state.additionalUserData = { people: [] };
     state.loginError = null;
     state.loginStatus = null;
     state.registerError = null;
@@ -141,12 +147,16 @@ const mutations = {
     state.additionalUserData = {
       firstName,
       lastName,
+      ...(state.additionalUserData),
     };
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
     state.roleClaim = role;
+  },
+  setRelatedPeople(state, payload) {
+    state.additionalUserData.people = payload;
   },
 };
 
@@ -166,9 +176,10 @@ const actions = {
       const token = await fireAuth().currentUser.getIdTokenResult();
 
       const { role } = token.claims;
-      const { firstName, lastName } = (await usersCollection.doc(user.uid).get()).data();
+      const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
 
       commit('loginSuccess', { role, firstName, lastName });
+      commit('setRelatedPeople', people);
 
       analytics().setUserId(user.uid);
       analytics().setUserProperties({ user_type: role });
@@ -225,9 +236,10 @@ const actions = {
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
-        const { firstName, lastName } = (await usersCollection.doc(user.uid).get()).data();
+        const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
 
         commit('reLoginSuccess', { role, firstName, lastName }); // Update state
+        commit('setRelatedPeople', people);
         router.push('/'); // Redirect user to /
       } else {
         router.push({ name: 'login' }); // Default redirects to login page
