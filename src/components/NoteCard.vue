@@ -4,7 +4,7 @@
       {{ noteData.title }}
     </v-card-title>
     <v-card-subtitle>
-      {{ noteData.author }} le {{ noteData.date }}
+      {{ noteData.author.firstName }} {{ noteData.author.lastName }} le {{ noteData.date }}
     </v-card-subtitle>
     <v-card-text>
       {{ noteData.message }}

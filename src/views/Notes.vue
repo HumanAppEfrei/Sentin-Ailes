@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1 class="my-12">Consulter vos notes</h1>
-    <v-row>
+    <v-row v-show="updating">
       <v-col cols="12">
         <v-progress-linear indeterminate></v-progress-linear>
       </v-col>
@@ -15,16 +15,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NoteCard from '@/components/NoteCard.vue';
 
 export default {
   components: {
     NoteCard,
   },
-  data() {
-    return {
-      notes: [],
-    };
+
+  computed: {
+    ...mapGetters({
+      updating: 'notes/isUpdating',
+      notes: 'notes/ownNotes',
+    }),
+  },
+
+  mounted() {
+    this.$store.dispatch('notes/fetchOwnNotes');
   },
 };
 </script>
