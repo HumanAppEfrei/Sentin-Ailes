@@ -77,7 +77,7 @@ service cloud.firestore {
         allow read: if isConcerned();
         allow create: if canAccessUser();
         allow update: if isConcerned();
-        allow delete: if isSelf() || isCreator();
+        allow delete: if isSelf() || isCreator();
       }
     }
   }
