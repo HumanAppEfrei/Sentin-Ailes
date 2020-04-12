@@ -65,8 +65,6 @@ const actions = {
     const userRole = rootGetters['auth/userRole'];
     if (userRole !== 'beneficiaire') return;
 
-    console.log('Before getting collection');
-
     const notesCollection = getUserNotesSubcollection(currentUser.uid);
 
     const notesRefs = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
