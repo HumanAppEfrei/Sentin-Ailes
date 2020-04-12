@@ -202,8 +202,8 @@ const actions = {
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
         commit('reLoginSuccess', role); // Update state
-        const lastVisitedRoutePath = secureLS.get('current-route'); // Get last visited route from local storage
-        router.push({ path: lastVisitedRoutePath }); // Redirect user to last visited route
+        const lastVisitedRoute = secureLS.get('current-route'); // Get last visited route from local storage
+        router.push(lastVisitedRoute); // Redirect user to last visited route
       } else {
         router.push({ name: 'login' }); // Default redirects to login page
       }

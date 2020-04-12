@@ -76,7 +76,7 @@ const router = new VueRouter({
 
 // Persist displayed route after each route change
 router.afterEach((to) => {
-  secureLS.set('current-route', to.fullPath);
+  secureLS.set('current-route', to);
 });
 
 export default router;
