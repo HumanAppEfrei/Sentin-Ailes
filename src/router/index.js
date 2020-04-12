@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Register from '@/views/Register.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import secureLS from '@/storage';
 import EventsList from '../views/EventsList.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
@@ -71,6 +72,11 @@ const routes = [
 const router = new VueRouter({
   routes,
   mode: 'history',
+});
+
+// Persist displayed route after each route change
+router.afterEach((to) => {
+  secureLS.set('current-route', to.fullPath);
 });
 
 export default router;

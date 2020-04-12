@@ -4,6 +4,7 @@ import { auth as fireAuth } from 'firebase';
 
 import router from '@/router/index';
 
+import secureLS from '@/storage';
 import { usersCollection, analytics } from '@/firebaseConfig';
 
 const state = {
@@ -121,6 +122,14 @@ const mutations = {
     state.registerStatus = null;
     state.roleClaim = null;
   },
+  reLoginSuccess(state, payload) {
+    state.loggedIn = true;
+    state.loginStatus = 'success';
+    state.loginError = null;
+    state.registerStatus = null;
+    state.registerError = null;
+    state.roleClaim = payload;
+  },
 };
 
 const actions = {
@@ -192,7 +201,9 @@ const actions = {
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
-        commit('loginSuccess', role);
+        commit('reLoginSuccess', role); // Update state
+        const lastVisitedRoutePath = secureLS.get('current-route'); // Get last visited route from local storage
+        router.push({ path: lastVisitedRoutePath }); // Redirect user to last visited route
       } else {
         router.push({ name: 'login' }); // Default redirects to login page
       }
