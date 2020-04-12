@@ -7,6 +7,7 @@ function extractImportantData({ id, data }) {
 }
 
 const state = {
+  updating: false,
   ownNotes: [],
   notes: {},
 };
@@ -19,34 +20,49 @@ const getters = {
   notesForUser(state, userId) {
     return state.notes[userId] ? state.notes[userId] : [];
   },
+
+  isUpdating(state) {
+    return state.updating;
+  },
 };
 
 const mutations = {
+  startUpdate(state) {
+    state.updating = true;
+  },
+
   ownNotesFetched(state, payload) {
     state.ownNotes = payload;
+    state.updating = false;
   },
 
   userNotesFetched(state, { userId, notesForUser }) {
     state.notes[userId] = notesForUser;
+    state.updating = false;
   },
 
   ownNoteAdded(state, note) {
     state.ownNotes = state.ownNotes.push(note);
+    state.updating = false;
   },
 
   userNoteAdded(state, { userId, note }) {
     const previousNotes = state.notes[userId] ? state.notes[userId] : [];
     state.notes[userId] = previousNotes.push(note);
+    state.updating = false;
   },
 
   userNoteDeleted(state, { userId, noteId }) {
     const previousUserNotes = state.notes[userId] ? state.notes[userId] : [];
     state.notes[userId] = previousUserNotes.filter(({ id }) => id !== noteId);
+    state.updating = false;
   },
 };
 
 const actions = {
   async fetchOwnNotes({ commit, rootState }) {
+    commit('startUpdate');
+
     const currentUser = rootState.auth.getters.user;
     if (!currentUser) return;
 
@@ -61,6 +77,8 @@ const actions = {
   },
 
   async fetchNotesForUser({ commit }, { userId }) {
+    commit('startUpdate');
+
     const notesCollection = getUserNotesSubcollection(userId);
 
     const notes = (await notesCollection.get()).docs.map(extractImportantData);
@@ -68,6 +86,8 @@ const actions = {
   },
 
   async addNoteToSelf({ commit, rootState }, { title, message }) {
+    commit('startUpdate');
+
     const currentUser = rootState.auth.getters.user;
     const date = Timestamp.now();
 
@@ -77,7 +97,8 @@ const actions = {
       date,
       author: {
         uid: currentUser.uid,
-        // TODO: additional data from user
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
       },
     });
 
@@ -93,6 +114,8 @@ const actions = {
   },
 
   async addNoteToUser({ commit, rootState }, { userId, note: { title, message } }) {
+    commit('startUpdate');
+
     const currentUser = rootState.auth.getters.user;
     const date = Timestamp.now();
 
@@ -107,7 +130,8 @@ const actions = {
       date,
       author: {
         uid: currentUser.uid,
-        // TODO: additional data from user
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
       },
     });
 
@@ -126,6 +150,8 @@ const actions = {
   },
 
   async deleteNoteFromUser({ commit }, { userId, noteId }) {
+    commit('startUpdate');
+
     const notesCollection = getUserNotesSubcollection(userId);
 
     if (!notesCollection) return;
