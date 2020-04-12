@@ -13,7 +13,6 @@ import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
-import EventEditor from '../views/EventEditor.vue';
 import WriteNewMessage from '../views/WriteNewMessage.vue';
 import ReceivedMessages from '../views/ReceivedMessages.vue';
 
