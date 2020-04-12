@@ -2,10 +2,6 @@
 
 import { getUserNotesSubcollection, Timestamp } from '@/firebaseConfig';
 
-function extractImportantData({ id, data }) {
-  return { id, ...data() };
-}
-
 const state = {
   updating: false,
   ownNotes: [],
@@ -60,20 +56,28 @@ const mutations = {
 };
 
 const actions = {
-  async fetchOwnNotes({ commit, rootState }) {
+  async fetchOwnNotes({ commit, rootGetters }) {
     commit('startUpdate');
 
-    const currentUser = rootState.auth.getters.user;
+    console.log(rootGetters);
+
+    const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
-    const { userRole } = rootState.auth.getters;
+    const userRole = rootGetters['auth/userRole'];
     if (userRole !== 'beneficiaire') return;
+
+    console.log('Before getting collection');
 
     const notesCollection = getUserNotesSubcollection(currentUser.uid);
 
-    const notesRefs = await notesCollection.get();
+    console.log('Before getting notesRef');
 
-    commit('ownNotesFetched', notesRefs.docs.map(extractImportantData));
+    const notesRefs = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
+
+    console.log('Before last commit');
+
+    commit('ownNotesFetched', notesRefs);
   },
 
   async fetchNotesForUser({ commit }, { userId }) {
@@ -81,14 +85,14 @@ const actions = {
 
     const notesCollection = getUserNotesSubcollection(userId);
 
-    const notes = (await notesCollection.get()).docs.map(extractImportantData);
+    const notes = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
     commit('userNotesFetched', notes);
   },
 
-  async addNoteToSelf({ commit, rootState }, { title, message }) {
+  async addNoteToSelf({ commit, rootGetters }, { title, message }) {
     commit('startUpdate');
 
-    const currentUser = rootState.auth.getters.user;
+    const currentUser = rootGetters['auth/user'];
     const date = Timestamp.now();
 
     const insertedNote = await getUserNotesSubcollection(currentUser.uid).add({
@@ -113,10 +117,10 @@ const actions = {
     });
   },
 
-  async addNoteToUser({ commit, rootState }, { userId, note: { title, message } }) {
+  async addNoteToUser({ commit, rootGetters }, { userId, note: { title, message } }) {
     commit('startUpdate');
 
-    const currentUser = rootState.auth.getters.user;
+    const currentUser = rootGetters['auth/user'];
     const date = Timestamp.now();
 
     /**
