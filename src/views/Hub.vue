@@ -12,7 +12,7 @@
 
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="pink" icon="mail" text="Messages" link="/notes"/>
+            <MenuTile color="pink" icon="note" text="Notes" link="/notes"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
