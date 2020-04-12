@@ -2,7 +2,7 @@
   <v-container fluid>
       <v-row justify="center">
         <v-col cols="12" sm="6">
-          <h1>Ecrire un nouveau message</h1>
+          <h1 class="text-center">Ecrire un nouveau message</h1>
         </v-col>
       </v-row>
 

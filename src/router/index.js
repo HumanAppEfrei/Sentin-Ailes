@@ -1,8 +1,9 @@
+/* eslint-disable import/no-cycle */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Register from '@/views/Register.vue';
-import Home from '@/views/Home.vue';
+// import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import secureLS from '@/storage';
 import EventsList from '../views/EventsList.vue';
@@ -12,15 +13,23 @@ import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import MessagesHub from '../views/MessagesHub.vue';
 import WriteNewMessage from '../views/WriteNewMessage.vue';
+import ReceivedMessages from '../views/ReceivedMessages.vue';
 
+import store from '../store';
 
 Vue.use(VueRouter);
+
+function requiresAdminOrAbove(to, from, next) {
+  const userRole = store.getters['auth/userRole'];
+  if (userRole === 'admin' || userRole === 'superAdmin') next();
+  else next('/');
+}
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home,
+    name: 'hub',
+    component: Hub,
   },
   {
     path: '/login',
@@ -41,11 +50,7 @@ const routes = [
     path: '/whitelist',
     name: 'whitelist',
     component: WhitelistView,
-  },
-  {
-    path: '/hub',
-    name: 'hub',
-    component: Hub,
+    beforeEnter: requiresAdminOrAbove,
   },
   {
     path: '/calendar',
@@ -67,11 +72,24 @@ const routes = [
     name: 'new-message',
     component: WriteNewMessage,
   },
+  {
+    path: '/messages/received',
+    name: 'received',
+    component: ReceivedMessages,
+  },
 ];
 
 const router = new VueRouter({
   routes,
   mode: 'history',
+});
+
+router.beforeEach((to, from, next) => {
+  // Global check if user trys to access app without logged in
+  if (to.path !== '/login' && to.path !== '/register') {
+    if (!store.getters['auth/isLoggedIn']) next('/login');
+  }
+  next();
 });
 
 // Persist displayed route after each route change
