@@ -14,12 +14,16 @@ const state = {
   registerStatus: null,
   registerError: null,
   roleClaim: null,
+  additionalUserData: {},
 };
 
 const getters = {
   user(state) {
     if (state.loggedIn) { // Ensure user logged in
-      return fireAuth().currentUser;
+      return {
+        ...(state.additionalUserData),
+        ...(fireAuth().currentUser),
+      };
     }
     return null;
   },
@@ -68,6 +72,7 @@ const getters = {
 const mutations = {
   loginPending(state) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.loginStatus = 'pending';
     state.loginError = null;
     state.registerStatus = null;
@@ -76,22 +81,28 @@ const mutations = {
   },
   registerPending(state) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.registerStatus = 'pending';
     state.registerError = null;
     state.loginStatus = null;
     state.loginError = null;
     state.roleClaim = null;
   },
-  loginSuccess(state, payload) {
+  loginSuccess(state, { firstName, lastName, role }) {
     state.loggedIn = true;
+    state.additionalUserData = {
+      firstName,
+      lastName,
+    };
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
-    state.roleClaim = payload;
+    state.roleClaim = role;
   },
   loginFailure(state, payload) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.loginStatus = 'failure';
     state.loginError = payload;
     state.registerStatus = null;
@@ -100,6 +111,7 @@ const mutations = {
   },
   registerSuccess(state) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.registerStatus = 'success';
     state.registerError = null;
     state.loginStatus = null;
@@ -108,6 +120,7 @@ const mutations = {
   },
   registerFailure(state, payload) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.registerStatus = 'failure';
     state.registerError = payload;
     state.loginStatus = null;
@@ -116,19 +129,24 @@ const mutations = {
   },
   logout(state) {
     state.loggedIn = false;
+    state.additionalUserData = {};
     state.loginError = null;
     state.loginStatus = null;
     state.registerError = null;
     state.registerStatus = null;
     state.roleClaim = null;
   },
-  reLoginSuccess(state, payload) {
+  reLoginSuccess(state, { firstName, lastName, role }) {
     state.loggedIn = true;
+    state.additionalUserData = {
+      firstName,
+      lastName,
+    };
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
-    state.roleClaim = payload;
+    state.roleClaim = role;
   },
 };
 
@@ -147,11 +165,13 @@ const actions = {
       // Gather user token (to get custom claims for role-based interface)
       const token = await fireAuth().currentUser.getIdTokenResult();
 
-      const userRole = token.claims.role;
-      commit('loginSuccess', userRole);
+      const { role } = token.claims;
+      const { firstName, lastName } = (await usersCollection.doc(user.uid).get()).data();
+
+      commit('loginSuccess', { role, firstName, lastName });
 
       analytics().setUserId(user.uid);
-      analytics().setUserProperties({ user_type: userRole });
+      analytics().setUserProperties({ user_type: role });
       analytics().logEvent('connection');
 
       // Redirect user to hub page
@@ -205,7 +225,9 @@ const actions = {
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
-        commit('reLoginSuccess', role); // Update state
+        const { firstName, lastName } = (await usersCollection.doc(user.uid).get()).data();
+
+        commit('reLoginSuccess', { role, firstName, lastName }); // Update state
         router.push('/'); // Redirect user to /
       } else {
         router.push({ name: 'login' }); // Default redirects to login page
