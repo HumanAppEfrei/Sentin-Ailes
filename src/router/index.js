@@ -125,12 +125,12 @@ const routes = [
     component: MessagesHub,
   },
   {
-    path: 'calendar/my-events/:id',
+    path: '/calendar/my-events/:id',
     name: 'event editor',
     component: EventEditor,
   },
   {
-    path: 'calendar/my-events/new',
+    path: '/calendar/my-events/new',
     name: 'new event editor',
     component: EventEditor,
   },
@@ -150,7 +150,7 @@ const routes = [
     component: EventEditor,
   },
   {
-    path: 'calendar/my-events/new',
+    path: '/calendar/my-events/new',
     name: 'new event editor',
     component: EventEditor,
   },
