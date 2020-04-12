@@ -59,8 +59,6 @@ const actions = {
   async fetchOwnNotes({ commit, rootGetters }) {
     commit('startUpdate');
 
-    console.log(rootGetters);
-
     const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
@@ -71,11 +69,7 @@ const actions = {
 
     const notesCollection = getUserNotesSubcollection(currentUser.uid);
 
-    console.log('Before getting notesRef');
-
     const notesRefs = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
-
-    console.log('Before last commit');
 
     commit('ownNotesFetched', notesRefs);
   },
