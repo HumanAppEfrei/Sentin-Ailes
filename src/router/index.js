@@ -6,6 +6,7 @@ import Register from '@/views/Register.vue';
 // import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import secureLS from '@/storage';
+import { analytics } from '@/firebaseConfig';
 import EventsList from '../views/EventsList.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
@@ -16,6 +17,7 @@ import WriteNewMessage from '../views/WriteNewMessage.vue';
 import ReceivedMessages from '../views/ReceivedMessages.vue';
 
 import store from '../store';
+
 
 Vue.use(VueRouter);
 
@@ -150,6 +152,9 @@ router.beforeEach((to, from, next) => {
 
 // Persist displayed route after each route change
 router.afterEach((to) => {
+  if (to.name) {
+    analytics().setCurrentScreen(to.name);
+  }
   secureLS.set('current-route', to);
 });
 
