@@ -11,10 +11,6 @@ service cloud.firestore {
 
     function isAdmin() {
       return request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
-    } 
-    
-    match /{document=**} {
-      allow read, write: if true;
     }
 
     match /whitelist/{whitelistEntry} {
@@ -22,7 +18,7 @@ service cloud.firestore {
         return resource.data.userType == 'beneficiaire' || resource.data.userType == 'intervenant';
       }
 
-      allow read: if true;
+      allow read;
       allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
     }
 
