@@ -10,7 +10,8 @@
       {{ noteData.message }}
     </v-card-text>
     <v-card-actions>
-      <v-btn class="right" color="error">Supprimer</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon elevation="1" color="error"><v-icon>delete</v-icon></v-btn>
     </v-card-actions>
   </v-card>
 </template>

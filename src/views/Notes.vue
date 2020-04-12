@@ -1,7 +1,13 @@
 <template>
   <v-container>
+    <h1 class="my-12">Consulter vos notes</h1>
     <v-row>
-      <v-col v-for="note in notes" :key="note" sm="3">
+      <v-col cols="12">
+        <v-progress-linear indeterminate></v-progress-linear>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="note in notes" :key="note.date" cols="12" sm="6" md="4" lg="3">
         <NoteCard :noteData="note"/>
       </v-col>
     </v-row>
@@ -17,60 +23,7 @@ export default {
   },
   data() {
     return {
-      notes: [
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          message: 'vas te faire foutre',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          // eslint-disable-next-line
-          message: 'Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus. Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus.',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          message: 'vas te faire foutre',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          // eslint-disable-next-line
-          message: 'Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus. Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus.',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          message: 'vas te faire foutre',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          // eslint-disable-next-line
-          message: 'Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus. Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus.',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          message: 'vas te faire foutre',
-        },
-        {
-          title: 'titre',
-          author: 'ziakeur',
-          date: '2020-10-10',
-          // eslint-disable-next-line
-          message: 'Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus. Fusce commodo aliquam arcu. Nunc sed turpis. Donec mi odio, faucibus at, scelerisque quis, convallis in, nisi. Sed lectus.',
-        },
-      ],
+      notes: [],
     };
   },
 };
