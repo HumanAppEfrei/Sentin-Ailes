@@ -11,7 +11,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn icon elevation="1" color="error"><v-icon>delete</v-icon></v-btn>
+      <v-btn icon elevation="1" color="error" @click="deleteNote"><v-icon>delete</v-icon></v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,6 +31,15 @@ export default {
       const date = a.getDate();
       const time = `${date} ${month} ${year}`;
       return time;
+    },
+
+    deleteNote() {
+      // console.log('dispatch tes grand morts');
+      // console.log(this.$store.getters['auth/user']);
+      this.$store.dispatch('notes/deleteNoteFromUser', {
+        userId: this.$store.getters['auth/user'].uid,
+        noteId: this.noteData.id,
+      });
     },
   },
 };
