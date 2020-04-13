@@ -205,11 +205,11 @@ const actions = {
 
       const { user } = await fireAuth().createUserWithEmailAndPassword(email, password);
 
-      // Ensure user is logged out
-      await fireAuth().signOut();
-
       // Write additional data to Firestore document of user
       await usersCollection.doc(user.uid).set(additionalData, { merge: true });
+
+      // Ensure user is logged out
+      await fireAuth().signOut();
 
       commit('registerSuccess');
 
