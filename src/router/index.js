@@ -129,11 +129,6 @@ const routes = [
     name: 'event editor',
     component: EventEditor,
   },
-  {
-    path: '/messages',
-    name: 'messages-hub',
-    component: MessagesHub,
-  },
 ];
 
 const router = new VueRouter({
