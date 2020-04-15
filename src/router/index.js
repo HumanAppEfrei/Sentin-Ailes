@@ -6,17 +6,17 @@ import Register from '@/views/Register.vue';
 // import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import secureLS from '@/storage';
+import { analytics } from '@/firebaseConfig';
 import EventsList from '../views/EventsList.vue';
 import EventEditor from '../views/EventEditor.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
-import MessagesHub from '../views/MessagesHub.vue';
-import WriteNewMessage from '../views/WriteNewMessage.vue';
-import ReceivedMessages from '../views/ReceivedMessages.vue';
+import Notes from '../views/Notes.vue';
 
 import store from '../store';
+
 
 Vue.use(VueRouter);
 
@@ -120,6 +120,11 @@ const routes = [
     component: EventsList,
   },
   {
+    path: '/notes',
+    name: 'notes',
+    component: Notes,
+  },
+  {
     path: '/calendar/event-editor/:id',
     name: 'event editor',
     component: EventEditor,
@@ -128,16 +133,6 @@ const routes = [
     path: '/messages',
     name: 'messages-hub',
     component: MessagesHub,
-  },
-  {
-    path: '/messages/new-message',
-    name: 'new-message',
-    component: WriteNewMessage,
-  },
-  {
-    path: '/messages/received',
-    name: 'received',
-    component: ReceivedMessages,
   },
 ];
 
@@ -156,6 +151,9 @@ router.beforeEach((to, from, next) => {
 
 // Persist displayed route after each route change
 router.afterEach((to) => {
+  if (to.name) {
+    analytics().setCurrentScreen(to.name);
+  }
   secureLS.set('current-route', to);
 });
 

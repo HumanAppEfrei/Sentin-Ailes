@@ -81,7 +81,6 @@
             type="email"
             v-model="email"
             label="Adresse e-mail"
-            :rules="emailRules"
             required
             prepend-inner-icon="email"
             readonly

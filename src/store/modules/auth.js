@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-shadow */
 
@@ -14,12 +15,16 @@ const state = {
   registerStatus: null,
   registerError: null,
   roleClaim: null,
+  additionalUserData: { people: [] },
 };
 
 const getters = {
   user(state) {
     if (state.loggedIn) { // Ensure user logged in
-      return fireAuth().currentUser;
+      return {
+        ...(state.additionalUserData),
+        ...(fireAuth().currentUser),
+      };
     }
     return null;
   },
@@ -63,11 +68,16 @@ const getters = {
   userRole(state) {
     return state.roleClaim;
   },
+
+  relatedPeople(state) {
+    return state.additionalUserData.people;
+  },
 };
 
 const mutations = {
   loginPending(state) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.loginStatus = 'pending';
     state.loginError = null;
     state.registerStatus = null;
@@ -76,22 +86,29 @@ const mutations = {
   },
   registerPending(state) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'pending';
     state.registerError = null;
     state.loginStatus = null;
     state.loginError = null;
     state.roleClaim = null;
   },
-  loginSuccess(state, payload) {
+  loginSuccess(state, { firstName, lastName, role }) {
     state.loggedIn = true;
+    state.additionalUserData = {
+      firstName,
+      lastName,
+      ...(state.additionalUserData),
+    };
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
-    state.roleClaim = payload;
+    state.roleClaim = role;
   },
   loginFailure(state, payload) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.loginStatus = 'failure';
     state.loginError = payload;
     state.registerStatus = null;
@@ -100,6 +117,7 @@ const mutations = {
   },
   registerSuccess(state) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'success';
     state.registerError = null;
     state.loginStatus = null;
@@ -108,6 +126,7 @@ const mutations = {
   },
   registerFailure(state, payload) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.registerStatus = 'failure';
     state.registerError = payload;
     state.loginStatus = null;
@@ -116,19 +135,28 @@ const mutations = {
   },
   logout(state) {
     state.loggedIn = false;
+    state.additionalUserData = { people: [] };
     state.loginError = null;
     state.loginStatus = null;
     state.registerError = null;
     state.registerStatus = null;
     state.roleClaim = null;
   },
-  reLoginSuccess(state, payload) {
+  reLoginSuccess(state, { firstName, lastName, role }) {
     state.loggedIn = true;
+    state.additionalUserData = {
+      firstName,
+      lastName,
+      ...(state.additionalUserData),
+    };
     state.loginStatus = 'success';
     state.loginError = null;
     state.registerStatus = null;
     state.registerError = null;
-    state.roleClaim = payload;
+    state.roleClaim = role;
+  },
+  setRelatedPeople(state, payload) {
+    state.additionalUserData.people = payload;
   },
 };
 
@@ -147,11 +175,14 @@ const actions = {
       // Gather user token (to get custom claims for role-based interface)
       const token = await fireAuth().currentUser.getIdTokenResult();
 
-      const userRole = token.claims.role;
-      commit('loginSuccess', userRole);
+      const { role } = token.claims;
+      const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
+
+      commit('loginSuccess', { role, firstName, lastName });
+      commit('setRelatedPeople', people);
 
       analytics().setUserId(user.uid);
-      analytics().setUserProperties({ user_type: userRole });
+      analytics().setUserProperties({ user_type: role });
       analytics().logEvent('connection');
 
       // Redirect user to hub page
@@ -174,11 +205,11 @@ const actions = {
 
       const { user } = await fireAuth().createUserWithEmailAndPassword(email, password);
 
-      // Ensure user is logged out
-      await fireAuth().signOut();
-
       // Write additional data to Firestore document of user
       await usersCollection.doc(user.uid).set(additionalData, { merge: true });
+
+      // Ensure user is logged out
+      await fireAuth().signOut();
 
       commit('registerSuccess');
 
@@ -205,7 +236,10 @@ const actions = {
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
-        commit('reLoginSuccess', role); // Update state
+        const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
+
+        commit('reLoginSuccess', { role, firstName, lastName }); // Update state
+        commit('setRelatedPeople', people);
         router.push('/'); // Redirect user to /
       } else {
         router.push({ name: 'login' }); // Default redirects to login page
