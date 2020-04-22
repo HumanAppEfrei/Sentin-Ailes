@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="green darken-4">
+  <v-app-bar app color="green darken-4">
     <v-app-bar-nav-icon v-if="this.$route.name !== 'login' && this.$route.name !== 'hub'">
       <v-icon class="white--text" v-on:click="back">arrow_back</v-icon>
     </v-app-bar-nav-icon>

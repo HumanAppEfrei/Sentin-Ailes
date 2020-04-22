@@ -1,9 +1,9 @@
 <template>
   <v-app id="app">
-    <div id="nav">
-      <Appbar/>
-    </div>
-    <router-view/>
+    <Appbar/>
+    <v-content>
+      <router-view/>
+    </v-content>
   </v-app>
 </template>
 
@@ -22,6 +22,3 @@ export default {
 };
 
 </script>
-
-<style lang="scss">
-</style>
