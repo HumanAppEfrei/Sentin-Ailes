@@ -1,1 +1,0 @@
-# Bienvenue sur la Doc du projet Sentin'Ailes
