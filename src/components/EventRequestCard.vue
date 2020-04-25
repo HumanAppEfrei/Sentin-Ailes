@@ -1,15 +1,17 @@
 <template>
-  <div>
-    <div>
-      <h1>{{ event.title }}</h1>
-      <h2>{{ event.date }}</h2>
-      <h2>{{ event.time }}</h2>
-    </div>
-    <div>
-      <v-btn @click="onAccept">Accepter</v-btn>
-      <v-btn @click="onReject">Refuser</v-btn>
-    </div>
-  </div>
+  <v-card>
+    <v-row>
+      <v-col>
+        <v-card-title>{{ event.title }}</v-card-title>
+        <v-card-subtitle>{{ event.date }} - {{ event.time }}</v-card-subtitle>
+        <v-card-text>{{ event.description }}</v-card-text>
+      </v-col>
+      <v-col sm="3" cols="12" class="d-flex flex-sm-column justify-space-around align-center">
+        <v-btn color="primary" @click="onAccept">Accepter</v-btn>
+        <v-btn color="error" @click="onReject">Refuser</v-btn>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>

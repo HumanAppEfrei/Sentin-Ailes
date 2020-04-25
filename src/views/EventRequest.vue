@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="main">
     <h1>Vos demandes d'évenement</h1>
     <event-request-card
       v-for="(event, index) in eventRequest"
-      :key="index" event="event"
+      :key="index" :event="event"
       @accept="onEventAccepted(index)"
       @reject="onEventRejected(index)"
     />
@@ -49,4 +49,16 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2% 10%;
+}
+
+@media only screen and (max-width: 599px) {
+  .main {
+    padding: 2%;
+  }
+}
 </style>
