@@ -10,7 +10,7 @@
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="blue" icon="date_range" text="Demandes d'évènement" link="/" notif=""/>
+            <MenuTile color="blue" icon="date_range" text="Demandes d'évènement" link="/calendar/event-requests" notif=""/>
           </v-col>
       </v-row>
   </v-container>
