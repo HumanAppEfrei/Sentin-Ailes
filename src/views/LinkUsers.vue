@@ -9,7 +9,7 @@
 
       <v-stepper-content step="1">
         <v-container>
-          <v-form v-model="validBenef" @submit.prevent="validateBenef" class="my-5">
+          <v-form ref="benefForm" v-model="validBenef" @submit.prevent="validateBenef" class="my-5">
             <h2>Prénom du bénéficiaire à lier</h2>
             <v-text-field
               v-model="benefFirstName"
@@ -36,10 +36,18 @@
       </v-stepper-content>
 
       <v-stepper-step step="2">
-        <h3>Choix de l'intervenant à lier à ce bénéficiaire</h3>
+        <h3 v-show="potentialBenefs.length >= 2">Plusieurs bénéficiaires trouvés, sélectionner le bénéficiaire à lier</h3>
       </v-stepper-step>
 
       <v-stepper-content step="2">
+        <h2>Test</h2>
+      </v-stepper-content>
+
+      <v-stepper-step step="3">
+        <h3>Choix de l'intervenant à lier à ce bénéficiaire</h3>
+      </v-stepper-step>
+
+      <v-stepper-content step="3">
         <v-form v-model="validInterv" @submit.prevent class="my-5">
           <v-text-field type="email" v-model="intervEmail" outlined placeholder="intervenant@mail.com" />
 
@@ -84,7 +92,7 @@ export default {
           .where('lastName', '==', this.benefLastName)
           .get();
 
-        //
+        // Filter only essential data
         this.potentialBenefs = potentialBenefsRefs.docs
           .map(ref => ref.data())
           .map(userData => ({
@@ -95,15 +103,16 @@ export default {
             lastName: userData.lastName,
           }));
 
-        if (this.potentialBenefs.length !== 0) {
+        // Process to right stepper step
+        if (this.potentialBenefs.length === 0) {
+          this.$refs.benefForm.reset();
+        } else if (this.potentialBenefs.length >= 2) {
           this.currentStep = 2;
         } else {
-          // TODO: notify the user
+          this.currentStep = 3;
         }
       }
     },
-
-
   },
 };
 </script>
