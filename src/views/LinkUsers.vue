@@ -9,7 +9,7 @@
 
       <v-stepper-content step="1">
         <v-container>
-          <v-form ref="benefForm" v-model="validBenef" @submit.prevent="validateBenef" class="my-5">
+          <v-form ref="benefForm" @submit.prevent="validateBenef" class="my-5">
             <h2>Prénom du bénéficiaire à lier</h2>
             <v-text-field
               v-model="benefFirstName"
@@ -61,7 +61,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="3">
-        <v-form ref="intervForm" v-model="validInterv" @submit.prevent="validateInterv" class="my-5">
+        <v-form ref="intervForm" @submit.prevent="validateInterv" class="my-5">
           <h2>Prénom de l'intervenant à lier</h2>
           <v-text-field
               v-model="intervFirstName"
@@ -122,8 +122,6 @@ export default {
       benefFirstName: '',
       intervFirstName: '',
       intervLastName: '',
-      validBenef: false,
-      validInterv: false,
       rules: {
         nonEmpty: value => !!value || 'Doit être renseigné',
       },
@@ -200,7 +198,10 @@ export default {
 
           // Process to right stepper step
           if (this.potentialBenefs.length === 0) {
-            // TODO: notify user
+            this.$swal({
+              icon: 'error',
+              title: 'Pas de bénéficiaire trouvé',
+            });
           } else { // Means at least 2 users matching criterions were found
             this.currentStep = 2;
           }
@@ -211,7 +212,7 @@ export default {
     },
 
     async validateInterv() {
-      if (this.benefFirstName && this.benefLastName) {
+      if (this.intervFirstName && this.intervLastName) {
         // Get potential users from database
         const potentialIntervsRefs = await usersCollection
           .where('type', '==', 'intervenant')
@@ -230,7 +231,10 @@ export default {
 
           // Process to right stepper step
           if (this.potentialIntervs.length === 0) {
-            // TODO: notify user
+            this.$swal({
+              icon: 'error',
+              titleText: 'Pas d\'intervenant trouvé',
+            });
           } else { // Means at least 2 users matching criterions were found
             this.currentStep = 4;
           }
@@ -251,12 +255,23 @@ export default {
     },
 
     async linkUsers() {
-      // Actually add the intervenant UID to the array of people allowed to access a beneficiaire
-      await this.benefRef.update({
-        people: FieldValue.arrayUnion(this.intervUID),
-      });
+      try {
+        // Actually add the intervenant UID to the array of people allowed to access a beneficiaire
+        await this.benefRef.update({
+          people: FieldValue.arrayUnion(this.intervUID),
+        });
 
-      // TODO: notify user
+        this.$swal({
+          icon: 'success',
+          titleText: 'Bénéficiaire et Intervenant liés !',
+        });
+      } catch (e) {
+        console.error('Unable to update', e);
+        this.$swal({
+          icon: 'error',
+          titleText: 'Une erreur s\'est produite pendant l\'enregistrement, merci de réessayer',
+        });
+      }
     },
   },
 };
