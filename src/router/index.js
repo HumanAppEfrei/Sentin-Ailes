@@ -14,6 +14,7 @@ import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import Notes from '../views/Notes.vue';
 import AdminPanel from '../views/AdminPanel.vue';
+import LinkUsers from '../views/LinkUsers.vue';
 
 import store from '../store';
 
@@ -127,6 +128,10 @@ const routes = [
       {
         path: 'whitelist',
         component: WhitelistView,
+      },
+      {
+        path: 'link-users',
+        component: LinkUsers,
       },
       {
         path: '',
