@@ -36,12 +36,13 @@
       </v-stepper-content>
 
       <v-stepper-step step="2">
-        <h3 v-show="potentialBenefs.length >= 2">Plusieurs bénéficiaires trouvés, sélectionner le bénéficiaire à lier</h3>
+        <h3 v-if="potentialBenefs.length >= 2">Plusieurs bénéficiaires trouvés, sélectionner le bénéficiaire à lier</h3>
+        <h3 v-else class="subtitle-2">Nécessaire seulement si plusieurs bénéficiaires sont trouvés</h3>
       </v-stepper-step>
 
       <v-stepper-content step="2">
         <v-data-table
-          :headers="tableHeaders"
+          :headers="benefTableHeaders"
           :items="potentialBenefs"
           disable-sort
           hide-default-footer
@@ -60,13 +61,49 @@
       </v-stepper-step>
 
       <v-stepper-content step="3">
-        <v-form v-model="validInterv" @submit.prevent class="my-5">
-          <v-text-field type="email" v-model="intervEmail" outlined placeholder="intervenant@mail.com" />
+        <v-form ref="intervForm" v-model="validInterv" @submit.prevent="validateInterv" class="my-5">
+          <h2>Prénom de l'intervenant à lier</h2>
+          <v-text-field
+              v-model="intervFirstName"
+              :rules="[rules.nonEmpty]"
+              placeholder="Jean"
+              hint="Nom de famille de l'intervenant"
+              outlined
+              validate-on-blur />
+
+          <h2>Nom de famille de l'intervenant à lier</h2>
+          <v-text-field
+              v-model="intervLastName"
+              :rules="[rules.nonEmpty]"
+              placeholder="Dupont"
+              hint="Nom de famille de l'intervenant"
+              outlined
+              validate-on-blur />
 
           <v-btn type="submit" color="primary">
             Valider et lier les utilisateurs
           </v-btn>
         </v-form>
+      </v-stepper-content>
+
+      <v-stepper-step v-if="potentialIntervs.length >= 2" step="4">
+        <h3 v-show="potentialIntervs.length >= 2">Plusieurs intervenants trouvés, sélectionner l'intervenant à lier</h3>
+      </v-stepper-step>
+
+      <v-stepper-content v-if="potentialIntervs.length >= 2" step="4">
+        <v-data-table
+          :headers="intervTableHeaders"
+          :items="potentialIntervs"
+          disable-sort
+          hide-default-footer
+          :items-per-page="100"
+        >
+          <template v-slot:item.btn="{ item }">
+            <v-btn color="primary" @click="selectBenef(item)">
+              Sélectionner
+            </v-btn>
+          </template>
+        </v-data-table>
       </v-stepper-content>
     </v-stepper>
   </div>
@@ -83,17 +120,18 @@ export default {
       currentStep: 1,
       benefLastName: '',
       benefFirstName: '',
-      intervEmail: '',
+      intervFirstName: '',
+      intervLastName: '',
       validBenef: false,
       validInterv: false,
       rules: {
         nonEmpty: value => !!value || 'Doit être renseigné',
       },
       potentialBenefs: [],
-      potentialInterv: [],
+      potentialIntervs: [],
       benefRef: null,
       intervRef: null,
-      tableHeaders: [
+      benefTableHeaders: [
         {
           text: 'Prénom',
           value: 'firstName',
@@ -109,6 +147,25 @@ export default {
         {
           text: 'Addresse',
           value: 'address',
+        },
+        {
+          text: '',
+          value: 'btn',
+          align: 'center',
+        },
+      ],
+      intervTableHeaders: [
+        {
+          text: 'Prénom',
+          value: 'firstName',
+        },
+        {
+          text: 'Nom',
+          value: 'lastName',
+        },
+        {
+          text: 'Téléphone',
+          value: 'phone',
         },
         {
           text: '',
@@ -153,9 +210,48 @@ export default {
       }
     },
 
+    async validateInterv() {
+      if (this.benefFirstName && this.benefLastName) {
+        // Get potential users from database
+        const potentialIntervsRefs = await usersCollection
+          .where('type', '==', 'intervenant')
+          .where('firstName', '==', this.intervFirstName)
+          .where('lastName', '==', this.intervLastName)
+          .get();
+
+        if (potentialIntervsRefs.docs.length === 1) {
+          this.intervRef = potentialIntervsRefs.docs[0].ref;
+          await this.linkUsers();
+          this.currentStep = 1;
+        } else {
+          // Filter only essential data
+          this.potentialIntervs = potentialIntervsRefs.docs
+            .map(snap => ({ ...snap.data(), ref: snap.ref }));
+
+          // Process to right stepper step
+          if (this.potentialIntervs.length === 0) {
+            // TODO: notify user
+          } else { // Means at least 2 users matching criterions were found
+            this.currentStep = 4;
+          }
+        }
+
+        this.$refs.intervForm.reset();
+      }
+    },
+
     selectBenef(item) {
       this.benefRef = item.ref;
       this.currentStep = 3;
+    },
+
+    selectInterv(item) {
+      this.intervRef = item.ref;
+      this.linkUsers();
+    },
+
+    async linkUsers() {
+      // TODO: effective linkage of users
     },
   },
 };
