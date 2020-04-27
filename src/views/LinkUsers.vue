@@ -40,7 +40,19 @@
       </v-stepper-step>
 
       <v-stepper-content step="2">
-        <h2>Test</h2>
+        <v-data-table
+          :headers="tableHeaders"
+          :items="potentialBenefs"
+          disable-sort
+          hide-default-footer
+          :items-per-page="100"
+        >
+          <template v-slot:item.btn="{ item }">
+            <v-btn color="primary" @click="selectBenef(item)">
+              Sélectionner
+            </v-btn>
+          </template>
+        </v-data-table>
       </v-stepper-content>
 
       <v-stepper-step step="3">
@@ -81,12 +93,35 @@ export default {
       potentialInterv: [],
       benefRef: null,
       intervRef: null,
+      tableHeaders: [
+        {
+          text: 'Prénom',
+          value: 'firstName',
+        },
+        {
+          text: 'Nom',
+          value: 'lastName',
+        },
+        {
+          text: 'Téléphone',
+          value: 'phone',
+        },
+        {
+          text: 'Addresse',
+          value: 'address',
+        },
+        {
+          text: '',
+          value: 'btn',
+          align: 'center',
+        },
+      ],
     };
   },
 
   methods: {
     async validateBenef() {
-      if (this.validBenef) {
+      if (this.benefFirstName && this.benefLastName) {
         // Get potential users from database
         const potentialBenefsRefs = await usersCollection
           .where('type', '==', 'beneficiaire')
@@ -95,7 +130,7 @@ export default {
           .get();
 
         if (potentialBenefsRefs.docs.length === 1) {
-          this.benefRef = potentialBenefsRefs.docs[1].ref;
+          this.benefRef = potentialBenefsRefs.docs[0].ref;
           this.currentStep = 3;
         } else {
           // Filter only essential data
@@ -108,12 +143,19 @@ export default {
 
           // Process to right stepper step
           if (this.potentialBenefs.length === 0) {
-            this.$refs.benefForm.reset();
+            // TODO: notify user
           } else { // Means at least 2 users matching criterions were found
             this.currentStep = 2;
           }
         }
+
+        this.$refs.benefForm.reset();
       }
+    },
+
+    selectBenef(item) {
+      this.benefRef = item.ref;
+      this.currentStep = 3;
     },
   },
 };
