@@ -15,7 +15,7 @@ service cloud.firestore {
 
     match /whitelist/{whitelistEntry} {
       function userTypeIsBenefOfInterv() {
-        return resource.data.userType == 'beneficiaire' || resource.data.userType == 'intervenant';
+        return request.resource.data.userType == 'beneficiaire' || request.resource.data.userType == 'intervenant';
       }
 
       allow read;
