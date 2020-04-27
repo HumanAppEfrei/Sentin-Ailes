@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueSweetAlert2 from 'vue-sweetalert2';
 import App from '@/App.vue';
 import '@/registerServiceWorker';
 import router from '@/router';
@@ -7,6 +8,7 @@ import vuetify from '@/plugins/vuetify';
 import { firestorePlugin } from 'vuefire';
 
 import * as fb from './firebaseConfig';
+
 
 let app;
 
@@ -24,3 +26,4 @@ fb.auth.onAuthStateChanged(() => {
 Vue.config.productionTip = false;
 
 Vue.use(firestorePlugin);
+Vue.use(VueSweetAlert2);
