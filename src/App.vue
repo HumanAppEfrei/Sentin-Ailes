@@ -3,7 +3,7 @@
     <div id="nav">
       <Appbar/>
     </div>
-    <router-view/>
+    <router-view id="app-content" />
   </v-app>
 </template>
 
@@ -24,4 +24,14 @@ export default {
 </script>
 
 <style lang="scss">
+#app {
+  height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+#app-content {
+  overflow-y: scroll;
+}
 </style>
