@@ -37,7 +37,7 @@ service cloud.firestore {
       }
 
       allow read, write: if isSelf();  // TODO: should update this to disallow deletion later
-      allow read, delete: if request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
+      allow read, update, delete: if request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
       allow read: if request.auth.uid in resource.data.people;  // Allow users which UID is in the `people` array of the record to read the document
 
       match /notes/{note} {
