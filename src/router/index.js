@@ -128,6 +128,10 @@ const routes = [
         path: 'whitelist',
         component: WhitelistView,
       },
+      {
+        path: '',
+        redirect: 'whitelist',
+      },
     ],
   },
 ];
