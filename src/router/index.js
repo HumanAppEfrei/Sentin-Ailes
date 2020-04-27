@@ -8,6 +8,8 @@ import Login from '@/views/Login.vue';
 import secureLS from '@/storage';
 import { analytics } from '@/firebaseConfig';
 import EventsList from '../views/EventsList.vue';
+import EventEditor from '../views/EventEditor.vue';
+import EventRequest from '../views/EventRequest.vue';
 import ContactInfo from '../views/ContactInfo.vue';
 import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
@@ -138,6 +140,16 @@ const routes = [
         redirect: 'whitelist',
       },
     ],
+  },
+  {
+    path: '/calendar/event-editor/:id',
+    name: 'event editor',
+    component: EventEditor,
+  },
+  {
+    path: '/calendar/event-requests',
+    name: 'event requests',
+    component: EventRequest,
   },
 ];
 
