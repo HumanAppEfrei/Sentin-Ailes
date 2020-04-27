@@ -12,6 +12,15 @@
           Whitelist
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item to="/admin/link-users">
+        <v-list-item-icon>
+          <v-icon class="white--text">mdi-account-switch</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content class="white--text">
+          Liaison utilisateurs
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
