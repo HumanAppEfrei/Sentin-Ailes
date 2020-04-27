@@ -100,7 +100,7 @@
         >
           <template v-slot:item.btn="{ item }">
             <v-btn color="primary" @click="selectBenef(item)">
-              Sélectionner
+              Sélectionner et lier
             </v-btn>
           </template>
         </v-data-table>
@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { usersCollection } from '@/firebaseConfig';
+import { usersCollection, FieldValue } from '@/firebaseConfig';
 
 export default {
   name: 'LinkUsers',
@@ -130,7 +130,7 @@ export default {
       potentialBenefs: [],
       potentialIntervs: [],
       benefRef: null,
-      intervRef: null,
+      intervUID: null,
       benefTableHeaders: [
         {
           text: 'Prénom',
@@ -192,7 +192,7 @@ export default {
         } else {
           // Filter only essential data
           this.potentialBenefs = potentialBenefsRefs.docs
-            .map(snap => ({ ...snap.data(), ref: snap.ref }))
+            .map(snap => ({ ...snap.data(), ref: snap.ref, uid: snap.id }))
             .map(userData => ({
               birthDate: userData.birthDate.seconds * 1000,
               ...userData,
@@ -220,13 +220,13 @@ export default {
           .get();
 
         if (potentialIntervsRefs.docs.length === 1) {
-          this.intervRef = potentialIntervsRefs.docs[0].ref;
+          this.intervUID = potentialIntervsRefs.docs[0].id;
           await this.linkUsers();
           this.currentStep = 1;
         } else {
           // Filter only essential data
           this.potentialIntervs = potentialIntervsRefs.docs
-            .map(snap => ({ ...snap.data(), ref: snap.ref }));
+            .map(snap => ({ ...snap.data(), ref: snap.ref, uid: snap.id }));
 
           // Process to right stepper step
           if (this.potentialIntervs.length === 0) {
@@ -246,12 +246,17 @@ export default {
     },
 
     selectInterv(item) {
-      this.intervRef = item.ref;
+      this.intervUID = item.id;
       this.linkUsers();
     },
 
     async linkUsers() {
-      // TODO: effective linkage of users
+      // Actually add the intervenant UID to the array of people allowed to access a beneficiaire
+      await this.benefRef.update({
+        people: FieldValue.arrayUnion(this.intervUID),
+      });
+
+      // TODO: notify user
     },
   },
 };
