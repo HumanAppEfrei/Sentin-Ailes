@@ -54,8 +54,11 @@ function getUserNotesSubcollection(userId) {
 
 const { analytics } = firebase;
 
+const { FieldValue } = firebase.firestore;
+
 export {
   Timestamp,
+  FieldValue,
   analytics,
   db,
   auth,
