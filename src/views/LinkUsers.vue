@@ -79,6 +79,8 @@ export default {
       },
       potentialBenefs: [],
       potentialInterv: [],
+      benefRef: null,
+      intervRef: null,
     };
   },
 
@@ -92,24 +94,24 @@ export default {
           .where('lastName', '==', this.benefLastName)
           .get();
 
-        // Filter only essential data
-        this.potentialBenefs = potentialBenefsRefs.docs
-          .map(ref => ref.data())
-          .map(userData => ({
-            address: userData.address,
-            birthDate: userData.birthDate.seconds * 1000,
-            phone: userData.phone,
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-          }));
-
-        // Process to right stepper step
-        if (this.potentialBenefs.length === 0) {
-          this.$refs.benefForm.reset();
-        } else if (this.potentialBenefs.length >= 2) {
-          this.currentStep = 2;
-        } else {
+        if (potentialBenefsRefs.docs.length === 1) {
+          this.benefRef = potentialBenefsRefs.docs[1].ref;
           this.currentStep = 3;
+        } else {
+          // Filter only essential data
+          this.potentialBenefs = potentialBenefsRefs.docs
+            .map(snap => ({ ...snap.data(), ref: snap.ref }))
+            .map(userData => ({
+              birthDate: userData.birthDate.seconds * 1000,
+              ...userData,
+            }));
+
+          // Process to right stepper step
+          if (this.potentialBenefs.length === 0) {
+            this.$refs.benefForm.reset();
+          } else { // Means at least 2 users matching criterions were found
+            this.currentStep = 2;
+          }
         }
       }
     },
