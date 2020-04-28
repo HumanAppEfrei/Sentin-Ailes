@@ -38,7 +38,7 @@ jobs:
     - name: Firebase GitHub Action
       uses: pizzafox/firebase-action@1.0.7
       env:
-        PROJECT_ID: "google-cloud-or-firebase-project-id"
+        PROJECT_ID: "humanapp-sentinailes"
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       with:
         args: "deploy --only hosting"
