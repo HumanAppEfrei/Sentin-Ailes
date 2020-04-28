@@ -176,14 +176,21 @@ const actions = {
       const token = await fireAuth().currentUser.getIdTokenResult();
 
       const { role } = token.claims;
-      const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
-
-      commit('loginSuccess', { role, firstName, lastName });
-      commit('setRelatedPeople', people);
 
       analytics().setUserId(user.uid);
       analytics().setUserProperties({ user_type: role });
       analytics().logEvent('connection');
+
+      if (role === 'admin' || role === 'superAdmin') {
+        commit('loginSuccess', { role, firstName: 'Administrateur', lastName: '' });
+        router.push('/admin');
+        return;
+      }
+
+      const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
+
+      commit('loginSuccess', { role, firstName, lastName });
+      commit('setRelatedPeople', people);
 
       // Redirect user to hub page
       router.push({ path: '/' });
@@ -236,6 +243,13 @@ const actions = {
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;
+
+        if (role === 'admin' || role === 'superAdmin') {
+          commit('reLoginSuccess', { role, firstName: 'Administrateur', lastName: '' });
+          router.push('/admin');
+          return;
+        }
+
         const { firstName, lastName, people } = (await usersCollection.doc(user.uid).get()).data();
 
         commit('reLoginSuccess', { role, firstName, lastName }); // Update state

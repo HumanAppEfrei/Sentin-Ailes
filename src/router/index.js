@@ -15,6 +15,8 @@ import WhitelistView from '../views/Whitelist.vue';
 import Hub from '../views/Hub.vue';
 import CalendarHub from '../views/CalendarHub.vue';
 import Notes from '../views/Notes.vue';
+import AdminPanel from '../views/AdminPanel.vue';
+import LinkUsers from '../views/LinkUsers.vue';
 
 import store from '../store';
 
@@ -105,12 +107,6 @@ const routes = [
     component: ContactInfo,
   },
   {
-    path: '/whitelist',
-    name: 'whitelist',
-    component: WhitelistView,
-    beforeEnter: requiresAdminOrAbove,
-  },
-  {
     path: '/calendar',
     name: 'calendar-hub',
     component: CalendarHub,
@@ -124,6 +120,26 @@ const routes = [
     path: '/notes',
     name: 'notes',
     component: Notes,
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminPanel,
+    beforeEnter: requiresAdminOrAbove,
+    children: [
+      {
+        path: 'whitelist',
+        component: WhitelistView,
+      },
+      {
+        path: 'link-users',
+        component: LinkUsers,
+      },
+      {
+        path: '',
+        redirect: 'whitelist',
+      },
+    ],
   },
   {
     path: '/calendar/event-editor/:id',
