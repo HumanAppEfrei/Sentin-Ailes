@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { eventCollection, Timestamp } from '@/firebaseConfig';
+import { eventCollection } from '@/firebaseConfig';
 
 const state = {
   updating: false,
@@ -10,20 +10,31 @@ const getters = {
   isUpdating(state) {
     return state.updating;
   },
+
+  getEvents(state) {
+    return state.events;
+  },
 };
 
 const mutations = {
   fetchingEvents(state) {
     state.updating = true;
   },
+
+  eventsFeched(state, payload) {
+    state.events = payload;
+  },
 };
 
 const actions = {
-  async fetchAllEventForUser({ commit }, { uid }) {
+  async fetchAllEventsForUser({ commit }, { uid }) {
     commit('fetchingEvents');
 
-    const userEvents = await eventCollection.where('with', 'array-contains', uid).get();
-    console.log(userEvents);
+    const { docs: eventDocs } = await eventCollection
+      .where('concerned', 'array-contains', uid).get();
+
+    const events = eventDocs.map(_ => _.data());
+    commit('eventsFeched', events);
   },
 };
 

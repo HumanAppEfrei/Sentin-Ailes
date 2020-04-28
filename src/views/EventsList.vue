@@ -92,7 +92,7 @@ export default {
   },
 
   beforeCreate() {
-    this.$store.dispatch('events/fetchAllEventForUser', { uid: this.$store.getters['auth/user'].uid });
+    this.$store.dispatch('events/fetchAllEventsForUser', { uid: this.$store.getters['auth/user'].uid });
   },
 };
 </script>
