@@ -50,14 +50,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import EventCard from '../components/EventCard.vue';
 
-const eventDemo = {
-  id: 1,
-  name: 'Demo event',
-  date: '2020-04-01',
-  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-};
+// const eventDemo = {
+//   id: 1,
+//   name: 'Demo event',
+//   date: '2020-04-01',
+//   description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+// };
 
 export default {
   name: 'EventsList',
@@ -65,17 +66,20 @@ export default {
     return {
       selectedDate: null,
       dateDialog: false,
-      events: [
-        eventDemo,
-        eventDemo,
-        eventDemo,
-      ],
       filteredEvents: [],
     };
   },
+
   components: {
     EventCard,
   },
+
+  computed: {
+    ...mapGetters({
+      events: 'events/getEvents',
+    }),
+  },
+
   methods: {
     onFilterEvents() {
       const { selectedDate, events } = this.$data;
@@ -85,6 +89,10 @@ export default {
     onResetDate() {
       this.$data.selectedDate = null;
     },
+  },
+
+  beforeCreate() {
+    this.$store.dispatch('events/fetchAllEventForUser', { uid: this.$store.getters['auth/user'].uid });
   },
 };
 </script>
