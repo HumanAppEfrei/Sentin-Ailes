@@ -24,15 +24,15 @@ jobs:
     
     # install dependencies
     - name: install dependencies 
-      uses: uses = "comchangs/action-yarn@master"
+      uses: CultureHQ/actions-yarn@master
       with:
-        args: "yarn install"
+        args: install
     
     # building Sentin'ailes
     - name: build
-      uses: uses = "comchangs/action-yarn@master"
+      uses: CultureHQ/actions-yarn@master
       with:
-        args: "yarn build"
+        args: build
 
     # Runs a set of commands using the runners shell
     - name: Firebase GitHub Action
