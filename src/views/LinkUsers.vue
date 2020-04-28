@@ -36,8 +36,10 @@
       </v-stepper-content>
 
       <v-stepper-step step="2">
-        <h3 v-if="potentialBenefs.length >= 2">Plusieurs bénéficiaires trouvés, sélectionner le bénéficiaire à lier</h3>
-        <h3 v-else class="subtitle-2">Nécessaire seulement si plusieurs bénéficiaires sont trouvés</h3>
+        <h3 class="subtitle-2">Sélection du bénéficiaire</h3>
+        <small>
+          Nécessaire seulement si plusieurs bénéficiaires sont trouvés
+        </small>
       </v-stepper-step>
 
       <v-stepper-content step="2">
@@ -86,11 +88,12 @@
         </v-form>
       </v-stepper-content>
 
-      <v-stepper-step v-if="potentialIntervs.length >= 2" step="4">
-        <h3 v-show="potentialIntervs.length >= 2">Plusieurs intervenants trouvés, sélectionner l'intervenant à lier</h3>
+      <v-stepper-step step="4">
+        <h3 class="subtitle-2">Sélection de l'intervenant à lier</h3>
+        <small>Nécessaire seulement si plusieurs intervenants sont trouvés</small>
       </v-stepper-step>
 
-      <v-stepper-content v-if="potentialIntervs.length >= 2" step="4">
+      <v-stepper-content step="4">
         <v-data-table
           :headers="intervTableHeaders"
           :items="potentialIntervs"
@@ -99,7 +102,7 @@
           :items-per-page="100"
         >
           <template v-slot:item.btn="{ item }">
-            <v-btn color="primary" @click="selectBenef(item)">
+            <v-btn color="primary" @click="selectInterv(item)">
               Sélectionner et lier
             </v-btn>
           </template>
@@ -227,7 +230,7 @@ export default {
         } else {
           // Filter only essential data
           this.potentialIntervs = potentialIntervsRefs.docs
-            .map(snap => ({ ...snap.data(), ref: snap.ref, uid: snap.id }));
+            .map(snap => ({ ...snap.data(), ref: snap.ref, id: snap.id }));
 
           // Process to right stepper step
           if (this.potentialIntervs.length === 0) {
@@ -271,6 +274,10 @@ export default {
           icon: 'error',
           titleText: 'Une erreur s\'est produite pendant l\'enregistrement, merci de réessayer',
         });
+      } finally {
+        this.$refs.benefForm.reset();
+        this.$refs.intervForm.reset();
+        this.currentStep = 1;
       }
     },
   },
