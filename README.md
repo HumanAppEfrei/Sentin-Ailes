@@ -4,6 +4,8 @@
 
 ![Firebase deploy hosting](https://github.com/HumanAppEfrei/Sentin-Ailes/workflows/Firebase%20deploy%20hosting/badge.svg)
 
+![develop build](https://github.com/HumanAppEfrei/Sentin-Ailes/workflows/develop%20build/badge.svg)
+
 ## Project setup
 
 ```
