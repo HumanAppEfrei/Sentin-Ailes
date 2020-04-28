@@ -107,16 +107,6 @@ const routes = [
     component: ContactInfo,
   },
   {
-    path: '/calendar',
-    name: 'calendar-hub',
-    component: CalendarHub,
-  },
-  {
-    path: '/calendar/my-events',
-    name: 'my-events',
-    component: EventsList,
-  },
-  {
     path: '/notes',
     name: 'notes',
     component: Notes,
@@ -140,6 +130,16 @@ const routes = [
         redirect: 'whitelist',
       },
     ],
+  },
+  {
+    path: '/calendar',
+    name: 'calendar-hub',
+    component: CalendarHub,
+  },
+  {
+    path: '/calendar/my-events',
+    name: 'my-events',
+    component: EventsList,
   },
   {
     path: '/calendar/event-editor/:id',
