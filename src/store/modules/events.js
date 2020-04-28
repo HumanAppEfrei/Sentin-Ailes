@@ -2,13 +2,13 @@
 import { eventCollection } from '@/firebaseConfig';
 
 const state = {
-  updating: false,
+  status: 'None',
   events: [],
 };
 
 const getters = {
   isUpdating(state) {
-    return state.updating;
+    return state.status;
   },
 
   getEvents(state) {
@@ -17,24 +17,37 @@ const getters = {
 };
 
 const mutations = {
-  fetchingEvents(state) {
-    state.updating = true;
+  updatingEvents(state) {
+    state.status = 'updating';
   },
 
   eventsFeched(state, payload) {
     state.events = payload;
+    state.status = 'success';
+  },
+
+  newEventSent(state) {
+    state.status = 'sent';
   },
 };
 
 const actions = {
   async fetchAllEventsForUser({ commit }, { uid }) {
-    commit('fetchingEvents');
+    commit('updatingEvents');
 
     const { docs: eventDocs } = await eventCollection
       .where('concerned', 'array-contains', uid).get();
 
     const events = eventDocs.map(_ => _.data());
     commit('eventsFeched', events);
+  },
+
+  async addEvent({ commit, dispatch }, { event }) {
+    commit('updatingEvents');
+
+    await eventCollection.add(event);
+    commit('newEventSent');
+    dispatch('events/fetchAllEventsForUser');
   },
 };
 

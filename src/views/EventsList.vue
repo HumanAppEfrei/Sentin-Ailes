@@ -88,6 +88,7 @@ export default {
     },
     onResetDate() {
       this.$data.selectedDate = null;
+      console.log(this.events);
     },
   },
 
