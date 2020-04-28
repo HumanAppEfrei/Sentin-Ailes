@@ -53,22 +53,13 @@ service cloud.firestore {
       }
 
       match /events/{event} {
-        function isParticipant() {
-          return request.auth.uid in resource.data.participants;
-        }
-
-        function isCreator() {
-          return request.auth.uid == resource.data.creator;
-        }
 
         function isConcerned() {
-          return isSelf() || isParticipant() || isCreator();
+          return request.auth.uid in resource.data.concerned;
         }
 
-        allow read: if isConcerned();
+        allow read, update, delete: if isConcerned();
         allow create: if canAccessUser();
-        allow update: if isConcerned();
-        allow delete: if isSelf() || isCreator();
       }
     }
   }

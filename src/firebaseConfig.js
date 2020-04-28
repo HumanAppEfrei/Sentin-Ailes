@@ -42,6 +42,7 @@ const { currentUser } = auth;
 
 const usersCollection = db.collection('users');
 const whitelistCollection = db.collection('whitelist');
+const eventCollection = db.collection('events');
 
 /**
  * Get a a reference to the notes subcollection of a user
@@ -63,4 +64,5 @@ export {
   getUserNotesSubcollection,
   usersCollection,
   whitelistCollection,
+  eventCollection,
 };
