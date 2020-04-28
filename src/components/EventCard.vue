@@ -2,7 +2,7 @@
     <v-card class="event-card" min-width="60%">
       <v-row>
         <v-col cols="12" sm="8">
-          <v-card-title>{{ event.name }}</v-card-title>
+          <v-card-title>{{ event.title }}</v-card-title>
           <v-card-subtitle>{{ event.date }}</v-card-subtitle>
           <v-card-text>{{ event.description }} </v-card-text>
         </v-col>
