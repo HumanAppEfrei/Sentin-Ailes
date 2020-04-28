@@ -22,6 +22,15 @@ service cloud.firestore {
       allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
     }
 
+    match /events/{event} {
+      function isConcerned() {
+        return request.auth.uid in resource.data.concerned;
+      }
+
+      allow read, update, delete: if isConcerned();
+      allow create: if isAuthenticated();
+    }
+
     match /users/{userId} {
       function isSelf() {
         return request.auth.uid == userId;
@@ -50,16 +59,6 @@ service cloud.firestore {
         allow read: if isSelf() || isAuthor();
         allow delete: if isSelf() || isAuthor();
         allow update: if isAuthor();
-      }
-
-      match /events/{event} {
-
-        function isConcerned() {
-          return request.auth.uid in resource.data.concerned;
-        }
-
-        allow read, update, delete: if isConcerned();
-        allow create: if canAccessUser();
       }
     }
   }
