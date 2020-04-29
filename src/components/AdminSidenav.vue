@@ -2,6 +2,7 @@
   <v-navigation-drawer
       color="primary"
       permanent
+      app
     >
     <v-list>
       <v-list-item to="/admin/whitelist">
