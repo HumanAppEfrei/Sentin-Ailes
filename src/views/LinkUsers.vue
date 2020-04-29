@@ -179,12 +179,12 @@ export default {
 
   methods: {
     async validateBenef() {
-      if (this.benefFirstName && this.benefLastName) {
+      if (this.benefFirstName.trim() && this.benefLastName.trim()) {
         // Get potential users from database
         const potentialBenefsRefs = await usersCollection
           .where('type', '==', 'beneficiaire')
-          .where('firstName', '==', this.benefFirstName)
-          .where('lastName', '==', this.benefLastName)
+          .where('firstName', '==', this.benefFirstName.trim())
+          .where('lastName', '==', this.benefLastName.trim())
           .get();
 
         if (potentialBenefsRefs.docs.length === 1) {
@@ -215,12 +215,12 @@ export default {
     },
 
     async validateInterv() {
-      if (this.intervFirstName && this.intervLastName) {
+      if (this.intervFirstName.trim() && this.intervLastName.trim()) {
         // Get potential users from database
         const potentialIntervsRefs = await usersCollection
           .where('type', '==', 'intervenant')
-          .where('firstName', '==', this.intervFirstName)
-          .where('lastName', '==', this.intervLastName)
+          .where('firstName', '==', this.intervFirstName.trim())
+          .where('lastName', '==', this.intervLastName.trim())
           .get();
 
         if (potentialIntervsRefs.docs.length === 1) {
