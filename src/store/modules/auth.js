@@ -232,8 +232,8 @@ const actions = {
       await fireAuth().signOut();
       commit('logout');
       router.push('/login');
-    } catch (err) {
-      console.error(err);
+    } catch (_) {
+      //
     }
   },
 
@@ -259,7 +259,6 @@ const actions = {
         router.push({ name: 'login' }); // Default redirects to login page
       }
     } catch (err) {
-      console.error(err);
       router.push({ name: 'login' }); // Defaults redirect to login page
     }
   },

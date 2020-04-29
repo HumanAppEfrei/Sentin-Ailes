@@ -269,7 +269,6 @@ export default {
           titleText: 'Bénéficiaire et Intervenant liés !',
         });
       } catch (e) {
-        console.error('Unable to update', e);
         this.$swal({
           icon: 'error',
           titleText: 'Une erreur s\'est produite pendant l\'enregistrement, merci de réessayer',

@@ -56,20 +56,11 @@ const mutations = {
 };
 
 const actions = {
-  async fetchOwnNotes({ commit, rootGetters }) {
-    commit('startUpdate');
-
+  async fetchOwnNotes({ dispatch, rootGetters }) {
     const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
-    const userRole = rootGetters['auth/userRole'];
-    if (userRole !== 'beneficiaire') return;
-
-    const notesCollection = getUserNotesSubcollection(currentUser.uid);
-
-    const notesRefs = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
-
-    commit('ownNotesFetched', notesRefs);
+    dispatch('notes/fetchNotesForUser', { userId: currentUser.uid });
   },
 
   async fetchNotesForUser({ commit }, { userId }) {
@@ -81,25 +72,13 @@ const actions = {
     commit('userNotesFetched', notes);
   },
 
-  async addNoteToSelf({ commit, rootGetters }, { title, message }) {
-    commit('startUpdate');
-
+  async addNoteToSelf({ dispatch, rootGetters }, { title, message }) {
     const currentUser = rootGetters['auth/user'];
-    const date = Timestamp.now();
+    if (!currentUser) return;
 
-    const insertedNote = await getUserNotesSubcollection(currentUser.uid).add({
-      title,
-      message,
-      date,
-      author: `${currentUser.firstName} ${currentUser.lastName}`,
-    });
-
-    commit('userNoteAdded', {
-      title,
-      message,
-      date,
-      id: insertedNote.id,
-      author: `${currentUser.firstName} ${currentUser.lastName}`,
+    dispatch('notes/addNoteToUser', {
+      userId: currentUser.uid,
+      note: { title, message },
     });
   },
 
