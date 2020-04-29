@@ -20,7 +20,7 @@
 
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
-        <v-form ref="newNoteForm" @submit.prevent="addNote" v-model="formValid">
+        <v-form ref="newNoteForm" @submit.prevent="addNote">
           <v-toolbar dark color="green darken-4">
             <v-btn icon dark @click="toggleDialog">
               <v-icon>mdi-close</v-icon>
@@ -116,7 +116,7 @@ export default {
   },
 
   beforeCreate() {
-    this.$store.dispatch('notes/fetchOwnNotes');
+    this.$store.dispatch('notes/subscribeToOwnNotes');
   },
 };
 </script>
