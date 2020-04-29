@@ -2,21 +2,21 @@
   <v-container fluid>
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="orange" icon="person" text="Informations personnelles" link="/contact-info"/>
+            <MenuTile color="teal" icon="fab fa-buromobelexperte" text="Simon Says" link="/"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="blue" icon="event" text="Calendrier" link="/calendar"/>
+            <MenuTile color="teal" icon="fas fa-brain" text="Memory" link="/"/>
           </v-col>
       </v-row>
 
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="pink" icon="fas fa-sticky-note" text="Notes" link="/notes"/>
+            <MenuTile color="teal" icon="fas fa-calculator" text="Calcul mental" link="/"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="teal" icon="fas fa-chess" text="Exercices" link="/exercises"/>
+            <MenuTile color="teal" icon="timer" text="Jeu de rapidité" link="/"/>
           </v-col>
       </v-row>
   </v-container>
