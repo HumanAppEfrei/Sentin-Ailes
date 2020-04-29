@@ -141,14 +141,20 @@ export default {
     },
 
     showSequence() {
-      for (let i = 0; i < this.sequence.length; i += 1) {
-        const card = this.cards[this.sequence[i]];
+      const seq = this.sequence;
+
+      setTimeout(() => {
+        this.cardEnabled = true;
+      }, (seq.length * 1600) + 500);
+
+      for (let i = 0; i < seq.length; i += 1) {
+        const card = this.cards[seq[i]];
         setTimeout(() => {
           card.innerColor = 'rgba(0, 0, 0, 0)';
 
           setTimeout(() => {
             card.innerColor = 'rgba(0, 0, 0, 0.7)';
-          }, 600);
+          }, 1000);
         }, 600);
       }
     },
@@ -199,6 +205,9 @@ export default {
     },
 
     startNewLevel() {
+      // Disable user input
+      this.cardEnabled = false;
+
       // Clear level to start new level
       this.clearLevel();
 
