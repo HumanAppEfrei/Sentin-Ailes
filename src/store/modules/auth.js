@@ -2,11 +2,11 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-shadow */
 
-import { auth as fireAuth } from 'firebase';
+// import { auth as fireAuth } from 'firebase';
 
 import router from '@/router/index';
 
-import { usersCollection, analytics } from '@/firebaseConfig';
+import { usersCollection, analytics, auth as fireAuth } from '@/firebaseConfig';
 
 const state = {
   loggedIn: false,
@@ -23,7 +23,7 @@ const getters = {
     if (state.loggedIn) { // Ensure user logged in
       return {
         ...(state.additionalUserData),
-        ...(fireAuth().currentUser),
+        ...(fireAuth.currentUser),
       };
     }
     return null;
@@ -170,10 +170,10 @@ const actions = {
     commit('loginPending');
 
     try {
-      const { user } = await fireAuth().signInWithEmailAndPassword(email, password);
+      const { user } = await fireAuth.signInWithEmailAndPassword(email, password);
 
       // Gather user token (to get custom claims for role-based interface)
-      const token = await fireAuth().currentUser.getIdTokenResult();
+      const token = await fireAuth.currentUser.getIdTokenResult();
 
       const { role } = token.claims;
 
@@ -210,13 +210,13 @@ const actions = {
     try {
       analytics().logEvent('registration_attempt');
 
-      const { user } = await fireAuth().createUserWithEmailAndPassword(email, password);
+      const { user } = await fireAuth.createUserWithEmailAndPassword(email, password);
 
       // Write additional data to Firestore document of user
       await usersCollection.doc(user.uid).set(additionalData, { merge: true });
 
       // Ensure user is logged out
-      await fireAuth().signOut();
+      await fireAuth.signOut();
 
       commit('registerSuccess');
 
@@ -229,7 +229,7 @@ const actions = {
 
   async logout({ commit }) {
     try {
-      await fireAuth().signOut();
+      await fireAuth.signOut();
       commit('logout');
       router.push('/login');
     } catch (_) {
@@ -239,7 +239,7 @@ const actions = {
 
   async attemptRelogin({ commit }) {
     try {
-      const user = await fireAuth().currentUser;
+      const user = await fireAuth.currentUser;
 
       if (user) {
         const { role } = (await user.getIdTokenResult()).claims;

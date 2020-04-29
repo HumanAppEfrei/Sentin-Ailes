@@ -29,22 +29,26 @@ const mutations = {
 
   ownNotesFetched(state, payload) {
     state.ownNotes = payload;
+    state.ownNotes = state.ownNotes.sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   userNotesFetched(state, { userId, notesForUser }) {
     state.notes[userId] = notesForUser;
+    state.notes[userId] = state.notes[userId].sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   ownNoteAdded(state, note) {
-    state.ownNotes = state.ownNotes.push(note);
+    state.ownNotes.push(note);
+    state.ownNotes = state.ownNotes.sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   userNoteAdded(state, { userId, note }) {
-    const previousNotes = state.notes[userId] ? state.notes[userId] : [];
-    state.notes[userId] = previousNotes.push(note);
+    state.notes[userId] = state.notes[userId] ? state.notes[userId] : [];
+    state.notes[userId].push(note);
+    state.notes[userId] = state.notes[userId].sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
@@ -56,27 +60,45 @@ const mutations = {
 };
 
 const actions = {
+  async subscribeToOwnNotes({ commit, rootGetters, dispatch }) {
+    const currentUser = rootGetters['auth/user'];
+    if (!currentUser) return;
+
+    /**
+     * @type {FirebaseFirestore.CollectionReference}
+     */
+    const notesCollection = getUserNotesSubcollection(currentUser.uid);
+
+    dispatch('fetchOwnNotes');
+
+    notesCollection.onSnapshot((snap) => {
+      const notes = snap.docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
+
+      commit('ownNotesFetched', notes);
+    });
+  },
+
   async fetchOwnNotes({ dispatch, rootGetters }) {
     const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
-    dispatch('notes/fetchNotesForUser', { userId: currentUser.uid });
+    dispatch('fetchNotesForUser', { userId: currentUser.uid });
   },
 
-  async fetchNotesForUser({ commit }, { userId }) {
+  async fetchNotesForUser({ commit, rootGetters }, { userId }) {
     commit('startUpdate');
 
     const notesCollection = getUserNotesSubcollection(userId);
 
     const notes = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
-    commit('userNotesFetched', notes);
+    commit(rootGetters['auth/user'].uid === userId ? 'ownNotesFetched' : 'userNotesFetched', notes);
   },
 
   async addNoteToSelf({ dispatch, rootGetters }, { title, message }) {
     const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
-    dispatch('notes/addNoteToUser', {
+    dispatch('addNoteToUser', {
       userId: currentUser.uid,
       note: { title, message },
     });
@@ -100,7 +122,7 @@ const actions = {
       author: `${currentUser.firstName} ${currentUser.lastName}`,
     });
 
-    commit('userNoteAdded', {
+    commit(userId === currentUser.uid ? 'ownNoteAdded' : 'userNoteAdded', {
       userId,
       note: {
         title,

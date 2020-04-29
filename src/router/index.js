@@ -17,6 +17,7 @@ import CalendarHub from '../views/CalendarHub.vue';
 import Notes from '../views/Notes.vue';
 import AdminPanel from '../views/AdminPanel.vue';
 import LinkUsers from '../views/LinkUsers.vue';
+import ExercisesHub from '../views/ExercisesHub.vue';
 
 import store from '../store';
 
@@ -113,7 +114,6 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'admin',
     component: AdminPanel,
     beforeEnter: requiresAdminOrAbove,
     children: [
@@ -150,6 +150,11 @@ const routes = [
     path: '/calendar/event-requests',
     name: 'event requests',
     component: EventRequest,
+  },
+  {
+    path: '/exercises',
+    name: 'exercises-hub',
+    component: ExercisesHub,
   },
 ];
 
