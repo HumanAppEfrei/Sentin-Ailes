@@ -25,11 +25,9 @@ export default {
   },
   methods: {
     onEventAccepted(index) {
-      console.log('event accepted');
       this.eventRequest.splice(index, 1);
     },
     onEventRejected(index) {
-      console.log('event rejected');
       this.eventRequest.splice(index, 1);
     },
   },

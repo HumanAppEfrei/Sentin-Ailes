@@ -39,7 +39,6 @@ export default {
   created() {
     if (this.$route.path === '/calendar/event-editor/new') this.$data.isNew = true;
     else this.$data.isNew = false;
-    console.log(this.$route);
   },
 };
 </script>

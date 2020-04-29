@@ -136,7 +136,10 @@ export default {
         this.newEntryEmail = '';
         this.newEntryRole = '';
       } catch (err) {
-        console.error(err);
+        this.$swal({
+          icon: 'error',
+          titleText: 'Une erreur s\'est produite',
+        });
       }
     },
 
