@@ -72,25 +72,13 @@ const actions = {
     commit('userNotesFetched', notes);
   },
 
-  async addNoteToSelf({ commit, rootGetters }, { title, message }) {
-    commit('startUpdate');
-
+  async addNoteToSelf({ dispatch, rootGetters }, { title, message }) {
     const currentUser = rootGetters['auth/user'];
-    const date = Timestamp.now();
+    if (!currentUser) return;
 
-    const insertedNote = await getUserNotesSubcollection(currentUser.uid).add({
-      title,
-      message,
-      date,
-      author: `${currentUser.firstName} ${currentUser.lastName}`,
-    });
-
-    commit('userNoteAdded', {
-      title,
-      message,
-      date,
-      id: insertedNote.id,
-      author: `${currentUser.firstName} ${currentUser.lastName}`,
+    dispatch('notes/addNoteToUser', {
+      userId: currentUser.uid,
+      note: { title, message },
     });
   },
 
