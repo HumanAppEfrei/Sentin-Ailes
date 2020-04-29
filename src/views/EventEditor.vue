@@ -27,6 +27,7 @@
 <script>
 export default {
   name: 'EventEditor',
+
   data() {
     return {
       isNew: true,
@@ -36,10 +37,10 @@ export default {
     };
   },
   props: ['id'],
+
   created() {
     if (this.$route.path === '/calendar/event-editor/new') this.$data.isNew = true;
     else this.$data.isNew = false;
-    console.log(this.$route);
   },
 };
 </script>
