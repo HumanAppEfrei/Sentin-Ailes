@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <v-container>
     <h1 class="my-12">Consulter mes évenement programmés</h1>
     <!-- Date selector: small screen -->
     <v-dialog v-model="dateDialog" max-width="300px">
@@ -46,7 +46,7 @@
         <event-card v-for="event in filteredEvents" :key="event.id" :event="event" />
       </v-col>
     </v-row>
-  </main>
+  </v-container>
 </template>
 
 <script>
@@ -96,18 +96,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.main {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 2% 10%;
-}
-
-@media only screen and (max-width: 599px) {
-  .main {
-    padding: 2%;
-  }
-}
-</style>

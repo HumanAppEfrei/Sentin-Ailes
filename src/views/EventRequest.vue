@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <v-container>
     <h1>Vos demandes d'évenement</h1>
     <event-request-card
       v-for="(event, index) in eventRequest"
@@ -7,7 +7,7 @@
       @accept="onEventAccepted(index)"
       @reject="onEventRejected(index)"
     />
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -47,12 +47,6 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 2% 10%;
-}
 
 @media only screen and (max-width: 599px) {
   .main {
