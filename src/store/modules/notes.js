@@ -56,20 +56,11 @@ const mutations = {
 };
 
 const actions = {
-  async fetchOwnNotes({ commit, rootGetters }) {
-    commit('startUpdate');
-
+  async fetchOwnNotes({ dispatch, rootGetters }) {
     const currentUser = rootGetters['auth/user'];
     if (!currentUser) return;
 
-    const userRole = rootGetters['auth/userRole'];
-    if (userRole !== 'beneficiaire') return;
-
-    const notesCollection = getUserNotesSubcollection(currentUser.uid);
-
-    const notesRefs = (await notesCollection.get()).docs.map(doc => ({ id: doc.id, ...(doc.data()) }));
-
-    commit('ownNotesFetched', notesRefs);
+    dispatch('notes/fetchNotesForUser', { userId: currentUser.uid });
   },
 
   async fetchNotesForUser({ commit }, { userId }) {
