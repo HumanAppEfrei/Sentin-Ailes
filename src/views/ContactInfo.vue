@@ -10,7 +10,7 @@
         <v-text-field outlined
             type="text"
             label="Prénon"
-            v-model="firstName"
+            v-model="this.user.firstName"
             :readonly="!editMode"
             prepend-inner-icon="person"/>
       </v-col>
@@ -18,7 +18,7 @@
         <v-text-field outlined
             type="text"
             label="Nom"
-            v-model="lastName"
+            v-model="this.user.lastName"
             :readonly="!editMode"
             prepend-inner-icon="person"/>
       </v-col>
@@ -41,12 +41,17 @@
               v-on="on"
               outlined />
           </template>
-          <v-date-picker v-model="birthDate" first-day-of-week="1" min="1900-01-01" @input="birthDateMenu = false" locale="fr"></v-date-picker>
+          <v-date-picker v-model="birthDate"
+            first-day-of-week="1"
+            min="1900-01-01"
+            @input="birthDateMenu = false"
+            locale="fr">
+          </v-date-picker>
         </v-menu>
       </v-col>
       <v-col cols="12" sm="4">
         <v-select
-          v-model="familySituation"
+          v-model="this.user.famSituation"
           label="Situation familiale"
           :items="familySituationOptions"
           item-text="text"
@@ -62,7 +67,7 @@
         <v-text-field outlined
           type="text"
           label="Adresse"
-          v-model="address"
+          v-model="this.user.address"
           :readonly="!editMode"
           prepend-inner-icon="place"
             />
@@ -101,7 +106,7 @@
         <v-text-field outlined
         type="phone"
         label="Téléphone"
-        v-model="phone"
+        v-model="this.user.phone"
         :readonly="!editMode"
         prepend-inner-icon="phone" />
       </v-col>
@@ -139,6 +144,8 @@
 <script>
 import EmergencyContact from '@/components/EmergencyContact.vue';
 
+import { usersCollection } from '@/firebaseConfig';
+
 const contact1 = {
   number: 1,
   firstname: 'Jean',
@@ -149,19 +156,23 @@ const contact1 = {
 
 export default {
   name: 'contact-info',
+  components: {
+    EmergencyContact,
+  },
+
   data() {
     return {
+      user: {},
+      email: '',
+      date: '',
       editMode: false,
-      firstName: 'Jhon',
-      lastName: 'Doe',
-      email: 'jhon.doe@xxx.yy',
-      birthDate: '2020-03-15',
       birthDateMenu: '',
-      phone: '0123456789',
-      familySituation: 'single',
-      address: '1 rue de la paix',
-      postalCode: '12345',
-      city: 'Villejuif',
+      birthDate: '',
+
+      address: '',
+      postalCode: '',
+      city: '',
+
       emergencyContacts: [contact1],
       familySituationOptions: [
         { text: 'Célibataire', value: 'single' },
@@ -170,21 +181,22 @@ export default {
       ],
     };
   },
-  components: {
-    EmergencyContact,
-  },
+
   methods: {
     onEdit() {
       this.editMode = true;
     },
+
     onSave() {
       /* Update user in vuex store */
       this.editMode = false;
     },
+
     onCancel() {
       /* Reload User data From vuex store */
       this.editMode = false;
     },
+
     onAddContact() {
       this.emergencyContacts.push(
         {
@@ -196,6 +208,7 @@ export default {
         },
       );
     },
+
     onDeleteContact(number) {
       const array = this.emergencyContacts;
       array.splice(number - 1, 1);
@@ -203,6 +216,30 @@ export default {
         array[i].number -= 1;
       }
     },
+  },
+
+  async mounted() {
+    let uid;
+    if (this.$route.params.id === undefined) {
+      // eslint-disable-next-line prefer-destructuring
+      uid = this.$store.getters['auth/user'].uid;
+    } else {
+      uid = this.$route.params.id;
+    }
+
+    const firebaseUser = await usersCollection.doc(uid).get();
+    this.user = firebaseUser.data();
+
+    this.email = this.$store.getters['auth/user'].email;
+    this.birthDate = this.user.birthDate.toDate();
+    // parse user address
+    const parsedAdress = this.user.address.split(',');
+    // eslint-disable-next-line prefer-destructuring
+    this.address = parsedAdress[0];
+    // eslint-disable-next-line prefer-destructuring
+    this.postalCode = parsedAdress[1];
+    // eslint-disable-next-line prefer-destructuring
+    this.city = parsedAdress[2];
   },
 };
 </script>
