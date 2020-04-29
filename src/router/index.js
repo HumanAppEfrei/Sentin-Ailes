@@ -124,7 +124,6 @@ const routes = [
   },
   {
     path: '/admin',
-    name: 'admin',
     component: AdminPanel,
     beforeEnter: requiresAdminOrAbove,
     children: [
