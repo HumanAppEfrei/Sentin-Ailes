@@ -29,22 +29,26 @@ const mutations = {
 
   ownNotesFetched(state, payload) {
     state.ownNotes = payload;
+    state.ownNotes = state.ownNotes.sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   userNotesFetched(state, { userId, notesForUser }) {
     state.notes[userId] = notesForUser;
+    state.notes[userId] = state.notes[userId].sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   ownNoteAdded(state, note) {
     state.ownNotes.push(note);
+    state.ownNotes = state.ownNotes.sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
   userNoteAdded(state, { userId, note }) {
-    const previousNotes = state.notes[userId] ? state.notes[userId] : [];
-    state.notes[userId] = previousNotes.push(note);
+    state.notes[userId] = state.notes[userId] ? state.notes[userId] : [];
+    state.notes[userId].push(note);
+    state.notes[userId] = state.notes[userId].sort((a, b) => a.date.seconds < b.date.seconds);
     state.updating = false;
   },
 
