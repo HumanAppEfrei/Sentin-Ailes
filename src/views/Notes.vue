@@ -21,7 +21,7 @@
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-form ref="newNoteForm" @submit.prevent="addNote">
-          <v-toolbar dark color="green darken-4">
+          <v-toolbar dark color="main">
             <v-btn icon dark @click="toggleDialog">
               <v-icon>mdi-close</v-icon>
             </v-btn>
