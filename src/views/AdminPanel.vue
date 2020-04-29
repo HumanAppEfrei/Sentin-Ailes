@@ -18,13 +18,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.admin-panel {
-  height: 100%;
-}
-
-.admin-panel-content {
-  overflow-y: scroll;
-}
-</style>

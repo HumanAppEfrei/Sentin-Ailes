@@ -1,9 +1,9 @@
 <template>
-  <v-app id="app">
-    <div id="nav">
+  <v-app>
       <Appbar/>
-    </div>
-    <router-view id="app-content" />
+      <v-content>
+        <router-view/>
+      </v-content>
   </v-app>
 </template>
 
@@ -22,16 +22,3 @@ export default {
 };
 
 </script>
-
-<style lang="scss">
-#app {
-  height: 100vh;
-  max-height: 100vh;
-  width: 100vw;
-  max-width: 100vw;
-}
-
-#app-content {
-  overflow-y: scroll;
-}
-</style>
