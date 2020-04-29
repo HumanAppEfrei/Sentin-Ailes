@@ -154,7 +154,7 @@ export default {
 
           setTimeout(() => {
             card.innerColor = 'rgba(0, 0, 0, 0.7)';
-          }, 1000);
+          }, 1300);
         }, 600);
       }
     },
