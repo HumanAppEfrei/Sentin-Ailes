@@ -14,15 +14,18 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build-prod
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
+      - name: Install
+        uses: CultureHQ/actions-yarn@master
         with:
-          name: dist
-          path: dist
+          args: install
+      - name: Lint
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: lint
+      - name: build
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: build
   deploy:
     name: Deploy
     needs: build
