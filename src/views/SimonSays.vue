@@ -6,18 +6,21 @@
       </v-row>
 
       <v-row dense justify="center">
-        <p class="pt-4"><strong>Règles du jeu :</strong></p>
+        <h3 class="pt-4"><strong>Règles du jeu :</strong></h3>
+      </v-row>
 
-        <ul>
+      <v-row dense justify="center">
+        <ul class="pt-4">
           <li><p>Pour commencer la partie, cliquer sur le bouton <strong>Nouvelle Partie</strong> ci-dessous.</p></li>
           <li><p>Bien être attentif, et <strong>mémoriser la séquence</strong> de couleurs qui se joue à l'écran.</p></li>
           <li><p>Rejouer la séquence <strong>dans le bon ordre</strong>, en <strong>cliquant sur les bons rectangles</strong>.</p></li>
+          <li><p>Si la séquence est bonne, victoire ! Pour <strong>continuer à jouer</strong>, il vous suffira de cliquer sur le bouton <strong>Continuer</strong>.</p>
+          <li><p>Sinon, il vous faudra <strong>recommencer de zéro</strong> en cliquant sur le bouton <strong>Recommencer</strong>.</p></li>
         </ul>
-        <p>
-          Si la séquence est bonne, victoire ! Pour continuer à jouer, il vous suffira de cliquer sur le bouton <strong>Continuer</strong>.<br/>
-          Sinon, il vous faudra recommencer de zéro en cliquant sur le bouton <strong>Recommencer</strong>.<br/>
-          Vous pouvez arrêter de jouer à tout moment, en cliquant simplement sur la flêche de retour située en haut à gauche.
-        </p>
+      </v-row>
+
+      <v-row dense justify="center">
+        <p>Vous pouvez arrêter de jouer <strong>à tout moment</strong>, en cliquant simplement sur la flêche de retour située <strong>en haut à gauche</strong>.</p>
       </v-row>
 
       <v-row dense justify="center">
@@ -104,7 +107,7 @@
 
       <v-spacer class="py-5"></v-spacer>
 
-      <v-row dense justify="center">
+      <v-row dense justify="center" class="pb-5">
         <v-btn
         color="teal"
         dark
