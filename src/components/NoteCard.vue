@@ -29,7 +29,9 @@ export default {
       const year = a.getFullYear();
       const month = months[a.getMonth()];
       const date = a.getDate();
-      const time = `${date} ${month} ${year}`;
+      const formatedHour = (`0${a.getHours()}`).slice(-2);
+      const formatedMinu = (`0${a.getMinutes()}`).slice(-2);
+      const time = `Le ${date} ${month} ${year} à ${formatedHour}h${formatedMinu}`;
       return time;
     },
 

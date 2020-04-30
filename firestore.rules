@@ -1,6 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
+    
     function isSuperAdmin() {
       return request.auth.token.role == 'superAdmin'
     }
@@ -16,6 +20,15 @@ service cloud.firestore {
 
       allow read;
       allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
+    }
+
+    match /events/{event} {
+      function isConcerned() {
+        return request.auth.uid in resource.data.concerned;
+      }
+
+      allow read, update, delete: if isConcerned();
+      allow create: if isAuthenticated();
     }
 
     match /users/{userId} {
@@ -46,25 +59,6 @@ service cloud.firestore {
         allow read: if isSelf() || isAuthor();
         allow delete: if isSelf() || isAuthor();
         allow update: if isAuthor();
-      }
-
-      match /events/{event} {
-        function isParticipant() {
-          return request.auth.uid in resource.data.participants;
-        }
-
-        function isCreator() {
-          return request.auth.uid == resource.data.creator;
-        }
-
-        function isConcerned() {
-          return isSelf() || isParticipant() || isCreator();
-        }
-
-        allow read: if isConcerned();
-        allow create: if canAccessUser(request.auth.uid);
-        allow update: if isConcerned();
-        allow delete: if isSelf() || isCreator();
       }
     }
   }

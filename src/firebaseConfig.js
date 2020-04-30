@@ -44,6 +44,7 @@ const { currentUser } = auth;
 
 const usersCollection = db.collection('users');
 const whitelistCollection = db.collection('whitelist');
+const eventCollection = db.collection('events');
 
 /**
  * Get a a reference to the notes subcollection of a user
@@ -52,6 +53,10 @@ const whitelistCollection = db.collection('whitelist');
  */
 function getUserNotesSubcollection(userId) {
   return usersCollection.doc(userId).collection('notes');
+}
+
+function getUserPeopleSubcollection(userId) {
+  return usersCollection.doc(userId).collection('people');
 }
 
 const { analytics } = firebase;
@@ -66,6 +71,8 @@ export {
   auth,
   currentUser,
   getUserNotesSubcollection,
+  getUserPeopleSubcollection,
   usersCollection,
   whitelistCollection,
+  eventCollection,
 };
