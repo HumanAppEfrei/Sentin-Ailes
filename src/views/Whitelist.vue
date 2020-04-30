@@ -9,7 +9,13 @@
           <v-text-field v-model="newEntryEmail" placeholder="Email" outlined class="pa-0" />
         </v-col>
         <v-col cols="3">
-          <v-select v-model="newEntryRole" :items="possibleRoles" item-text="name" item-value="value" placeholder="Role" outlined />
+          <v-select
+            v-model="newEntryRole"
+            :items="possibleRoles"
+            item-text="name"
+            item-value="value"
+            placeholder="Role"
+            outlined />
         </v-col>
         <v-col cols="3">
           <v-btn block color="primary" type="submit">
@@ -169,7 +175,12 @@ export default {
     this.unsubscribeFromSubscription = whitelistCollection.onSnapshot((snapshot) => {
       this.whitelistRecords = snapshot.docs
         .map(doc => ({ ref: doc.ref, data: doc.data() }))
-        .map(doc => ({ ref: doc.ref, data: { ...doc.data, userType: mapRoleAbbrToRoleName(doc.data.userType) } }));
+        .map(doc => ({
+          ref: doc.ref,
+          data: {
+            ...doc.data, userType: mapRoleAbbrToRoleName(doc.data.userType),
+          },
+        }));
     });
   },
 

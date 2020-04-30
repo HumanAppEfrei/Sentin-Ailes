@@ -13,9 +13,20 @@
 
       <v-stepper-step :complete="e1 > 2" step="2">Inscription</v-stepper-step>
       <v-stepper-content step="2">
-        <IntervenantRegisterForm v-if="whitelistStatus.type === 'intervenant'" @submit="registerUser" :email="this.email"/>
-        <BeneficiaireRegisterForm v-if="whitelistStatus.type === 'beneficiaire'" @submit="registerUser" :email="this.email"/>
-        <AdminRegisterForm v-if="['admin', 'superAdmin'].includes(whitelistStatus.type)" @submit="registerUser" :email="this.email" />
+        <IntervenantRegisterForm
+          v-if="whitelistStatus.type === 'intervenant'"
+          @submit="registerUser"
+          :email="this.email" />
+
+        <BeneficiaireRegisterForm
+          v-if="whitelistStatus.type === 'beneficiaire'"
+          @submit="registerUser"
+          :email="this.email" />
+
+        <AdminRegisterForm
+          v-if="['admin', 'superAdmin'].includes(whitelistStatus.type)"
+          @submit="registerUser"
+          :email="this.email" />
       </v-stepper-content>
     </v-container>
   </v-stepper>

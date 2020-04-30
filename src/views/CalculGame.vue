@@ -1,10 +1,23 @@
 <template>
   <v-container >
-      <v-form @submit.prevent="onResponse" class="d-flex flex-column justify-content-center align-center">
-        <p class="display-4">{{ numberA }} {{ operator }} {{ numberB }} =</p>
-        <v-text-field type="number" class="flex-grow-0" label="Response" v-model="response" outlined />
+      <v-form
+        @submit.prevent="onResponse"
+        class="d-flex flex-column justify-content-center align-center">
+
+        <p class="display-4">
+          {{ numberA }} {{ operator }} {{ numberB }} =
+        </p>
+
+        <v-text-field
+          type="number"
+          v-model="response"
+          label="Response"
+          class="flex-grow-0"
+          outlined />
+
         <v-btn @click="onResponse">Submit</v-btn>
       </v-form>
+
       <v-snackbar :color="snackbar.color" v-model="snackbar.model" timeout="2000">
         {{ snackbar.message }}
         <v-btn color="black" text @click="result = false">Fermer</v-btn>

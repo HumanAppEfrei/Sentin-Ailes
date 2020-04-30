@@ -11,7 +11,9 @@
             Attention !
           </v-card-title>
           <v-card-text>
-            Êtes-vous sur de vouloir supprimer {{contact.firstname}} {{contact.lastname}} de vos contacts d'urgences ?
+            Êtes-vous sur de vouloir supprimer
+            {{contact.firstname}} {{contact.lastname}}
+            de vos contacts d'urgences ?
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

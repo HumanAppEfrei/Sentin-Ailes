@@ -3,21 +3,26 @@
     <h1 class="my-12">Consulter mes évenement programmés</h1>
     <!-- Date selector: small screen -->
     <v-dialog v-model="dateDialog" max-width="300px">
+
       <template v-slot:activator="{ on }">
-        <v-text-field outlined
-        class="hidden-md-and-up flex-grow-0"
-        v-model="selectedDate"
-        label="Date"
-        prepend-inner-icon="date_range"
-        v-on="on"
-        clearable
-        readonly />
+        <v-text-field
+          class="hidden-md-and-up flex-grow-0"
+          v-model="selectedDate"
+          label="Date"
+          prepend-inner-icon="date_range"
+          v-on="on"
+          clearable
+          readonly
+          outlined />
       </template>
+
       <v-date-picker
         color="green darken-3"
         v-model="selectedDate"
         @input="onFilterEvents" />
+
     </v-dialog>
+
     <v-row>
       <!-- Date Selector: large screen -->
       <v-col class="flex-grow-0 hidden-sm-and-down">
@@ -53,13 +58,6 @@
 import { mapGetters } from 'vuex';
 import EventCard from '../components/EventCard.vue';
 
-// const eventDemo = {
-//   id: 1,
-//   name: 'Demo event',
-//   date: '2020-04-01',
-//   description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-// };
-
 export default {
   name: 'EventsList',
   data() {
@@ -92,7 +90,9 @@ export default {
   },
 
   beforeCreate() {
-    this.$store.dispatch('events/fetchAllEventsForUser', { uid: this.$store.getters['auth/user'].uid });
+    this.$store.dispatch('events/fetchAllEventsForUser', {
+      uid: this.$store.getters['auth/user'].uid,
+    });
   },
 };
 </script>

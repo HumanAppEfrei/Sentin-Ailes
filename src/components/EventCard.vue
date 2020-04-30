@@ -30,7 +30,20 @@ export default {
   methods: {
     timeConverter(timestamp) {
       const a = timestamp.toDate();
-      const months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+      const months = [
+        'Janvier',
+        'Fevrier',
+        'Mars',
+        'Avril',
+        'Mai',
+        'Juin',
+        'Juillet',
+        'Aout',
+        'Septembre',
+        'Octobre',
+        'Novembre',
+        'Decembre',
+      ];
       const year = a.getFullYear();
       const month = months[a.getMonth()];
       const date = a.getDate();

@@ -39,7 +39,7 @@ export default {
         title: 'Title',
         date: '2020-01-01',
         time: '10:00',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum faucibus erat, in tempus augue sagittis et.',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum erat.',
       },
     ];
   },
