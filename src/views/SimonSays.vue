@@ -145,6 +145,8 @@ export default {
     nbrClicks: 0,
     max: 4,
     done: false,
+
+    timeouts: [],
   }),
 
   methods: {
@@ -162,9 +164,10 @@ export default {
 
     smallDelay(ms) {
       return new Promise((resolve) => {
-        setTimeout(() => {
+        this.timeouts.push(setTimeout(() => {
+          this.timeouts.pop();
           resolve();
-        }, ms);
+        }, ms));
       });
     },
 
@@ -301,6 +304,14 @@ export default {
         titleText: 'A votre tour !',
       });
     },
+  },
+
+  destroyed: () => {
+    if (this.timeouts.length > 0) {
+      for (let i = 0; i < this.timeouts.length; i += 1) {
+        clearTimeout(this.timeouts[i]);
+      }
+    }
   },
 };
 </script>
