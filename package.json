@@ -1,6 +1,7 @@
 {
   "name": "sentinailes",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "author": "Human'App <contact@humanapp.fr> (https://human-app.fr/)",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host 127.0.0.1 --port 8080",
