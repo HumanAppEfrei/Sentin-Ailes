@@ -144,114 +144,126 @@ export default {
   }),
 
   methods: {
-    clearLevel() {
-      // Setting values
-      this.level += 1;
-      this.max += 1;
-      this.buttonEnabled = false;
-      this.userInput = [];
-    },
-
     incrementSequence() {
       this.sequence.push(Math.floor(Math.random() * Math.floor(this.NUMBER_OF_CARDS)));
     },
 
-    showSequence() {
-      const seq = this.sequence;
+    smallDelay(ms) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, ms);
+      });
+    },
 
-      setTimeout(() => {
-        this.cardEnabled = true;
-      }, (seq.length * 1600) + 500);
+    async showSequence() {
+      const seq = this.sequence;
 
       for (let i = 0; i < seq.length; i += 1) {
         const card = this.cards[seq[i]];
-        setTimeout(() => {
-          card.innerColor = 'rgba(0, 0, 0, 0)';
-          card.sound.play();
 
-          setTimeout(() => {
-            card.innerColor = 'rgba(0, 0, 0, 0.7)';
-          }, 1300);
-        }, 600);
+        card.innerColor = 'rgba(0, 0, 0, 0)';
+        card.sound.play();
+
+        // eslint-disable-next-line no-await-in-loop
+        await this.smallDelay(1300);
+
+        card.innerColor = 'rgba(0, 0, 0, 0.7)';
+
+        // eslint-disable-next-line no-await-in-loop
+        await this.smallDelay(300);
       }
+
+      await this.smallDelay(500);
+      this.cardEnabled = true;
     },
 
-    registerClick(number) {
+    async registerClick(number) {
       this.cardEnabled = false;
       this.cards[number].innerColor = 'rgba(0, 0, 0, 0)';
       this.cards[number].sound.play();
       this.userInput.push(number);
       this.nbrClicks += 1;
-      setTimeout(() => {
-        this.cards[number].innerColor = 'rgba(0, 0, 0, 0.7)';
-        this.cardEnabled = true;
-      }, 350);
-    },
 
-    compareSequences() {
-      for (let i = 0; i < this.sequence.length; i += 1) {
-        if (this.sequence[i] !== this.userInput[i]) {
-          break;
+      await this.smallDelay(350);
+
+      this.cards[number].innerColor = 'rgba(0, 0, 0, 0.7)';
+      this.cardEnabled = true;
+
+      await this.smallDelay(200);
+
+
+      if (this.compareSequences(this.userInput.length - 1)) {
+        // If the user has clicked enough cards
+        if (this.nbrClicks === this.sequence.length) {
+          this.cardEnabled = false;
+
+          // Deduce from game result
+          this.victorySequence();
         }
-
-        if (i === this.sequence.length - 1) {
-          return true;
-        }
-      }
-
-      return false;
-    },
-
-    deduceResults(win) {
-      if (win) {
-        // If the current score is the highscore
-        if (this.level > this.highscore) {
-          // Set highscore to current score
-          this.highscore = this.level;
-        }
-
-        // Set the button's text's value
-        this.buttonText = 'Continuer';
       } else {
-        // Set the level to the current (unbeat) level
-        this.level -= 1;
-
-        // Clear sequence
-        this.sequence = [];
-
-        // Set start button value
-        this.buttonText = 'Recommencer';
+        this.defeatSequence();
       }
+    },
+
+    compareSequences(i) {
+      return this.userInput[i] === this.sequence[i];
+    },
+
+    victorySequence() {
+      // If the current score is the highscore
+      if (this.level > this.highscore) {
+        // Set highscore to current score
+        this.highscore = this.level;
+      }
+
+      // Alert user
+      this.$swal({
+        icon: 'success',
+        titleText: `Bravo! Vous avez réussi le niveau ${this.level}!`,
+      });
+
+      // Set the button's text's value
+      this.buttonText = 'Continuer';
+
+      this.userInput = [];
+    },
+
+    defeatSequence() {
+      // Set start button value
+      this.buttonText = 'Recommencer';
+
+      // Alert user
+      this.$swal({
+        icon: 'error',
+        titleText: `Aïe aïe aïe, vous n'avez pas réussi le niveau ${this.level}...`,
+      });
+
+      // Set the level to 0
+      this.level = 0;
+
+      this.userInput = [];
+      this.sequence = [];
     },
 
     startNewLevel() {
       // Disable user input
       this.cardEnabled = false;
+      this.buttonEnabled = false;
 
-      // Clear level to start new level
-      this.clearLevel();
+      // Setting values
+      this.level += 1;
+      this.max += 1;
+      this.nbrClicks = 0;
 
       /* LEVEL START */
 
-      // 1. Increment random sequence by one move
+      // Increment random sequence by one move
       this.incrementSequence();
 
 
-      // 2. Light up squares according to sequence & enable user input
+      // Light up squares according to sequence & enable user input
       this.showSequence();
-
-
-      // 4. Wait for user input
-
-
-      // 5. Compare user input to sequence
-      const win = this.compareSequences();
-
-      /* END OF LEVEL */
-
-
-      // Deduce from game result
-      this.deduceResults(win);
     },
   },
 };
