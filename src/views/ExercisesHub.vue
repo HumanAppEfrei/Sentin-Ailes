@@ -6,7 +6,7 @@
               color="exercise"
               icon="fab fa-buromobelexperte"
               text="Simon Says"
-              link="/" />
+              link="/exercises/simon" />
           </v-col>
 
           <v-col cols="12" sm="6">

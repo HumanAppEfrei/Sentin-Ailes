@@ -19,6 +19,7 @@ import AdminPanel from '../views/AdminPanel.vue';
 import LinkUsers from '../views/LinkUsers.vue';
 import ExercisesHub from '../views/ExercisesHub.vue';
 import CalculGame from '../views/CalculGame.vue';
+import SimonSays from '../views/SimonSays.vue';
 
 import store from '../store';
 
@@ -161,6 +162,11 @@ const routes = [
     path: '/exercises/calcul-game',
     name: 'calcul game',
     component: CalculGame,
+  },
+  {
+    path: '/exercises/simon',
+    name: 'simon-says',
+    component: SimonSays,
   },
 ];
 
