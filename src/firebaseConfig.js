@@ -55,6 +55,10 @@ function getUserNotesSubcollection(userId) {
   return usersCollection.doc(userId).collection('notes');
 }
 
+function getUserPeopleSubcollection(userId) {
+  return usersCollection.doc(userId).collection('people');
+}
+
 const { analytics } = firebase;
 
 const { FieldValue } = firebase.firestore;
@@ -67,6 +71,7 @@ export {
   auth,
   currentUser,
   getUserNotesSubcollection,
+  getUserPeopleSubcollection,
   usersCollection,
   whitelistCollection,
   eventCollection,

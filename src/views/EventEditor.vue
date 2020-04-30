@@ -69,10 +69,13 @@
             </v-date-picker>
           </v-dialog>
 
-          <v-text-field outlined
-            append-icon="people"
-            v-model="destinataires"
-            label="Participant(s)" />
+          <v-autocomplete
+            outlined
+            multiple
+            label="Déstinataire"
+            v-model="autoModel"
+            :items="destinataires"
+          ></v-autocomplete>
 
           <v-textarea outlined
           v-model="description"
@@ -86,7 +89,7 @@
 </template>
 
 <script>
-import { Timestamp } from '@/firebaseConfig';
+import { Timestamp, getUserPeopleSubcollection } from '@/firebaseConfig';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -98,6 +101,7 @@ export default {
       isNew: true,
       dateMenu: false,
       hoursMenu: false,
+      autoModel: false,
 
       hour: null,
       date: null,
@@ -152,7 +156,7 @@ export default {
 
       const event = {
         date: nexDate,
-        destinataires: this.destinataires,
+        concerned: this.destinataires,
         description: this.description,
       };
 
@@ -160,9 +164,15 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     if (this.$route.path === '/calendar/event-editor/new') this.$data.isNew = true;
     else this.$data.isNew = false;
+
+    this.destinataires = (await getUserPeopleSubcollection(this.$store.getters['auth/user'].uid).get())
+      .docs.map(doc => ({ id: doc.id, ...(doc.data()) }))
+      .map(people => ({ text: `${people.firstName} ${people.lastName}`, value: people.id }));
+
+    console.log(this.destinataires);
   },
 };
 </script>
