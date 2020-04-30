@@ -75,10 +75,10 @@
             label="Participant(s)" />
 
           <v-textarea outlined
-          v-model="message"
-          label="Message"
+          v-model="description"
+          label="Description"
           height="300px" />
-          <v-btn type="submit" dark color="calendar">Valider</v-btn>
+          <v-btn :loading="updating" type="submit" dark color="calendar">Valider</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -86,37 +86,77 @@
 </template>
 
 <script>
-// import { Timestamp } from '@/firebaseConfig';
+import { Timestamp } from '@/firebaseConfig';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'EventEditor',
 
   data() {
     return {
+      updating: false,
       isNew: true,
       dateMenu: false,
       hoursMenu: false,
 
       hour: null,
       date: null,
-      destinataires: '',
-      message: '',
+      destinataires: [],
+      description: '',
     };
   },
   props: ['id'],
 
+  computed: {
+    ...mapGetters({
+      status: 'events/getStatus',
+    }),
+  },
+
+  watch: {
+    status(newValue) {
+      switch (newValue) {
+        case 'sent':
+          this.updating = false;
+
+          this.$swal({
+            icon: 'success',
+            titleText: 'Evènement bien enregisté',
+          });
+
+          this.hour = null;
+          this.date = null;
+          this.destinataires = [];
+          this.description = '';
+          break;
+        case 'error':
+          this.updating = false;
+
+          this.$swal({
+            icon: 'error',
+            titleText: 'Une erreur s\'est produite pendant l\'enregistrement, merci de réessayer',
+          });
+          break;
+        case 'updating':
+          this.updating = true;
+          break;
+        default:
+          this.updating = false;
+      }
+    },
+  },
+
   methods: {
     sendEvent() {
+      const nexDate = Timestamp.fromDate(new Date(`${this.date} ${this.hour}`));
+
       const event = {
-        hour: this.hour,
-        date: this.date,
+        date: nexDate,
         destinataires: this.destinataires,
-        message: this.message,
+        description: this.description,
       };
 
-      const nexDate = Date.parse(`${event.date}`);
-
-      console.log(nexDate);
+      this.$store.dispatch('events/addEvent', event);
     },
   },
 
