@@ -42,7 +42,7 @@ const actions = {
     const { docs: eventDocs } = await eventCollection
       .where('concerned', 'array-contains', uid).get();
 
-    const events = eventDocs.map(_ => _.data());
+    const events = eventDocs.map(event => ({ id: event.id, ...(event.data()) }));
     commit('eventsFeched', events);
   },
 
@@ -56,6 +56,10 @@ const actions = {
       commit('errorSendindEvent');
     }
   },
+
+  // async modifyEvent({ commit }, event) {
+  //   commit('updatingEvents');
+  // },
 };
 
 export default {
