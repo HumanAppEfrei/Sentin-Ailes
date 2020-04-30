@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card outlined elevation="2">
     <v-card-title>
       {{ noteData.title }}
     </v-card-title>
