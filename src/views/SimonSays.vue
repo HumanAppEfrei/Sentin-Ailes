@@ -177,11 +177,14 @@ export default {
     },
 
     registerClick(number) {
+      this.cardEnabled = false;
       this.cards[number].innerColor = 'rgba(0, 0, 0, 0)';
+      this.cards[number].sound.play();
       this.userInput.push(number);
       this.nbrClicks += 1;
       setTimeout(() => {
         this.cards[number].innerColor = 'rgba(0, 0, 0, 0.7)';
+        this.cardEnabled = true;
       }, 350);
     },
 
