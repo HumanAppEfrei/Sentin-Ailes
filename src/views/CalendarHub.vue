@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
             <MenuTile color="calendar" icon="event" text="Ajouter un évènement" link="/calendar/event-editor/new"/>
