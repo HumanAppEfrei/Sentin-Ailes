@@ -12,7 +12,7 @@
 
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="exercise" icon="fas fa-calculator" text="Calcul mental" link="/"/>
+            <MenuTile color="exercise" icon="fas fa-calculator" text="Calcul mental" link="/exercises/calcul-game"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">
