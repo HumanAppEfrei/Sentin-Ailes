@@ -31,7 +31,3 @@ export default {
   name: 'AdminSidenav',
 };
 </script>
-
-<style>
-
-</style>

@@ -23,70 +23,9 @@ import SimonSays from '../views/SimonSays.vue';
 
 import store from '../store';
 
+import { requiresAdminOrAbove } from './access-rules';
 
 Vue.use(VueRouter);
-
-// eslint-disable-next-line no-unused-vars
-function requiresAuthentication(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (['beneficiaire', 'intervenant', 'admin', 'superAdmin'].includes(userRole)) next();
-  else next('/login');
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresBeneficiaire(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (userRole === 'beneficiaire') next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresIntervenant(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (userRole === 'intervenant') next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresAdmin(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (userRole === 'admin') next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresSuperAdmin(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (userRole === 'superAdmin') next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresBeneficiaireOrIntervenant(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (['beneficiaire', 'intervenant'].includes(userRole)) next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresIntervenantOrAdmin(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (['intervenant', 'admin', 'superAdmin'].includes(userRole)) next();
-  else next(false);
-}
-
-// eslint-disable-next-line no-unused-vars
-function requiresBeneficiaireOrAdmin(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (['beneficiaire', 'admin', 'superAdmin'].includes(userRole)) next();
-  else next(false);
-}
-
-function requiresAdminOrAbove(to, from, next) {
-  const userRole = store.getters['auth/userRole'];
-  if (userRole === 'admin' || userRole === 'superAdmin') next();
-  else next('/');
-}
 
 const routes = [
   {

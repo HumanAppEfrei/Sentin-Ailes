@@ -23,7 +23,7 @@ async function handleFirebaseAuthUserCreation(user) {
     return;
   }
 
-  whitelistRecord = userWhitelistRecord.data();
+  const whitelistRecord = userWhitelistRecord.data();
 
   // Create Firestore record in 'users' collection with matching UID
   if (
