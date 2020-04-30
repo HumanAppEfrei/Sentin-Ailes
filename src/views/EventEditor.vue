@@ -8,7 +8,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12" sm="6">
-        <v-form @submit.prevent="sendEvent">
+        <v-form @submit.prevent="sendEvent" v-model="formValid">
           <v-dialog
             ref="dialogHours"
             v-model="hoursMenu"
@@ -19,6 +19,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 outlined
+                :rules="notEmpty"
                 v-model="hour"
                 label="Horaire"
                 append-icon="access_time"
@@ -49,6 +50,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 outlined
+                :rules="notEmpty"
                 v-model="date"
                 label="Date"
                 append-icon="today"
@@ -72,6 +74,7 @@
           <v-autocomplete
             outlined
             multiple
+            :rules="notEmpty"
             label="Déstinataire"
             v-model="autoModel"
             :items="destinataires"
@@ -79,9 +82,15 @@
 
           <v-textarea outlined
           v-model="description"
+          :rules="notEmpty"
           label="Description"
           height="300px" />
-          <v-btn :loading="updating" type="submit" dark color="calendar">Valider</v-btn>
+          <v-btn
+            :disabled="!formValid"
+            :loading="updating"
+            type="submit"
+            color="calendar"
+          >Valider</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -97,16 +106,20 @@ export default {
 
   data() {
     return {
+      formValid: false,
       updating: false,
       isNew: true,
       dateMenu: false,
       hoursMenu: false,
-      autoModel: false,
+      autoModel: null,
 
       hour: null,
       date: null,
       destinataires: [],
       description: '',
+      notEmpty: [
+        v => !!v || 'Ce champ doit être remplie',
+      ],
     };
   },
   props: ['id'],
@@ -115,6 +128,16 @@ export default {
     ...mapGetters({
       status: 'events/getStatus',
     }),
+
+    concerned() {
+      const concern = this.autoModel.map(val => val);
+      concern.push(this.getUid);
+      return concern;
+    },
+
+    getUid() {
+      return this.$store.getters['auth/user'].uid;
+    },
   },
 
   watch: {
@@ -152,15 +175,20 @@ export default {
 
   methods: {
     sendEvent() {
-      const nexDate = Timestamp.fromDate(new Date(`${this.date} ${this.hour}`));
+      if (this.formValid) {
+        const nexDate = Timestamp.fromDate(new Date(`${this.date} ${this.hour}`));
 
-      const event = {
-        date: nexDate,
-        concerned: this.destinataires,
-        description: this.description,
-      };
+        const event = {
+          date: nexDate,
+          concerned: this.concerned,
+          acceptedBy: [this.getUid],
+          description: this.description,
+        };
 
-      this.$store.dispatch('events/addEvent', event);
+        // console.log(this.autoModel);
+        // console.log(event);
+        this.$store.dispatch('events/addEvent', event);
+      }
     },
   },
 
@@ -171,8 +199,6 @@ export default {
     this.destinataires = (await getUserPeopleSubcollection(this.$store.getters['auth/user'].uid).get())
       .docs.map(doc => ({ id: doc.id, ...(doc.data()) }))
       .map(people => ({ text: `${people.firstName} ${people.lastName}`, value: people.id }));
-
-    console.log(this.destinataires);
   },
 };
 </script>
