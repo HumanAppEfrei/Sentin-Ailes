@@ -1,11 +1,14 @@
 <template>
-  <v-container class="d-flex flex-column justify-content-center align-center">
-      <p class="green" v-if="result=='success'">Bonne réponse !</p>
-      <p class="red" v-else-if="result=='failure'">Mauvaise réponse ...</p>
-      <p></p>
-      <p class="display-4">{{ numberA }} {{ operator }} {{ numberB }} =</p>
-      <v-text-field type="number" class="flex-grow-0" label="Response" v-model="response" outlined />
-      <v-btn @click="onResponse()">Submit</v-btn>
+  <v-container >
+      <v-form @submit.prevent="onResponse" class="d-flex flex-column justify-content-center align-center">
+        <p class="display-4">{{ numberA }} {{ operator }} {{ numberB }} =</p>
+        <v-text-field type="number" class="flex-grow-0" label="Response" v-model="response" outlined />
+        <v-btn @click="onResponse">Submit</v-btn>
+      </v-form>
+      <v-snackbar :color="snackbar.color" v-model="snackbar.model" timeout="2000">
+        {{ snackbar.message }}
+        <v-btn color="black" text @click="result = false">Fermer</v-btn>
+      </v-snackbar>
   </v-container>
 </template>
 
@@ -18,7 +21,11 @@ export default {
       operator: '+',
       response: null,
       expected: 0,
-      result: false,
+      snackbar: {
+        model: false,
+        message: '',
+        color: '',
+      },
     };
   },
   methods: {
@@ -51,10 +58,13 @@ export default {
     onResponse() {
       if (Number(this.response) === this.expected) {
         this.generateOperation();
-        this.result = 'success';
+        this.snackbar.message = 'Bonne réponse !';
+        this.snackbar.color = 'green';
       } else {
-        this.result = 'failure';
+        this.snackbar.message = 'Mauvaise réponse ...';
+        this.snackbar.color = 'red';
       }
+      this.snackbar.model = true;
       this.response = null;
     },
   },
