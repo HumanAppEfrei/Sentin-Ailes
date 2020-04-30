@@ -2,7 +2,29 @@
   <v-container class="mx-auto" max-width="500" fill-height v-model="level">
     <v-container fuild>
       <v-row dense justify="center">
-        <h1>Niveau actuel : {{level}}</h1>
+        <h1>Simon Says</h1>
+      </v-row>
+
+      <v-row dense justify="center">
+        <h3 class="pt-4"><strong>Règles du jeu :</strong></h3>
+      </v-row>
+
+      <v-row dense justify="center">
+        <ul class="pt-4">
+          <li><p>Pour commencer la partie, cliquer sur le bouton <strong>Nouvelle Partie</strong> ci-dessous.</p></li>
+          <li><p>Bien être attentif, et <strong>mémoriser la séquence</strong> de couleurs qui se joue à l'écran.</p></li>
+          <li><p>Rejouer la séquence <strong>dans le bon ordre</strong>, en <strong>cliquant sur les bons rectangles</strong>.</p></li>
+          <li><p>Si la séquence est bonne, victoire ! Pour <strong>continuer à jouer</strong>, il vous suffira de cliquer sur le bouton <strong>Continuer</strong>.</p>
+          <li><p>Sinon, il vous faudra <strong>recommencer de zéro</strong> en cliquant sur le bouton <strong>Recommencer</strong>.</p></li>
+        </ul>
+      </v-row>
+
+      <v-row dense justify="center">
+        <p>Vous pouvez arrêter de jouer <strong>à tout moment</strong>, en cliquant simplement sur la flêche de retour située <strong>en haut à gauche</strong>.</p>
+      </v-row>
+
+      <v-row dense justify="center">
+        <h2 class="pt-4">Niveau actuel : {{level}}</h2>
       </v-row>
 
       <v-row dense justify="center">
@@ -85,7 +107,7 @@
 
       <v-spacer class="py-5"></v-spacer>
 
-      <v-row dense justify="center">
+      <v-row dense justify="center" class="pb-5">
         <v-btn
         color="teal"
         dark
@@ -145,6 +167,8 @@ export default {
     nbrClicks: 0,
     max: 4,
     done: false,
+
+    timeouts: [],
   }),
 
   methods: {
@@ -162,9 +186,10 @@ export default {
 
     smallDelay(ms) {
       return new Promise((resolve) => {
-        setTimeout(() => {
+        this.timeouts.push(setTimeout(() => {
+          this.timeouts.pop();
           resolve();
-        }, ms);
+        }, ms));
       });
     },
 
@@ -301,6 +326,14 @@ export default {
         titleText: 'A votre tour !',
       });
     },
+  },
+
+  destroyed: () => {
+    if (this.timeouts.length > 0) {
+      for (let i = 0; i < this.timeouts.length; i += 1) {
+        clearTimeout(this.timeouts[i]);
+      }
+    }
   },
 };
 </script>
