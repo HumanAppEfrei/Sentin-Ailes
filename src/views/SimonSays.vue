@@ -246,7 +246,7 @@ export default {
       this.sequence = [];
     },
 
-    startNewLevel() {
+    async startNewLevel() {
       // Disable user input
       this.cardEnabled = false;
       this.buttonEnabled = false;
@@ -262,8 +262,28 @@ export default {
       this.incrementSequence();
 
 
+      // Alert user
+      await this.$swal({
+        icon: 'info',
+        titleText: 'La séquence va commencer.',
+      });
+
+
+      await this.smallDelay(800);
+
+
       // Light up squares according to sequence & enable user input
-      this.showSequence();
+      await this.showSequence();
+
+
+      await this.smallDelay(100);
+
+
+      // Alert user
+      await this.$swal({
+        icon: 'info',
+        titleText: 'A votre tour !',
+      });
     },
   },
 };
