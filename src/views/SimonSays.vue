@@ -100,16 +100,32 @@ export default {
   data: () => ({
     cards: [
       {
-        number: 0, color: 'green', innerColor: 'rgba(0, 0, 0, 0.7)', flex: 6,
+        number: 0,
+        color: 'green',
+        innerColor: 'rgba(0, 0, 0, 0.7)',
+        flex: 6,
+        sound: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'),
       },
       {
-        number: 1, color: 'red', innerColor: 'rgba(0, 0, 0, 0.7)', flex: 6,
+        number: 1,
+        color: 'red',
+        innerColor: 'rgba(0, 0, 0, 0.7)',
+        flex: 6,
+        sound: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
       },
       {
-        number: 2, color: 'orange', innerColor: 'rgba(0, 0, 0, 0.7)', flex: 6,
+        number: 2,
+        color: 'orange',
+        innerColor: 'rgba(0, 0, 0, 0.7)',
+        flex: 6,
+        sound: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'),
       },
       {
-        number: 3, color: 'blue', innerColor: 'rgba(0, 0, 0, 0.7)', flex: 6,
+        number: 3,
+        color: 'blue',
+        innerColor: 'rgba(0, 0, 0, 0.7)',
+        flex: 6,
+        sound: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3'),
       },
     ],
 
@@ -151,6 +167,7 @@ export default {
         const card = this.cards[seq[i]];
         setTimeout(() => {
           card.innerColor = 'rgba(0, 0, 0, 0)';
+          card.sound.play();
 
           setTimeout(() => {
             card.innerColor = 'rgba(0, 0, 0, 0.7)';
