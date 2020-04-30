@@ -7,7 +7,7 @@ const state = {
 };
 
 const getters = {
-  isUpdating(state) {
+  getStatus(state) {
     return state.status;
   },
 
@@ -29,6 +29,10 @@ const mutations = {
   newEventSent(state) {
     state.status = 'sent';
   },
+
+  errorSendindEvent(state) {
+    state.status = 'error';
+  },
 };
 
 const actions = {
@@ -42,12 +46,15 @@ const actions = {
     commit('eventsFeched', events);
   },
 
-  async addEvent({ commit, dispatch }, { event }) {
+  async addEvent({ commit }, event) {
     commit('updatingEvents');
 
-    await eventCollection.add(event);
-    commit('newEventSent');
-    dispatch('events/fetchAllEventsForUser');
+    try {
+      await eventCollection.add(event);
+      commit('newEventSent');
+    } catch (e) {
+      commit('errorSendindEvent');
+    }
   },
 };
 
