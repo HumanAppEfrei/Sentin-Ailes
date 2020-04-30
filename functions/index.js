@@ -7,5 +7,6 @@ admin.initializeApp({
 });
 
 const handleFirebaseAuthUserCreation = require('./auth/user-creation');
+// const handleEventRequest = require('./events/event-creation');
 
 exports.onUserCreation = functions.auth.user().onCreate(handleFirebaseAuthUserCreation);

@@ -2,8 +2,8 @@
     <v-card class="event-card" min-width="60%">
       <v-row>
         <v-col cols="12" sm="8">
-          <v-card-title>{{ event.name }}</v-card-title>
-          <v-card-subtitle>{{ event.date }}</v-card-subtitle>
+          <v-card-title>{{ event.title }}</v-card-title>
+          <v-card-subtitle>{{ timeConverter(event.date) }}</v-card-subtitle>
           <v-card-text>{{ event.description }} </v-card-text>
         </v-col>
         <v-col class="d-flex flex-column justify-center align-center align-sm-center">
@@ -26,6 +26,20 @@ export default {
   props: [
     'event',
   ],
+
+  methods: {
+    timeConverter(timestamp) {
+      const a = timestamp.toDate();
+      const months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+      const year = a.getFullYear();
+      const month = months[a.getMonth()];
+      const date = a.getDate();
+      const formatedHour = (`0${a.getHours()}`).slice(-2);
+      const formatedMinu = (`0${a.getMinutes()}`).slice(-2);
+      const time = `Le ${date} ${month} ${year} à ${formatedHour}h${formatedMinu}`;
+      return time;
+    },
+  },
 };
 </script>
 

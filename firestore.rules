@@ -4,7 +4,7 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth.uid != null;
     }
-
+    
     function isSuperAdmin() {
       return request.auth.token.role == 'superAdmin'
     }
@@ -22,23 +22,32 @@ service cloud.firestore {
       allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
     }
 
+    match /events/{event} {
+      function isConcerned() {
+        return request.auth.uid in resource.data.concerned;
+      }
+
+      allow read, update, delete: if isConcerned();
+      allow create: if isAuthenticated();
+    }
+
     match /users/{userId} {
       function isSelf() {
         return request.auth.uid == userId;
       }
 
-      // Only use this function if refering to the user document in a nested collection
-      function getUserDoc() {
-        return get(/databases/$(database)/users/$(userId)).data;
-      }
-
-      function canAccessUser() {
-        return request.auth.uid in getUserDoc().people;
+      function canAccessUser(uid) {
+        return exists(/databases/$(database)/users/$(userId)/people/$(uid));
       }
 
       allow read, write: if isSelf();  // TODO: should update this to disallow deletion later
       allow read, update, delete: if request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
-      allow read: if request.auth.uid in resource.data.people;  // Allow users which UID is in the `people` array of the record to read the document
+      allow read: if canAccessUser(request.auth.uid);  // Allow users which UID is in the `people` array of the record to read the document
+
+      match /people/{personId} {
+        allow read: if isSelf() || isAdmin() || isSuperAdmin();
+        allow write: if isAdmin() || isSuperAdmin();
+      }
 
       match /notes/{note} {
         // Determines whether the current request user is the author of the note
@@ -46,29 +55,10 @@ service cloud.firestore {
           return request.auth.uid == resource.data.from;
         }
 
-        allow create: if isSelf() || canAccessUser();
+        allow create: if isSelf() || canAccessUser(request.auth.uid);
         allow read: if isSelf() || isAuthor();
         allow delete: if isSelf() || isAuthor();
         allow update: if isAuthor();
-      }
-
-      match /events/{event} {
-        function isParticipant() {
-          return request.auth.uid in resource.data.participants;
-        }
-
-        function isCreator() {
-          return request.auth.uid == resource.data.creator;
-        }
-
-        function isConcerned() {
-          return isSelf() || isParticipant() || isCreator();
-        }
-
-        allow read: if isConcerned();
-        allow create: if canAccessUser();
-        allow update: if isConcerned();
-        allow delete: if isSelf() || isCreator();
       }
     }
   }

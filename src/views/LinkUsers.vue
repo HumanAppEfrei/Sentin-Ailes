@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { usersCollection, FieldValue } from '@/firebaseConfig';
+import { usersCollection } from '@/firebaseConfig';
 
 export default {
   name: 'LinkUsers',
@@ -132,6 +132,7 @@ export default {
       potentialIntervs: [],
       benefRef: null,
       intervUID: null,
+      intervPhone: '',
       benefTableHeaders: [
         {
           text: 'Prénom',
@@ -225,6 +226,8 @@ export default {
 
         if (potentialIntervsRefs.docs.length === 1) {
           this.intervUID = potentialIntervsRefs.docs[0].id;
+          this.intervPhone = potentialIntervsRefs.docs[0].data().phone;
+
           await this.linkUsers();
           this.currentStep = 1;
         } else {
@@ -254,14 +257,17 @@ export default {
 
     selectInterv(item) {
       this.intervUID = item.id;
+      this.intervPhone = item.phone;
       this.linkUsers();
     },
 
     async linkUsers() {
       try {
         // Actually add the intervenant UID to the array of people allowed to access a beneficiaire
-        await this.benefRef.update({
-          people: FieldValue.arrayUnion(this.intervUID),
+        await this.benefRef.collection('people').doc(this.intervUID).set({
+          firstName: this.intervFirstName,
+          lastName: this.intervLastName,
+          phone: this.intervPhone,
         });
 
         this.$swal({

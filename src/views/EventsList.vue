@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <v-container>
     <h1 class="my-12">Consulter mes évenement programmés</h1>
     <!-- Date selector: small screen -->
     <v-dialog v-model="dateDialog" max-width="300px">
@@ -46,18 +46,19 @@
         <event-card v-for="event in filteredEvents" :key="event.id" :event="event" />
       </v-col>
     </v-row>
-  </main>
+  </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import EventCard from '../components/EventCard.vue';
 
-const eventDemo = {
-  id: 1,
-  name: 'Demo event',
-  date: '2020-04-01',
-  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-};
+// const eventDemo = {
+//   id: 1,
+//   name: 'Demo event',
+//   date: '2020-04-01',
+//   description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+// };
 
 export default {
   name: 'EventsList',
@@ -65,17 +66,20 @@ export default {
     return {
       selectedDate: null,
       dateDialog: false,
-      events: [
-        eventDemo,
-        eventDemo,
-        eventDemo,
-      ],
       filteredEvents: [],
     };
   },
+
   components: {
     EventCard,
   },
+
+  computed: {
+    ...mapGetters({
+      events: 'events/getEvents',
+    }),
+  },
+
   methods: {
     onFilterEvents() {
       const { selectedDate, events } = this.$data;
@@ -86,20 +90,9 @@ export default {
       this.$data.selectedDate = null;
     },
   },
+
+  beforeCreate() {
+    this.$store.dispatch('events/fetchAllEventsForUser', { uid: this.$store.getters['auth/user'].uid });
+  },
 };
 </script>
-
-<style scoped>
-.main {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 2% 10%;
-}
-
-@media only screen and (max-width: 599px) {
-  .main {
-    padding: 2%;
-  }
-}
-</style>
