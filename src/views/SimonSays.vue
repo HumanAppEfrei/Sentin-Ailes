@@ -24,6 +24,8 @@
             :disabled="!cardEnabled"
             :hover="cardEnabled"
             :ripple="cardEnabled"
+            @mouseover="changeColorOnHover(card.number)"
+            @mouseleave="changeColorOnLeave(card.number)"
             @click="registerClick(card.number)"
             height="150">
 
@@ -58,6 +60,8 @@
             :disabled="!cardEnabled"
             :hover="cardEnabled"
             :ripple="cardEnabled"
+            @mouseover="changeColorOnHover(card.number)"
+            @mouseleave="changeColorOnLeave(card.number)"
             @click="registerClick(card.number)"
             height="150">
 
@@ -144,6 +148,14 @@ export default {
   }),
 
   methods: {
+    changeColorOnHover(number) {
+      this.cards[number].innerColor = this.cards[number].color;
+    },
+
+    changeColorOnLeave(number) {
+      this.cards[number].innerColor = 'rgba(0, 0, 0, 0.7)';
+    },
+
     incrementSequence() {
       this.sequence.push(Math.floor(Math.random() * Math.floor(this.NUMBER_OF_CARDS)));
     },
@@ -254,7 +266,6 @@ export default {
       // Disable user input
       this.cardEnabled = false;
       this.buttonEnabled = false;
-      this.buttonText = 'Partie en cours...';
 
       // Setting values
       this.level += 1;
