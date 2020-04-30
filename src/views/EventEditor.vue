@@ -78,11 +78,21 @@
             label="Déstinataire"
             v-model="autoModel"
             :items="destinataires"
+            append-icon="people">
           ></v-autocomplete>
+
+          <v-text-field
+            outlined
+            :rules="notEmpty"
+            v-model="title"
+            label="Titre de l'évenement"
+            append-icon="title">
+          </v-text-field>
 
           <v-textarea outlined
           v-model="description"
           :rules="notEmpty"
+          append-icon="subject"
           label="Description"
           height="300px" />
           <v-btn
@@ -113,6 +123,7 @@ export default {
       hoursMenu: false,
       autoModel: null,
 
+      title: '',
       hour: null,
       date: null,
       destinataires: [],
@@ -179,6 +190,7 @@ export default {
         const nexDate = Timestamp.fromDate(new Date(`${this.date} ${this.hour}`));
 
         const event = {
+          title: this.title,
           date: nexDate,
           concerned: this.concerned,
           acceptedBy: [this.getUid],
