@@ -2,7 +2,7 @@
   <v-container class="fill-height">
       <v-row justify="center">
           <v-col cols="12" sm="6">
-            <MenuTile color="exercise" icon="fab fa-buromobelexperte" text="Simon Says" link="/"/>
+            <MenuTile color="exercise" icon="fab fa-buromobelexperte" text="Simon Says" link="/exercises/simon"/>
           </v-col>
 
           <v-col cols="12" sm="6">
