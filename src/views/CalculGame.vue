@@ -1,12 +1,12 @@
 <template>
-  <main>
+  <v-container class="d-flex flex-column justify-content-center align-center">
       <p class="green" v-if="result=='success'">Bonne réponse !</p>
       <p class="red" v-else-if="result=='failure'">Mauvaise réponse ...</p>
       <p></p>
-      <p class="operation">{{ numberA }} {{ operator }} {{ numberB }} =</p>
+      <p class="display-4">{{ numberA }} {{ operator }} {{ numberB }} =</p>
       <v-text-field type="number" class="flex-grow-0" label="Response" v-model="response" outlined />
       <v-btn @click="onResponse()">Submit</v-btn>
-  </main>
+  </v-container>
 </template>
 
 <script>
@@ -63,18 +63,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.operation {
-  font-size: 4em;
-}
-</style>
