@@ -6,9 +6,9 @@ name: develop build
 # events but only for the master branch
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,17 +19,19 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - uses: actions/checkout@develop
-    - name: Install
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: install
-    - name: Lint
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: lint
-    - name: build
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: build
+      # Runs a single command using the runners shell
+      - uses: actions/checkout@v2
+        with:
+          ref: develop
+      - name: Install
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: install
+      - name: Lint
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: lint
+      - name: build
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: build

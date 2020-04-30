@@ -6,9 +6,7 @@ name: Firebase deploy hosting
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,26 +17,26 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-    
-    # install dependencies
-    - name: install dependencies 
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: install
-    
-    # building Sentin'ailes
-    - name: build
-      uses: CultureHQ/actions-yarn@master
-      with:
-        args: build
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # Runs a set of commands using the runners shell
-    - name: Firebase GitHub Action
-      uses: pizzafox/firebase-action@1.0.7
-      env:
-        PROJECT_ID: "humanapp-sentinailes"
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      with:
-        args: "deploy --only hosting"
+      # install dependencies
+      - name: install dependencies
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: install
+
+      # building Sentin'ailes
+      - name: build
+        uses: CultureHQ/actions-yarn@master
+        with:
+          args: build
+
+      # Runs a set of commands using the runners shell
+      - name: Firebase GitHub Action
+        uses: pizzafox/firebase-action@1.0.7
+        env:
+          PROJECT_ID: "humanapp-sentinailes"
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        with:
+          args: "deploy --only hosting"

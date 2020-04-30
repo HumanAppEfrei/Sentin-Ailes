@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
+    
+    function isSuperAdmin() {
+      return request.auth.token.role == 'superAdmin'
+    }
+
+    function isAdmin() {
+      return request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
+    }
+
+    match /whitelist/{whitelistEntry} {
+      function userTypeIsBenefOfInterv() {
+        return request.resource.data.userType == 'beneficiaire' || request.resource.data.userType == 'intervenant';
+      }
+
+      allow read;
+      allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
+    }
+
+    match /events/{event} {
+      function isConcerned() {
+        return request.auth.uid in resource.data.concerned;
+      }
+
+      allow read, update, delete: if isConcerned();
+      allow create: if isAuthenticated();
+    }
+
+    match /users/{userId} {
+      function isSelf() {
+        return request.auth.uid == userId;
+      }
+
+      function canAccessUser(uid) {
+        return exists(/databases/$(database)/users/$(userId)/people/$(uid));
+      }
+
+      allow read, write: if isSelf();  // TODO: should update this to disallow deletion later
+      allow read, update, delete: if request.auth.token.role == 'admin' || request.auth.token.role == 'superAdmin';
+      allow read: if canAccessUser(request.auth.uid);  // Allow users which UID is in the `people` array of the record to read the document
+
+      match /people/{personId} {
+        allow read: if isSelf() || isAdmin() || isSuperAdmin();
+        allow write: if isAdmin() || isSuperAdmin();
+      }
+
+      match /notes/{note} {
+        // Determines whether the current request user is the author of the note
+        function isAuthor() {
+          return request.auth.uid == resource.data.from;
+        }
+
+        allow create: if isSelf() || canAccessUser(request.auth.uid);
+        allow read: if isSelf() || isAuthor();
+        allow delete: if isSelf() || isAuthor();
+        allow update: if isAuthor();
+      }
+    }
+  }
+}

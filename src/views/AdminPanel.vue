@@ -1,0 +1,20 @@
+<template>
+  <div class="admin-panel p0 d-flex">
+    <AdminSidenav />
+    <v-container class="admin-panel-content">
+      <router-view></router-view>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import AdminSidenav from '@/components/AdminSidenav.vue';
+
+export default {
+  name: 'AdminPanel',
+
+  components: {
+    AdminSidenav,
+  },
+};
+</script>
