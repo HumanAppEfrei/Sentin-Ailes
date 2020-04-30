@@ -2,7 +2,7 @@
   <v-container fluid>
       <v-row justify="center">
           <v-col cols="12" lg="4" sm="6">
-            <MenuTile color="teal" icon="fab fa-buromobelexperte" text="Simon Says" link="/"/>
+            <MenuTile color="teal" icon="fab fa-buromobelexperte" text="Simon Says" link="/exercises/simon"/>
           </v-col>
 
           <v-col cols="12" lg="4" sm="6">

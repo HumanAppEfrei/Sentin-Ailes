@@ -18,6 +18,7 @@ import Notes from '../views/Notes.vue';
 import AdminPanel from '../views/AdminPanel.vue';
 import LinkUsers from '../views/LinkUsers.vue';
 import ExercisesHub from '../views/ExercisesHub.vue';
+import SimonSays from '../views/SimonSays.vue';
 
 import store from '../store';
 
@@ -156,6 +157,11 @@ const routes = [
     path: '/exercises',
     name: 'exercises-hub',
     component: ExercisesHub,
+  },
+  {
+    path: '/exercises/simon',
+    name: 'simon-says',
+    component: SimonSays,
   },
 ];
 
