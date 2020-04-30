@@ -1,6 +1,6 @@
 <template>
   <router-link :to="link">
-    <v-card align="center" min-height=225 dark :color="color" hover>
+    <v-card class="d-flex flex-column justify-center" align="center" min-height=225 dark :color="color" hover>
       <v-card-title class="justify-center">
           <v-icon size="75">{{ icon }}</v-icon>
       </v-card-title>
