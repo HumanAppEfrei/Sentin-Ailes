@@ -86,8 +86,8 @@
         color="teal"
         dark
         x-large
-        :disable="buttonEnabled"
-        @click="startNewLevel()">
+        :disabled="!buttonEnabled"
+        @click="startNewLevel();">
         {{buttonText}}
         </v-btn>
       </v-row>
@@ -227,6 +227,8 @@ export default {
       this.buttonText = 'Continuer';
 
       this.userInput = [];
+
+      this.buttonEnabled = true;
     },
 
     defeatSequence() {
@@ -244,12 +246,15 @@ export default {
 
       this.userInput = [];
       this.sequence = [];
+
+      this.buttonEnabled = true;
     },
 
     async startNewLevel() {
       // Disable user input
       this.cardEnabled = false;
       this.buttonEnabled = false;
+      this.buttonText = 'Partie en cours...';
 
       // Setting values
       this.level += 1;
