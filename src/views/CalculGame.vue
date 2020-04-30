@@ -38,11 +38,11 @@ export default {
           this.expected = this.numberA + this.numberB;
           break;
         case 1:
-          this.operator = '-';
+          this.operator = '−';
           this.expected = this.numberA - this.numberB;
           break;
         case 2:
-          this.operator = '*';
+          this.operator = '×';
           this.expected = this.numberA * this.numberB;
           break;
         /* Division is to hard
