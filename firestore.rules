@@ -1,6 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
+    
     function isSuperAdmin() {
       return request.auth.token.role == 'superAdmin'
     }
