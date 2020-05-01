@@ -19,7 +19,8 @@ service cloud.firestore {
       }
 
       allow read;
-      allow write: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
+      allow create, update: if isSuperAdmin() || (isAdmin() && userTypeIsBenefOfInterv());
+      allow delete: if isSuperAdmin() || isAdmin();
     }
 
     match /events/{event} {
