@@ -8,7 +8,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="12" sm="6">
-        <v-form @submit.prevent="sendEvent" v-model="formValid">
+        <v-form ref="eventForm" @submit.prevent="sendEvent" v-model="formValid">
           <v-dialog
             ref="dialogHours"
             v-model="hoursMenu"
@@ -75,32 +75,34 @@
             outlined
             multiple
             :rules="notEmpty"
-            label="Déstinataire"
+            label="Destinataire"
             v-model="autoModel"
             :items="destinataires"
-            append-icon="people">
-          ></v-autocomplete>
+            append-icon="people" />
 
           <v-text-field
             outlined
             :rules="notEmpty"
             v-model="title"
             label="Titre de l'évenement"
-            append-icon="title">
-          </v-text-field>
+            append-icon="title" />
 
-          <v-textarea outlined
-          v-model="description"
-          :rules="notEmpty"
-          append-icon="subject"
-          label="Description"
-          height="300px" />
+          <v-textarea
+            outlined
+            v-model="description"
+            :rules="notEmpty"
+            append-icon="subject"
+            label="Description"
+            height="300px"
+            no-resize />
           <v-btn
             :disabled="!formValid"
             :loading="updating"
             type="submit"
             color="calendar"
-          >Valider</v-btn>
+          >
+            Valider
+          </v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -164,10 +166,7 @@ export default {
             + 'afin qu\'il s\'affiche dans leur calendrier',
           });
 
-          this.hour = null;
-          this.date = null;
-          this.destinataires = [];
-          this.description = '';
+          this.$refs.eventForm.reset();
           break;
         case 'error':
           this.updating = false;
