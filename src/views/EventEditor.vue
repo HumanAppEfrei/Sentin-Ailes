@@ -160,6 +160,8 @@ export default {
           this.$swal({
             icon: 'success',
             titleText: 'Evènement bien enregisté',
+            text: 'Les participants doivent accepter l\'évènement '
+            + 'afin qu\'il s\'affiche dans leur calendrier',
           });
 
           this.hour = null;

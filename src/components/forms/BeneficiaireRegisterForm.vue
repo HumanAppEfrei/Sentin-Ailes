@@ -45,7 +45,12 @@
                 outlined
               />
             </template>
-            <v-date-picker v-model="birthDate" first-day-of-week="1" min="1900-01-01" @input="birthDateMenu = false" locale="fr"></v-date-picker>
+            <v-date-picker
+              v-model="birthDate"
+              @input="birthDateMenu = false"
+              first-day-of-week="1"
+              min="1900-01-01"
+              locale="fr" />
           </v-menu>
         </v-col>
 
@@ -187,7 +192,8 @@ export default {
       ],
       nameRules: [
         v => !(/\d/.test(v)) || 'Ne doit pas contenir de chiffres',
-        v => !(/[@#&"(§!)°®†Úºîπ‡Ò∂ƒﬁ¬µ‹≈©◊ß~<>$*€`£ù%+=:/;.,?]/.test(v)) || 'Ne doit pas contenir de caractères spéciaux',
+        v => !(/[@#&"(§!)°®†Úºîπ‡Ò∂ƒﬁ¬µ‹≈©◊ß~<>$*€`£ù%+=:/;.,?]/.test(v))
+         || 'Ne doit pas contenir de caractères spéciaux',
       ],
       phoneRules: [
         v => /^((\+)33|0)[1-9](\d{2}){4}$/.test(v) || 'Numéro de téléphone invalide',
